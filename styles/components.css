@@ -1299,7 +1299,7 @@ body.menu-open {
   color: var(--green-dark);
   border-bottom: 1px solid transparent;
   background-image:
-    linear-gradient(var(--ccg-ground-yellow), var(--ccg-ground-yellow)),
+    linear-gradient(var(--ccg-green), var(--ccg-green)),
     linear-gradient(var(--line), var(--line));
   background-position: left bottom, left bottom;
   background-repeat: no-repeat;
@@ -2778,6 +2778,17 @@ body.menu-open {
 .filter-display-item.is-active {
   color: var(--green-dark);
   border-bottom-color: var(--ccg-gold);
+}
+
+/* Variant — small: compact facet size for control rows */
+.filter-display--small {
+  gap: var(--space-md);
+}
+
+.filter-display--small .filter-display-item {
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  padding-bottom: var(--space-2xs);
 }
 
 /* =============================================================
@@ -4455,13 +4466,6 @@ body.has-drawer-open {
 
 .onward-grid--2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-/* Onward cards sweep the title underline in green, not gold */
-.onward .business-card-title {
-  background-image:
-    linear-gradient(var(--ccg-green), var(--ccg-green)),
-    linear-gradient(var(--line), var(--line));
 }
 
 @media (max-width: 1000px) {
