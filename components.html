@@ -1,0 +1,2119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Components</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../styles/system.css?v=2">
+  <link rel="stylesheet" href="../styles/components.css?v=16">
+
+  <style>
+    /* =============================================
+       COMPONENT GALLERY CHROME
+       Every stage renders the REAL components from
+       components.css/.js; interactions are live, so
+       this document cannot drift from the build.
+    ============================================= */
+
+    /* content sits in the design-width container so fixed-px
+       components (mega grid etc.) render at their intended values */
+    .cmp-main {
+      max-width: 1512px;
+      margin: 0 auto;
+    }
+
+    /* aside menu: toggled overlay, never squeezes the content */
+    .cmp-aside {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 95;
+      width: 260px;
+      overflow-y: auto;
+      padding: 72px var(--space-card) var(--space-lg);
+      background: var(--green-dark);
+      color: var(--ink-inverse);
+      transform: translateX(-100%);
+      transition: transform .4s cubic-bezier(.22,.61,.36,1);
+      box-shadow: 0 0 40px rgba(0, 20, 16, .35);
+    }
+
+    .cmp-aside.is-open {
+      transform: translateX(0);
+    }
+
+    .cmp-menu-toggle {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 96;
+      appearance: none;
+      padding: 12px 20px;
+      border: 1px solid rgba(255,255,255,.3);
+      background: var(--green-dark);
+      color: var(--lime);
+      font-family: inherit;
+      font-size: var(--text-caption);
+      cursor: pointer;
+      box-shadow: 0 2px 12px rgba(0, 20, 16, .3);
+      transition: background-color .25s ease;
+    }
+
+    .cmp-menu-toggle:hover {
+      background: var(--green);
+    }
+
+    .cmp-aside-title {
+      margin: 0 0 var(--space-2xs);
+      font-size: var(--text-small);
+      font-weight: 600;
+    }
+
+    .cmp-aside-meta {
+      margin: 0 0 var(--space-md);
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--ink-inverse-muted);
+    }
+
+    .cmp-aside-label {
+      margin: var(--space-md) 0 var(--space-xs);
+      padding-bottom: var(--space-2xs);
+      border-bottom: 1px solid var(--line-dark);
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--lime);
+    }
+
+    .cmp-aside a {
+      display: block;
+      padding: 5px 0;
+      color: var(--ink-inverse-soft);
+      font-size: 13px;
+      line-height: 18px;
+      transition: color .2s ease, padding-left .25s ease;
+    }
+
+    .cmp-aside a:hover {
+      color: var(--ink-inverse);
+      padding-left: 6px;
+    }
+
+    .cmp-aside a.is-active {
+      color: var(--lime);
+      border-left: 2px solid var(--lime);
+      padding-left: 10px;
+    }
+
+    /* category band: announces the group; sections beneath
+       belong to it until the next band */
+    .cmp-category {
+      padding: var(--space-lg) var(--page-pad);
+      background: var(--green-dark);
+      color: var(--ink-inverse);
+    }
+
+    .cmp-category .eyebrow {
+      margin: 0 0 var(--space-2xs);
+      color: var(--lime);
+      font-size: var(--text-caption);
+    }
+
+    .cmp-category h2 {
+      margin: 0;
+      font-size: var(--text-h4);
+      line-height: var(--leading-h4);
+      font-weight: 400;
+    }
+
+    .cmp-category p {
+      margin: var(--space-xs) 0 0;
+      max-width: 640px;
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: var(--ink-inverse-soft);
+    }
+
+    .cmp-section {
+      padding: var(--space-section-compact) var(--page-pad);
+      background: #fff;
+    }
+
+    .cmp-section + .cmp-section {
+      border-top: 1px solid var(--line);
+    }
+
+    .cmp-head {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-md);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: var(--space-lg);
+    }
+
+    .cmp-head-number {
+      font-family: "EB Garamond", serif;
+      font-style: italic;
+      font-size: var(--text-h5);
+      line-height: var(--leading-h5);
+      color: var(--ccg-ground-yellow);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cmp-head h2 {
+      margin: 0;
+      font-size: var(--text-h3);
+      line-height: var(--leading-h3);
+      font-weight: 400;
+      color: var(--green-dark);
+    }
+
+    .cmp-head-note {
+      margin: 0 0 0 auto;
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--grey);
+    }
+
+    /* the live rendering area */
+    .cmp-stage {
+      padding: var(--space-xl);
+      border: 1px dashed var(--line);
+    }
+
+    .cmp-stage--dark {
+      background: var(--green-dark);
+      border: 0;
+    }
+
+    .cmp-stage--cream {
+      background: var(--cream);
+      border: 0;
+    }
+
+    .cmp-stage + .cmp-stage {
+      margin-top: var(--space-md);
+    }
+
+    .cmp-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+
+    .cmp-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-md);
+    }
+
+    /* notes fold away behind a quiet summary */
+    .cmp-notes-wrap {
+      margin-top: var(--space-md);
+    }
+
+    .cmp-notes-wrap summary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      cursor: pointer;
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--green);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+      list-style: none;
+    }
+
+    .cmp-notes-wrap summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .cmp-notes-wrap summary::after {
+      content: "▾";
+      transition: transform .3s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .cmp-notes-wrap[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    .cmp-notes-wrap[open] summary {
+      color: var(--green-dark);
+      border-bottom-color: var(--green-dark);
+    }
+
+    .cmp-stage--dark .cmp-notes-wrap summary,
+    .cmp-impact-stage .cmp-notes-wrap summary {
+      color: var(--lime);
+      border-bottom-color: var(--line-dark);
+    }
+
+    .cmp-notes-wrap .cmp-notes {
+      margin-top: var(--space-sm);
+    }
+
+    /* interaction spec: what the developer must reproduce */
+    .cmp-notes {
+      margin: var(--space-md) 0 0;
+      padding: 0 0 0 var(--space-md);
+      border-left: 2px solid var(--ccg-gold);
+      list-style: none;
+      display: grid;
+      gap: var(--space-xs);
+    }
+
+    .cmp-notes li {
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: var(--ink);
+    }
+
+    .cmp-notes .cmp-event {
+      color: var(--green);
+    }
+
+    .cmp-sub {
+      margin: var(--space-xl) 0 var(--space-md);
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: var(--green);
+    }
+
+    .cmp-sub:first-of-type {
+      margin-top: 0;
+    }
+
+    /* ---------------------------------------------
+       STATUS TABS: segmented filter tabs; the
+       active tab fuses with the band beneath.
+    --------------------------------------------- */
+
+    .status-tabs {
+      display: inline-flex;
+      background: #fff;
+    }
+
+    .status-tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--green-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: baseline;
+      gap: var(--space-xs);
+      padding: 16px 40px 20px;
+      font-size: var(--text-small);
+      font-family: inherit;
+    }
+
+    .status-tab + .status-tab {
+      border-left: 1px solid var(--line);
+    }
+
+    .status-tab .tab-count {
+      font-size: var(--text-caption);
+      opacity: .65;
+    }
+
+    .status-tab:hover:not(.is-active) {
+      background: var(--cream-light);
+    }
+
+    .status-tab.is-active {
+      background: var(--green-dark);
+      color: var(--lime);
+    }
+
+    /* ---------------------------------------------
+       CATEGORY PILLS: rounded outline filter on
+       dark grounds; active fills beige.
+    --------------------------------------------- */
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+
+    .category-pill {
+      appearance: none;
+      border: 1px solid var(--line-dark);
+      background: transparent;
+      color: var(--ink-inverse-soft);
+      padding: var(--space-xs) var(--space-ms);
+      font-size: var(--text-small);
+      font-family: inherit;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .category-pill:hover:not(.is-active) {
+      border-color: var(--ink-inverse-muted);
+      color: var(--ink-inverse);
+    }
+
+    .category-pill.is-active {
+      background: var(--ccg-lime);
+      border-color: var(--ccg-lime);
+      color: var(--green-dark);
+    }
+
+    /* dropdown demos: shrink-wrap the component as its flex-row
+       context does on real pages, so the panel hangs from the
+       trigger's bottom-right rather than the stage edge */
+    #cmpSelectLight,
+    #cmpSelectWide,
+    #cmpSelectDark {
+      display: inline-block;
+    }
+
+    /* wider trigger example: the panel tracks it automatically */
+    #cmpSelectWide .year-select-trigger {
+      min-width: 300px;
+    }
+
+    /* contained viewport for viewport-bound components (sticky nav) */
+    .cmp-viewport {
+      display: block;
+      width: 100%;
+      height: 620px;
+      border: 1px solid var(--line);
+      background: #fff;
+      transition: width .4s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .cmp-viewport--mobile {
+      width: 414px;
+      height: 740px;
+    }
+
+    /* viewport switcher: deliberately loud so it can't be missed */
+    .cmp-vp-controls {
+      display: flex;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .cmp-vp-btn {
+      appearance: none;
+      padding: 12px 20px;
+      border: 1px solid var(--green-dark);
+      background: #fff;
+      color: var(--green-dark);
+      font-family: inherit;
+      font-size: var(--text-small);
+      cursor: pointer;
+    }
+
+    .cmp-vp-btn:hover:not(.is-active) {
+      background: var(--cream);
+    }
+
+    .cmp-vp-btn.is-active {
+      background: var(--green-dark);
+      color: var(--lime);
+    }
+
+    /* ---------------------------------------------
+       PORTFOLIO SHOWCASE. Source: index.html
+       Strict card values made responsive: tokenised
+       type, breakpoint-stepped sizes.
+    --------------------------------------------- */
+
+    .cmp-portfolio-stage {
+      padding: var(--space-xl) 0;
+      background: var(--lime);
+      overflow: hidden;
+    }
+
+    .portfolio-viewport {
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      padding-left: var(--space-xl);
+    }
+
+    .portfolio-track {
+      display: flex;
+      gap: var(--space-grid);
+      width: max-content;
+      will-change: transform;
+      touch-action: pan-y;
+    }
+
+    .property-card {
+      width: 364px;
+      flex: 0 0 auto;
+    }
+
+    .property-image {
+      height: 416px;
+      overflow: hidden;
+      background: var(--sand);
+    }
+
+    .property-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .property-card:hover img {
+      transform: scale(1.025);
+    }
+
+    .property-info {
+      background: var(--green-dark);
+      padding: var(--space-card) var(--space-plate) var(--space-plate);
+    }
+
+    .property-card:hover .property-info,
+    .property-card:focus-within .property-info {
+      background: var(--green);
+    }
+
+    .property-name {
+      margin: 0 0 var(--space-sm);
+      font-size: var(--text-h4);
+      line-height: var(--leading-h4);
+      font-weight: 400;
+      color: var(--ink-inverse);
+    }
+
+    .property-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      color: var(--ink-inverse-soft);
+      font-size: var(--text-small);
+    }
+
+    .property-meta span + span::before {
+      content: "·";
+      margin-right: var(--space-xs);
+    }
+
+    /* mobile steps mirror the homepage's ≤680 treatment */
+    @media (max-width: 680px) {
+      .property-card {
+        width: 328px;
+      }
+
+      .property-image {
+        height: 344px;
+      }
+    }
+
+    /* ---------------------------------------------
+       IMPACT STATS CAROUSEL. Source: index.html
+       Card width fitted to the container (346 × 4 =
+       1384); colours tokenised (--line-dark borders).
+    --------------------------------------------- */
+
+    .cmp-impact-stage {
+      padding: var(--space-xl) 0;
+      background: var(--ccg-green);
+      color: var(--ink-inverse);
+      overflow: hidden;
+    }
+
+    .cmp-impact-stage .impact-heading {
+      padding: 0 var(--space-xl);
+      margin-bottom: var(--space-md);
+    }
+
+    .cmp-impact-stage .eyebrow {
+      margin-bottom: var(--space-sm);
+      color: var(--ink-inverse);
+    }
+
+    .cmp-impact-stage .section-divider {
+      background: rgba(255, 255, 255, .3);
+    }
+
+    .stats-window {
+      overflow: hidden;
+    }
+
+    .stats-track {
+      display: flex;
+      width: max-content;
+      transition: transform .8s cubic-bezier(.22,.61,.36,1);
+      will-change: transform;
+    }
+
+    .stat {
+      width: 346px;
+      height: 332px;
+      flex: 0 0 auto;
+      padding: var(--space-md) var(--space-lg) 0;
+      border-left: 1px solid var(--line-dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .stat:first-child {
+      border-left: 0;
+    }
+
+    .stat-description {
+      align-self: flex-start;
+      max-width: 264px;
+      margin: 0;
+      color: var(--ink-inverse);
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+    }
+
+    .stat-number {
+      align-self: flex-end;
+      max-width: 100%;
+      margin: auto 0 0;
+      color: var(--chinachem-beige);
+      font-size: 68px;
+      line-height: 58px;
+      font-weight: 400;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    @media (max-width: 680px) {
+      .stat {
+        width: 344px;
+        height: 252px;
+      }
+    }
+
+    .cmp-impact-stage .carousel-ui {
+      margin-top: 0;
+      padding: var(--space-md) var(--space-xl) 0;
+    }
+
+    .cmp-impact-stage .carousel-count,
+    .cmp-impact-stage .arrow {
+      color: var(--ink-inverse);
+    }
+
+    .cmp-impact-stage .progress-track {
+      background: var(--line-dark);
+    }
+
+    .cmp-impact-stage .progress-thumb {
+      background: var(--ink-inverse);
+    }
+
+    /* ---------------------------------------------
+       STORIES CAROUSEL. Source: index.html
+       Shared ccgCarousel engine + editorial cards.
+    --------------------------------------------- */
+
+    .cmp-stories-stage {
+      padding: var(--space-xl) 0;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .cmp-stories-stage .carousel-viewport {
+      padding: 0 var(--space-xl);
+    }
+
+    .story-grid article {
+      width: 444px;
+      flex: 0 0 auto;
+    }
+
+    .story-image {
+      aspect-ratio: 1;
+      overflow: hidden;
+      margin-bottom: var(--space-md);
+      background: var(--sand);
+    }
+
+    .story-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .story-grid article:hover .story-image img {
+      transform: scale(1.035);
+    }
+
+    .story-title {
+      max-width: 420px;
+      font-size: var(--text-h6);
+      line-height: var(--leading-h6);
+      color: var(--green-dark);
+    }
+
+    .story-link {
+      margin-top: var(--space-md);
+      font-size: var(--text-caption);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--green-dark);
+    }
+
+    .story-link .inline-arrow {
+      transition: transform .35s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .story-grid article:hover .story-link .inline-arrow {
+      transform: translateX(5px) rotate(90deg);
+    }
+
+    .cmp-stories-stage .carousel-ui {
+      padding: var(--space-lg) var(--space-xl) 0;
+    }
+
+    /* mobile step mirrors the homepage: one card short of the
+       column so the next peeks in */
+    @media (max-width: 680px) {
+      .story-grid article {
+        width: calc(100vw - (2 * var(--page-pad)) - 40px);
+      }
+    }
+
+    /* ---------------------------------------------
+       ONWARD CARD: the business-card in its
+       quick-links treatment (components.css;
+       ONWARD / QUICK LINKS): green title sweep.
+    --------------------------------------------- */
+
+    .cmp-onward-stage {
+      background: var(--cream);
+      border: 0;
+    }
+
+    .cmp-onward-stage .business-card-image {
+      aspect-ratio: 4/3.4;
+    }
+
+    /* Minimal plate card, light variant: white plate, ink text,
+       beige hover */
+    .property-card--light .property-info {
+      background: #fff;
+    }
+
+    .property-card--light .property-name {
+      color: var(--ink);
+    }
+
+    .property-card--light .property-meta {
+      color: var(--grey);
+    }
+
+    .property-card--light:hover .property-info,
+    .property-card--light:focus-within .property-info {
+      background: var(--chinachem-beige);
+    }
+
+    /* standalone plate cards run the 4/3.4 editorial image ratio
+       (the showcase carousel keeps its fixed 416px crop) */
+    #cmp-minimal-plate-card .property-image {
+      height: auto;
+      aspect-ratio: 4 / 3.4;
+    }
+
+    /* property modal: full-screen dialog over a blurred scrim */
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .property-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 60px;
+      background: rgba(3, 25, 22, .58);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .4s ease, visibility .4s ease;
+    }
+
+    .property-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .property-modal-panel {
+      position: relative;
+      width: min(1440px, calc(100vw - 120px));
+      height: min(820px, calc(100svh - 120px));
+      min-height: min(580px, calc(100svh - 40px));
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 472px;
+      overflow: hidden;
+      background: var(--cream);
+      color: var(--green-dark);
+      transform: translateY(24px) scale(.985);
+      transition: transform .55s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .property-modal.is-open .property-modal-panel {
+      transform: translateY(0) scale(1);
+    }
+
+    .property-modal-media {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      background: var(--sand);
+    }
+
+    .property-modal-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 72%, rgba(4, 29, 26, .13));
+      pointer-events: none;
+    }
+
+    .property-modal-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.04);
+      transition: transform 1s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .property-modal.is-open .property-modal-media img {
+      transform: scale(1);
+    }
+
+
+    .property-modal-content {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-xl);
+    }
+
+    .property-modal-kicker {
+      margin: 0 0 var(--space-lg);
+      color: rgba(7, 58, 52, .58);
+      font-size: var(--text-caption);
+    }
+
+    .property-modal-title {
+      margin: 0;
+      font-size: var(--text-h1);
+      line-height: var(--leading-h1);
+      font-weight: 400;
+    }
+
+    .property-modal-rule {
+      width: 100%;
+      height: 1px;
+      margin: var(--space-lg) 0;
+      background: rgba(7, 58, 52, .2);
+    }
+
+    .property-modal-description {
+      margin: 0;
+      max-width: 42ch;
+      color: rgba(7, 58, 52, .72);
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+    }
+
+    /* layout only; behaviour comes from the standard secondary CTA */
+    .property-modal-cta {
+      width: min(100%, 280px);
+      margin-top: auto;
+    }
+
+    .property-modal-close {
+      position: absolute;
+      top: var(--space-card);
+      right: var(--space-card);
+      z-index: 3;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(7, 58, 52, .22);
+      background: var(--cream);
+      color: var(--green-dark);
+      cursor: pointer;
+    }
+
+    .property-modal-close::before,
+    .property-modal-close::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .property-modal-close::before { transform: rotate(45deg); }
+    .property-modal-close::after { transform: rotate(-45deg); }
+
+    .property-modal-close:hover,
+    .property-modal-close:focus-visible {
+      background: var(--green-dark);
+      color: var(--cream);
+    }
+
+    .view-cursor {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      background: var(--ccg-lively-red);
+      color: var(--cream);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.8);
+      transition: transform .2s ease;
+      font-size: var(--text-small);
+    }
+
+    .view-cursor.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* cover header */
+    .cmp-cover {
+      padding: var(--space-section-standard) var(--page-pad);
+      background: var(--green-dark);
+      color: var(--ink-inverse);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cmp-cover-mark {
+      position: absolute;
+      right: -80px;
+      bottom: -120px;
+      width: 560px;
+      height: 436px;
+      background: var(--green);
+      -webkit-mask: var(--hearts-mask) center / contain no-repeat;
+      mask: var(--hearts-mask) center / contain no-repeat;
+    }
+
+    .cmp-cover .eyebrow {
+      margin: 0 0 var(--space-md);
+      color: var(--ink-inverse-soft);
+    }
+
+    .cmp-cover h1 {
+      position: relative;
+      margin: 0 0 var(--space-lg);
+      font-size: var(--text-display);
+      line-height: var(--leading-display);
+      font-weight: 400;
+    }
+
+    .cmp-cover-meta {
+      position: relative;
+      display: flex;
+      gap: var(--space-xl);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--line-dark);
+      max-width: 780px;
+    }
+
+    .cmp-cover-meta div p:first-child {
+      margin: 0 0 var(--space-2xs);
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--ink-inverse-muted);
+    }
+
+    .cmp-cover-meta div p:last-child {
+      margin: 0;
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: var(--ink-inverse);
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Live interaction reference. Each entry is the production component.</p>
+
+    <p class="cmp-aside-label">Actions</p>
+    <nav aria-label="Component index: actions">
+      <a href="#cmp-ctas" class="is-active">CTAs &amp; links</a>
+      <a href="#cmp-status-tabs">Status tabs</a>
+      <a href="#cmp-text-filter">Text filter</a>
+      <a href="#cmp-category-pills">Category pills</a>
+      <a href="#cmp-dropdown">Dropdown select</a>
+    </nav>
+
+    <p class="cmp-aside-label">Chrome</p>
+    <nav aria-label="Component index: chrome">
+      <a href="#cmp-nav">Site navigation</a>
+      <a href="#cmp-footer">Footer</a>
+    </nav>
+
+    <p class="cmp-aside-label">Carousels</p>
+    <nav aria-label="Component index: carousels">
+      <a href="#cmp-showcase-carousel">Showcase carousel</a>
+      <a href="#cmp-stats-carousel">Stats carousel</a>
+      <a href="#cmp-card-carousel">Manual carousel</a>
+    </nav>
+
+    <p class="cmp-aside-label">Cards</p>
+    <nav aria-label="Component index: cards">
+      <a href="#cmp-onward-card">Onward card</a>
+      <a href="#cmp-minimal-plate-card">Minimal plate card</a>
+      <a href="#cmp-editorial-card">Editorial card</a>
+    </nav>
+
+    <p class="cmp-aside-label">Page utilities</p>
+    <nav aria-label="Component index: page utilities">
+      <a href="#cmp-breadcrumb">Breadcrumb</a>
+    </nav>
+
+    <p class="cmp-aside-label">Content blocks</p>
+    <nav aria-label="Component index: content blocks">
+      <a href="#cmp-stat-cell">Stat cell</a>
+    </nav>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Interaction <span class="">guide</span></h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Components</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · ACTIONS ═══ -->
+  <section class="cmp-category" aria-label="Category: Actions">
+    <p class="eyebrow">Category</p>
+    <h2>Actions</h2>
+    <p>Buttons, links and filter controls. Everything the user presses.</p>
+  </section>
+
+  <!-- ACTIONS · CTAS & LINKS -->
+  <section class="cmp-section" id="cmp-ctas" aria-label="CTAs and links">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>CTAs &amp; links</h2>
+      <p class="cmp-head-note">Chamber sweep · underline sweep · arrow nudge</p>
+    </div>
+
+    <p class="cmp-sub">Light grounds</p>
+    <div class="cmp-stage">
+      <div class="cmp-row">
+        <a class="primary-cta primary-cta--solid" href="#">
+          <span class="primary-cta-label">Solid · light grounds</span>
+          <span class="primary-cta-arrow" aria-hidden="true"><span class="inline-arrow"></span></span>
+        </a>
+        <a class="secondary-link-cta link-arrow" href="#">Secondary link CTA</a>
+        <a class="link-arrow" href="#">Link arrow</a>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Hover / focus (primary):</span> the lime fill sweeps into the arrow chamber from the left over 0.4s on the house easing curve; the arrow flips to deep green.</li>
+        <li><span class="cmp-event">Hover / focus (secondary link):</span> a green underline sweeps left to right over 0.45s, replacing the resting hairline.</li>
+        <li><span class="cmp-event">Hover / focus (link arrow):</span> the arrow nudges 5px right over 0.35s; no underline.</li>
+      </ul>
+      </details>
+    </div>
+
+    <p class="cmp-sub">Dark grounds</p>
+    <div class="cmp-stage cmp-stage--dark">
+      <div class="cmp-row">
+        <a class="primary-cta" href="#">
+          <span class="primary-cta-label">Default · dark grounds</span>
+          <span class="primary-cta-arrow" aria-hidden="true"><span class="inline-arrow"></span></span>
+        </a>
+        <a class="primary-cta primary-cta--ghost" href="#">
+          <span class="primary-cta-label">Ghost · dark grounds</span>
+          <span class="primary-cta-arrow" aria-hidden="true"><span class="inline-arrow"></span></span>
+        </a>
+        <a class="secondary-link-cta secondary-link-cta--light link-arrow" href="#">Secondary · light variant</a>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes" style="border-left-color: var(--lime)">
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Hover / focus:</span> the default plate sweeps golden yellow; the ghost sweeps white; both flip the arrow to deep green. The light secondary underline fills white from left to right over 0.45s, matching the standard sweep.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACTIONS · STATUS TABS -->
+  <section class="cmp-section" id="cmp-status-tabs" aria-label="Status tabs">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Status tabs</h2>
+      <p class="cmp-head-note">Segmented filter: the active tab fuses with the band below</p>
+    </div>
+
+    <div class="cmp-stage cmp-stage--cream">
+      <div class="status-tabs" role="tablist" aria-label="Demo status filter" id="cmpStatusTabs">
+        <button class="status-tab" type="button" role="tab" aria-selected="false">First <span class="tab-count">(12)</span></button>
+        <button class="status-tab is-active" type="button" role="tab" aria-selected="true">Second <span class="tab-count">(07)</span></button>
+        <button class="status-tab" type="button" role="tab" aria-selected="false">Third <span class="tab-count">(05)</span></button>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Click:</span> the active plate flips white to deep green with lime text instantly; inactive tabs warm on hover, also instantly.</li>
+        <li><span class="cmp-event">Anatomy:</span> each tab pairs its label with a zero-padded count set smaller and lighter; tabs are divided by hairlines inside a hairline frame.</li>
+        <li><span class="cmp-event">In context:</span> the tab row sits flush against a deep green band so the active tab reads as one surface with the filtered content beneath it; switching resets dependent filters and pagination.</li>
+        <li><span class="cmp-event">Responsive:</span> below tablet width the row stretches full width with tabs sharing space equally; on mobile the padding tightens and the counts disappear.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACTIONS · TEXT FILTER -->
+  <section class="cmp-section" id="cmp-text-filter" aria-label="Text filter">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Text filter</h2>
+      <p class="cmp-head-note">Lead-size filter tabs: gold underline marks the active choice</p>
+    </div>
+
+    <div class="cmp-stage">
+      <div class="filter-display" role="group" aria-label="Demo filter" id="cmpTextFilter">
+        <button class="filter-display-item is-active" type="button" aria-pressed="true">All</button>
+        <button class="filter-display-item" type="button" aria-pressed="false">Option one</button>
+        <button class="filter-display-item" type="button" aria-pressed="false">Option two</button>
+        <button class="filter-display-item" type="button" aria-pressed="false">Option three</button>
+      </div>
+
+      <p class="cmp-sub">Small variant: compact facet for control rows</p>
+      <div class="filter-display filter-display--small" role="group" aria-label="Demo small filter" id="cmpTextFilterSmall">
+        <button class="filter-display-item is-active" type="button" aria-pressed="true">All</button>
+        <button class="filter-display-item" type="button" aria-pressed="false">For sale</button>
+        <button class="filter-display-item" type="button" aria-pressed="false">For lease</button>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Click:</span> the chosen item darkens to deep green and takes a 2px gold underline instantly; the previous choice releases both. Single-select.</li>
+        <li><span class="cmp-event">Hover / focus:</span> inactive items preview the deep green ink without the underline.</li>
+        <li><span class="cmp-event">Anatomy:</span> plain lead-size text resting in grey with generous gaps, no frames or plates; the gold underline is the only active mark.</li>
+        <li><span class="cmp-event">Rule of use:</span> the standard content filter for archives and listings: categories on the news archive, years on awards. Selecting re-filters content and resets pagination.</li>
+        <li><span class="cmp-event">Small variant:</span> the same behaviour at small text size with tighter gaps, for compact control rows beside a primary filter, like the availability facet on the portfolio browser.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACTIONS · CATEGORY PILLS -->
+  <section class="cmp-section" id="cmp-category-pills" aria-label="Category pills">
+    <div class="cmp-head">
+      <span class="cmp-head-number">04</span>
+      <h2>Category pills</h2>
+      <p class="cmp-head-note">Rounded outline filter on dark grounds: active fills lime</p>
+    </div>
+
+    <div class="cmp-stage cmp-stage--dark">
+      <div class="category-pills" role="group" aria-label="Demo categories" id="cmpCategoryPills">
+        <button class="category-pill is-active" type="button" aria-pressed="true">All</button>
+        <button class="category-pill" type="button" aria-pressed="false">Category one</button>
+        <button class="category-pill" type="button" aria-pressed="false">Category two</button>
+        <button class="category-pill" type="button" aria-pressed="false">Category three</button>
+        <button class="category-pill" type="button" aria-pressed="false">Category four</button>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes" style="border-left-color: var(--lime)">
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Click:</span> toggles the pill on or off instantly; active pills fill lime with deep green text, and any number can be active at once.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Hover:</span> inactive pills brighten; both outline and text step up towards white.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Anatomy:</span> fully rounded (the only rounded element in the system), with small labels, tight gaps, wrapping to as many rows as needed.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Rule of use:</span> the dark-ground category facet in a filter stack: status tabs pick the primary set and category pills refine it by any combination; changing any facet re-filters and resets pagination.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACTIONS · DROPDOWN SELECT -->
+  <section class="cmp-section" id="cmp-dropdown" aria-label="Dropdown select">
+    <div class="cmp-head">
+      <span class="cmp-head-number">05</span>
+      <h2>Dropdown select</h2>
+      <p class="cmp-head-note">Custom select: trigger with a floating options panel</p>
+    </div>
+
+    <p class="cmp-sub">Standard and wide on light grounds; the panel always matches the trigger width</p>
+    <div class="cmp-stage" style="min-height: 260px;">
+      <div class="cmp-row" style="align-items: flex-start;">
+      <div class="year-select" data-open="false" id="cmpSelectLight">
+        <span class="year-select-label" id="cmpSelectLightLabel">Filter label</span>
+        <button class="year-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="cmpSelectLightLabel cmpSelectLightValue">
+          <span id="cmpSelectLightValue">All options</span>
+          <span class="year-select-chevron" aria-hidden="true"></span>
+        </button>
+        <ul class="year-select-panel" role="listbox" aria-label="Demo filter" id="cmpSelectLightPanel">
+          <li class="year-option" role="option" tabindex="-1" data-value="all" aria-selected="true">All options</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="a" aria-selected="false">Option one</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="b" aria-selected="false">Option two</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="c" aria-selected="false">Option three</li>
+        </ul>
+      </div>
+
+      <div class="year-select" data-open="false" id="cmpSelectWide">
+        <span class="year-select-label" id="cmpSelectWideLabel">Wider trigger</span>
+        <button class="year-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="cmpSelectWideLabel cmpSelectWideValue">
+          <span id="cmpSelectWideValue">A longer default value</span>
+          <span class="year-select-chevron" aria-hidden="true"></span>
+        </button>
+        <ul class="year-select-panel" role="listbox" aria-label="Demo wide filter" id="cmpSelectWidePanel">
+          <li class="year-option" role="option" tabindex="-1" data-value="all" aria-selected="true">A longer default value</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="a" aria-selected="false">Second choice</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="b" aria-selected="false">Third choice</li>
+        </ul>
+      </div>
+      </div>
+    </div>
+
+    <p class="cmp-sub">Light variant on dark grounds</p>
+    <div class="cmp-stage cmp-stage--dark" style="min-height: 260px;">
+      <div class="year-select year-select--light" data-open="false" id="cmpSelectDark">
+        <span class="year-select-label" id="cmpSelectDarkLabel">Filter label</span>
+        <button class="year-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="cmpSelectDarkLabel cmpSelectDarkValue">
+          <span id="cmpSelectDarkValue">All options</span>
+          <span class="year-select-chevron" aria-hidden="true"></span>
+        </button>
+        <ul class="year-select-panel" role="listbox" aria-label="Demo filter" id="cmpSelectDarkPanel">
+          <li class="year-option" role="option" tabindex="-1" data-value="all" aria-selected="true">All options</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="a" aria-selected="false">Option one</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="b" aria-selected="false">Option two</li>
+        </ul>
+      </div>
+    </div>
+
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Click trigger:</span> the options panel slides down from behind the trigger over 0.25s on the house easing curve; the chevron flips in step and the options cascade in with a slight stagger.</li>
+        <li><span class="cmp-event">Click option:</span> the value swaps, the active row takes a gold rule and deep green ink, the panel closes and focus returns to the trigger.</li>
+        <li><span class="cmp-event">Outside click / Escape:</span> both close the panel; Escape also restores focus to the trigger.</li>
+        <li><span class="cmp-event">Width rule:</span> the options panel always matches the trigger width, however wide the trigger runs.</li>
+        <li><span class="cmp-event">Variants:</span> the options panel is always light, even on dark grounds; the light variant re-inks only the label and trigger, whose underline brightens to white on hover.</li>
+        <li>In stacked mobile filter bars the trigger stretches full width with the panel opening edge-to-edge beneath it.</li>
+      </ul>
+      </details>
+  </section>
+
+
+
+
+
+  <!-- ═══ CATEGORY · CHROME ═══ -->
+  <section class="cmp-category" aria-label="Category: Chrome">
+    <p class="eyebrow">Category</p>
+    <h2>Chrome</h2>
+    <p>The shared page shell. One source, identical on every page.</p>
+  </section>
+
+  <!-- CHROME · SITE NAVIGATION -->
+  <section class="cmp-section" id="cmp-nav" aria-label="Site navigation">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Site navigation</h2>
+      <p class="cmp-head-note">Sticky reveal + mega menu: contained viewport below</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <div class="cmp-vp-controls" role="group" aria-label="Demo viewport width">
+        <button class="cmp-vp-btn is-active" type="button" id="cmpVpDesktop" aria-pressed="true">Desktop viewport</button>
+        <button class="cmp-vp-btn" type="button" id="cmpVpMobile" aria-pressed="false">Mobile viewport · 414px</button>
+      </div>
+      <iframe class="cmp-viewport" id="cmpNavViewport" src="components-nav-demo.html" title="Site navigation demo: scrollable viewport"></iframe>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The frame above is a real viewport running the production header. Scroll inside it, and hover a nav item at the top to open the mega menu.</li>
+        <li><span class="cmp-event">At top:</span> the header is transparent over the hero, with white text and an inverted logo.</li>
+        <li><span class="cmp-event">Scroll down past 92px:</span> the header slides away upward over 0.42s on the house easing curve.</li>
+        <li><span class="cmp-event">Scroll up:</span> any upward scroll brings the header back as a fixed solid white bar with dark ink, the logo un-inverted and the CTA in its solid deep green form. Back at the very top it reattaches and turns transparent again.</li>
+        <li><span class="cmp-event">Nav links:</span> hover or focus draws a thin underline from the left over 0.3s; leaving retracts it to the right.</li>
+      </ul>
+      </details>
+
+      <p class="cmp-sub" style="margin-top: var(--space-lg);">Mobile navigation: switch to the 414px viewport above</p>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">The bar (mobile):</span> drops to 72px tall and keeps three elements: logo, a slimmed Sales &amp; Leasing plate, and the burger. Search moves into the menu panel.</li>
+        <li><span class="cmp-event">Burger:</span> three hairlines with the middle one shorter; hover extends it to full width. Open crosses the outer pair and retires the middle line.</li>
+        <li><span class="cmp-event">Tap burger:</span> a full-screen white panel slides down from the top over 0.55s; the section rows cascade in as the sheet lands, the bar fuses with it and page scrolling locks.</li>
+        <li><span class="cmp-event">Tap a section:</span> the five-row list sweeps left and fades as the child links cascade in from the right with a Back row and the section title. Back reverses; closing the panel resets to the top level.</li>
+        <li><span class="cmp-event">Utility foot:</span> a full-width Search row above Contact Us and the language toggle. The active language reads by weight, not underline.</li>
+        <li><span class="cmp-event">Escape:</span> closes the panel and returns focus to the burger.</li>
+      </ul>
+      </details>
+
+      <p class="cmp-sub" style="margin-top: var(--space-lg);">Mega menu: hover a nav item in the desktop viewport</p>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Open (hover / focus / click a nav item):</span> the panel fades in and drops 10px into place over roughly a third of a second. The header turns solid while open, and the open item keeps its underline.</li>
+        <li><span class="cmp-event">Moving between items:</span> repopulates the panel in place, with no close-and-reopen flicker.</li>
+        <li><span class="cmp-event">Layout:</span> four columns: overview (kicker, title, description), two numbered link lists split evenly, and a feature card with image, title and a read-the-story link. A utility row beneath carries Contact Us and the language toggle.</li>
+        <li><span class="cmp-event">Link rows:</span> hover or focus shifts the row slightly right, inks it green and fades in a green arrow. Numerals are set in the serif italic.</li>
+        <li><span class="cmp-event">Feature card:</span> the image zooms gently over 0.7s; the link underline darkens to green.</li>
+        <li><span class="cmp-event">Close:</span> a moment after the pointer leaves the header (brushing past never flickers it); immediately on an outside click; Escape closes and returns focus to the triggering item.</li>
+        <li>Below desktop width the mega menu does not exist; navigation moves to the mobile panel above.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+
+  <!-- CHROME · FOOTER -->
+  <section class="cmp-section" id="cmp-footer" aria-label="Footer">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Footer</h2>
+      <p class="cmp-head-note">Global footer: one source, identical on every page</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <div data-component="site-footer"></div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>One shared footer, identical on every page; the sitemap is maintained in a single place.</li>
+        <li><span class="cmp-event">Layout:</span> six equal columns on the deep green ground: five navigation groups mirroring the main menu, plus a contact column with address, phone and email. The bottom row holds the inverted wordmark, centred legal links and the social icons.</li>
+        <li><span class="cmp-event">Hover (social):</span> icons lift 2px over 0.25s. Navigation links rest at a softened white.</li>
+        <li><span class="cmp-event">Responsive:</span> the navigation grid steps from six columns to three, then two on mobile; the bottom row stacks and centres: the wordmark grows to three-quarters of the column, the legal row tightens, and the footer gains extra bottom padding.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ═══ CATEGORY · CAROUSELS ═══ -->
+  <section class="cmp-category" aria-label="Category: Carousels">
+    <p class="eyebrow">Category</p>
+    <h2>Carousels</h2>
+    <p>Three track behaviours: free-running showcase, stepped auto-advance, and the paged card carousel.</p>
+  </section>
+
+  <!-- CAROUSELS · SHOWCASE CAROUSEL -->
+  <section class="cmp-section" id="cmp-showcase-carousel" aria-label="Showcase carousel">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Showcase carousel</h2>
+      <p class="cmp-head-note">Infinite auto-scroll · drag · custom cursor · detail modal</p>
+    </div>
+
+    <div class="cmp-stage cmp-portfolio-stage" style="border: 0;">
+      <div class="portfolio-viewport" id="cmpPortfolioViewport">
+        <div class="portfolio-track" id="cmpPortfolioTrack"></div>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Autoplay:</span> the track drifts left continuously at about 54px per second, looping seamlessly and endlessly in both directions.</li>
+        <li><span class="cmp-event">Drag:</span> pressing pauses the drift and scrubs the track 1:1 with the pointer. Small movements still count as clicks; larger drags never open a card. The drift resumes shortly after release.</li>
+        <li><span class="cmp-event">Hover a card:</span> the image zooms gently over 0.8s; the deep green plate lightens instantly.</li>
+        <li><span class="cmp-event">Custom cursor:</span> over the images the native cursor is replaced by a red View disc that follows the pointer, scaling up with a quick fade.</li>
+        <li><span class="cmp-event">Click a card:</span> opens the detail modal, a full-screen dialog over a blurred deep-green scrim. The panel rises and settles over 0.55s while the hero image eases from a slight zoom to rest.</li>
+        <li><span class="cmp-event">While open:</span> the carousel pauses and page scrolling locks; keyboard focus stays inside the dialog.</li>
+        <li><span class="cmp-event">Close:</span> the cross button, a click on the backdrop, or Escape; focus returns to the card that opened it and the drift resumes.</li>
+        <li><span class="cmp-event">Responsive:</span> cards run 364px wide with a tall image crop on desktop, stepping down on mobile.</li>
+        <li>With reduced motion enabled the drift stops and the carousel becomes drag-only.</li>
+      </ul>
+      </details>
+  </section>
+
+  <!-- CAROUSELS · STATS CAROUSEL -->
+  <section class="cmp-section" id="cmp-stats-carousel" aria-label="Stats carousel">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Stats carousel</h2>
+      <p class="cmp-head-note">Clone loop · 3s autoplay · stepped slide</p>
+    </div>
+
+    <div class="cmp-stage cmp-impact-stage" style="border: 0;">
+      <div class="section-header impact-heading">
+        <div class="section-heading-copy">
+          <p class="eyebrow">Our Impact</p>
+          <div class="section-divider" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="stats-window">
+        <div class="stats-track" id="cmpStatsTrack">
+          <article class="stat">
+            <div class="stat-description">Commercial and mixed-use assets managed in Hong Kong.</div>
+            <div class="stat-number">4M sq ft</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Estates and single buildings under Group management.</div>
+            <div class="stat-number">90+</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Frontline and professional teams serving residents and tenants daily.</div>
+            <div class="stat-number">2,400</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Residential, commercial and mixed-use assets across Hong Kong.</div>
+            <div class="stat-number">24M sq ft</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Placeholder description for an additional Chinachem business statistic.</div>
+            <div class="stat-number">60+</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Placeholder description for an additional Chinachem company statistic.</div>
+            <div class="stat-number">12K+</div>
+          </article>
+        </div>
+      </div>
+
+      <div class="carousel-ui">
+        <div class="carousel-count"><span id="cmpStatsCurrent">01</span> / 06</div>
+        <div class="progress-track"><div class="progress-thumb" id="cmpStatsProgress"></div></div>
+        <div class="carousel-arrows">
+          <button class="arrow arrow-prev" id="cmpStatsPrev" aria-label="Previous statistic"><span class="ui-arrow" aria-hidden="true"></span></button>
+          <button class="arrow arrow-next" id="cmpStatsNext" aria-label="Next statistic"><span class="ui-arrow" aria-hidden="true"></span></button>
+        </div>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Autoplay:</span> steps one stat every 3 seconds; each step slides the track over 0.8s on the house easing curve. Pressing an arrow moves immediately and restarts the timer.</li>
+        <li><span class="cmp-event">Endless:</span> the loop continues in both directions with no visible rewind.</li>
+        <li><span class="cmp-event">UI:</span> the count shows the current position, zero-padded; the thin white thumb travels the hairline track proportionally.</li>
+        <li><span class="cmp-event">Responsive:</span> four stats visible on desktop, two on tablet, one on mobile; numbers sit in warm beige at a display scale, bottom-right of each cell, with hairline dividers between cells.</li>
+        <li>With reduced motion enabled the autoplay never starts; the arrows still work.</li>
+      </ul>
+      </details>
+  </section>
+
+  <!-- CAROUSELS · CARD CAROUSEL -->
+  <section class="cmp-section" id="cmp-card-carousel" aria-label="Card carousel">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Manual carousel</h2>
+      <p class="cmp-head-note">Paged carousel · drag · arrows · count + progress</p>
+    </div>
+
+    <div class="cmp-stage cmp-stories-stage" style="border: 0;">
+      <div class="carousel-viewport">
+        <div class="story-grid carousel-track" id="cmpStoriesTrack">
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Central Market: Breathing new life into a historic landmark</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Our pathway to a low-carbon and resilient future</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Inspiring communities through arts and culture</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Designing workplaces around a more human rhythm</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">How thoughtful neighbourhoods create lasting value</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Placemaking that starts with listening</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="carousel-ui">
+        <div class="carousel-count"><span id="cmpStoriesCurrent">01</span> / 06</div>
+        <div class="progress-track"><div class="progress-thumb" id="cmpStoriesProgress"></div></div>
+        <div class="carousel-arrows">
+          <button class="arrow arrow-prev" id="cmpStoriesPrev" aria-label="Previous story"><span class="ui-arrow" aria-hidden="true"></span></button>
+          <button class="arrow arrow-next" id="cmpStoriesNext" aria-label="Next story"><span class="ui-arrow" aria-hidden="true"></span></button>
+        </div>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Arrows / drag:</span> one card per step over 0.7s on the house easing curve; the track drags 1:1 with grab cursors and snaps to the nearest card on release. The page still scrolls vertically over it.</li>
+        <li><span class="cmp-event">Ends:</span> this carousel stops at either end; it does not loop, unlike the stats carousel.</li>
+        <li><span class="cmp-event">On move:</span> the zero-padded count updates and the green progress thumb repositions along the hairline.</li>
+        <li><span class="cmp-event">Hover a card:</span> the image zooms gently over 0.8s; the read-more arrow nudges right.</li>
+        <li><span class="cmp-event">Responsive:</span> three cards across on desktop, two on tablet, one on mobile, where each card sits slightly short of the column so the next peeks in.</li>
+      </ul>
+      </details>
+  </section>
+
+  <!-- ═══ CATEGORY · CARDS ═══ -->
+  <section class="cmp-category" aria-label="Category: Cards">
+    <p class="eyebrow">Category</p>
+    <h2>Cards</h2>
+    <p>The card families and their rules of use: which card for which job.</p>
+  </section>
+
+  <!-- CARDS · ONWARD CARD -->
+  <section class="cmp-section" id="cmp-onward-card" aria-label="Onward card">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Onward card</h2>
+      <p class="cmp-head-note">Cross-page routing at section ends: green title sweep</p>
+    </div>
+
+    <div class="cmp-stage cmp-onward-stage">
+      <div class="onward-grid">
+        <a class="business-card" href="#">
+          <div class="business-card-image cmp-img"></div>
+          <span class="business-card-title">
+            Card title
+            <span class="inline-arrow" aria-hidden="true"></span>
+          </span>
+        </a>
+        <a class="business-card" href="#">
+          <div class="business-card-image cmp-img"></div>
+          <span class="business-card-title">
+            Second destination
+            <span class="inline-arrow" aria-hidden="true"></span>
+          </span>
+        </a>
+        <a class="business-card" href="#">
+          <div class="business-card-image cmp-img"></div>
+          <span class="business-card-title">
+            Third destination
+            <span class="inline-arrow" aria-hidden="true"></span>
+          </span>
+        </a>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Hover / focus:</span> the image zooms gently over 0.8s; a <strong>green</strong> underline sweeps under the title over 0.45s and the arrow nudges right.</li>
+        <li><span class="cmp-event">Anatomy:</span> a 4/3.4 image and a title row with an inline arrow. The whole card is a single link.</li>
+        <li><span class="cmp-event">Grid:</span> three across by default, two across as a variant; steps to two columns on tablet and one on mobile.</li>
+        <li><span class="cmp-event">Rule of use:</span> onward cards route to other parts of the site at section ends (&ldquo;keep exploring&rdquo;). Content you scan and read uses the editorial card&rsquo;s gold sweep; doors to properties use the plate card.</li>
+        <li>Sits on cream by default; a page may set its own ground.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- CARDS · MINIMAL PLATE CARD -->
+  <section class="cmp-section" id="cmp-minimal-plate-card" aria-label="Minimal plate card">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Minimal plate card</h2>
+      <p class="cmp-head-note">Image + name plate: the showcase carousel's card, usable standalone</p>
+    </div>
+
+    <div class="cmp-stage cmp-stage--cream">
+      <div class="cmp-row" style="align-items: flex-start;">
+        <article class="property-card">
+          <a href="#" aria-label="View Card title">
+            <div class="property-image cmp-img"></div>
+            <div class="property-info">
+              <h3 class="property-name">Card title</h3>
+              <div class="property-meta"><span>Location</span><span>Type</span></div>
+            </div>
+          </a>
+        </article>
+        <article class="property-card">
+          <a href="#" aria-label="View Second card">
+            <div class="property-image cmp-img"></div>
+            <div class="property-info">
+              <h3 class="property-name">Second card</h3>
+              <div class="property-meta"><span>Location</span><span>Type</span></div>
+            </div>
+          </a>
+        </article>
+        <article class="property-card property-card--light">
+          <a href="#" aria-label="View Light variant">
+            <div class="property-image cmp-img"></div>
+            <div class="property-info">
+              <h3 class="property-name">Light variant</h3>
+              <div class="property-meta"><span>Location</span><span>Type</span></div>
+            </div>
+          </a>
+        </article>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Hover / focus:</span> the image zooms gently over 0.8s; the plate lightens from deep green to green instantly. The whole card is one link.</li>
+        <li><span class="cmp-event">Anatomy:</span> a 364px card with a 4/3.4 image above the plate: the name over a small meta row whose values are separated by an interpunct that is part of the design. (Inside the showcase carousel the image runs a taller fixed crop instead.)</li>
+        <li><span class="cmp-event">Rule of use:</span> the minimal member of the plate family: name and meta only, no description or view row. Use it where the destination is self-evident, as in showcase carousels and dense grids; the full plate card adds the description and view affordance.</li>
+        <li><span class="cmp-event">Light variant:</span> a borderless white plate with dark text; hover fills warm beige instead of the green shift. For cream or tinted grounds where the dark plate would sit too heavy.</li>
+        <li><span class="cmp-event">Responsive:</span> steps down to a narrower card on mobile.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- CARDS · EDITORIAL CARD -->
+  <section class="cmp-section" id="cmp-editorial-card" aria-label="Editorial card">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Editorial card</h2>
+      <p class="cmp-head-note">Content you scan and read: green title sweep, anchored read-more</p>
+    </div>
+
+    <div class="cmp-stage">
+      <div class="cmp-grid-3">
+        <a class="business-card" href="#">
+          <div class="business-card-image cmp-img"></div>
+          <p class="news-meta">
+            <span class="news-meta-category">Category</span>
+            <span class="news-meta-date">12 Jul 2026</span>
+          </p>
+          <span class="business-card-title">Card title with the gold underline sweep</span>
+          <p class="business-card-desc">A short excerpt held to a readable measure, sitting beneath the title.</p>
+          <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
+        </a>
+        <a class="business-card" href="#">
+          <div class="business-card-image cmp-img"></div>
+          <p class="news-meta">
+            <span class="news-meta-category">Category</span>
+            <span class="news-meta-date">03 Jun 2026</span>
+          </p>
+          <span class="business-card-title">A shorter title</span>
+          <p class="business-card-desc">Uneven titles still keep the read-more rows aligned along the card bottoms.</p>
+          <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
+        </a>
+        <a class="business-card" href="#">
+          <div class="business-card-image cmp-img"></div>
+          <p class="news-meta">
+            <span class="news-meta-category">Category</span>
+            <span class="news-meta-date">28 May 2026</span>
+          </p>
+          <span class="business-card-title">A title that runs a little longer across two lines</span>
+          <p class="business-card-desc">Third card completing the standard three-up archive grid.</p>
+          <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
+        </a>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Hover / focus:</span> the image zooms gently over 0.8s; a green underline sweeps under the title over 0.45s, and the title and read-more arrows nudge right.</li>
+        <li><span class="cmp-event">Anatomy:</span> a 4/3.4 image, a meta row (green category, grey date), the title, a short excerpt in grey, and a read-more row. The whole card is one link.</li>
+        <li><span class="cmp-event">Alignment:</span> the read-more row anchors to the card bottom, so grids of uneven titles keep their read-more rows on one line.</li>
+        <li><span class="cmp-event">Rule of use:</span> editorial cards are for content you scan and read: news, awards, stories. Cross-page routing at section ends uses the onward card's green sweep; doors to properties use the plate cards.</li>
+        <li>A static variant, used for awards, presents without navigating: no zoom, no sweep, default cursor.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+
+  <!-- ═══ CATEGORY · PAGE UTILITIES ═══ -->
+  <section class="cmp-category" aria-label="Category: Page utilities">
+    <p class="eyebrow">Category</p>
+    <h2>Page utilities</h2>
+    <p>Small page-level furniture that supports orientation and flow.</p>
+  </section>
+
+  <!-- PAGE UTILITIES · BREADCRUMB -->
+  <section class="cmp-section" id="cmp-breadcrumb" aria-label="Breadcrumb">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Breadcrumb</h2>
+      <p class="cmp-head-note">Page trail: sits directly beneath the page hero</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Parent section</a></li>
+          <li><span aria-current="page">Current page</span></li>
+        </ol>
+      </nav>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Structure:</span> a trail of ancestor links ending in the current page, which is plain text and never a link. The interpunct separators are part of the design, not typed content.</li>
+        <li><span class="cmp-event">Hover / focus:</span> ancestor links darken from grey to deep green instantly; the current page sits in deep green permanently.</li>
+        <li><span class="cmp-event">Placement:</span> a full-width cream band directly beneath the page hero on core pages, with the standard page gutters.</li>
+        <li>Set small, with even breathing room around each separator.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ═══ CATEGORY · CONTENT BLOCKS ═══ -->
+  <section class="cmp-category" aria-label="Category: Content blocks">
+    <p class="eyebrow">Category</p>
+    <h2>Content blocks</h2>
+    <p>General page-building modules: figures, rows and editorial splits.</p>
+  </section>
+
+  <!-- CONTENT BLOCKS · STAT CELL -->
+  <section class="cmp-section" id="cmp-stat-cell" aria-label="Stat cell">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Stat cell</h2>
+      <p class="cmp-head-note">Key figures: numbers count up on scroll</p>
+    </div>
+
+    <div class="cmp-stage">
+      <div class="portfolio-stats-grid" style="grid-template-columns: 346px;">
+        <div class="pstat">
+          <span class="pstat-icon" aria-hidden="true">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 15L15 5l11 10M8 12.5V26h14V12.5M13 26v-7h4v7"/></svg>
+          </span>
+          <p class="pstat-number"><span data-count="2.8" data-decimals="1">0</span>M<span class="pstat-unit">sq ft</span></p>
+          <p class="pstat-label">One-line label describing the figure at small size</p>
+        </div>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Count-up:</span> the figure animates from zero to its value the first time the cell scrolls into view, once only; decimal figures animate with their precision. With reduced motion enabled the final value shows immediately.</li>
+        <li><span class="cmp-event">Anatomy:</span> a small green line-drawn icon, the number at a large display scale in tabular numerals with its unit dropping to its own line below in green, and a one-line grey label held to a readable measure.</li>
+        <li><span class="cmp-event">Framing:</span> cells sit in a hairline grid where the outer frame and inner dividers never double up.</li>
+        <li><span class="cmp-event">Grids:</span> three columns as standard, or a centred four-up row; both step to two columns on tablet and pairs on mobile.</li>
+        <li>The number runs at a deliberate display scale that sits outside the standard type ramp.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  </main>
+
+  <div class="view-cursor" id="cmpViewCursor" aria-hidden="true">View</div>
+
+  <!-- PROPERTY MODAL -->
+  <div
+    class="property-modal"
+    id="cmpPropertyModal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="cmpPropertyModalTitle"
+  >
+    <div class="property-modal-panel" role="document">
+      <button class="property-modal-close" id="cmpPropertyModalClose" type="button" aria-label="Close property details"></button>
+
+      <div class="property-modal-media">
+        <img id="cmpPropertyModalImage" src="" alt="">
+      </div>
+
+      <div class="property-modal-content">
+        <p class="property-modal-kicker" id="cmpPropertyModalKicker"></p>
+        <h2 class="property-modal-title" id="cmpPropertyModalTitle"></h2>
+        <div class="property-modal-rule" aria-hidden="true"></div>
+        <p class="property-modal-description" id="cmpPropertyModalDescription"></p>
+
+        <a class="property-modal-cta secondary-link-cta link-arrow" id="cmpPropertyModalCta" href="#">
+          View property
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../scripts/components.js?v=9"></script>
+
+  <script>
+    /* Aside overlay toggle */
+    const cmpAside = document.querySelector("#cmpAside");
+    const cmpMenuToggle = document.querySelector("#cmpMenuToggle");
+
+    function setAside(open) {
+      cmpAside.classList.toggle("is-open", open);
+      cmpMenuToggle.setAttribute("aria-expanded", String(open));
+    }
+
+    cmpMenuToggle.addEventListener("click", () => setAside(!cmpAside.classList.contains("is-open")));
+
+    cmpAside.addEventListener("click", e => { if (e.target.closest("a")) setAside(false); });
+
+    document.addEventListener("pointerdown", e => {
+      if (cmpAside.classList.contains("is-open") && !cmpAside.contains(e.target) && !cmpMenuToggle.contains(e.target)) setAside(false);
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && cmpAside.classList.contains("is-open")) setAside(false);
+    });
+
+    /* Portfolio showcase: production behaviour from index.html */
+    const cmpProperties = [
+      { name: "One Hennessy", location: "Wan Chai", type: "Commercial", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2200&q=92", description: "A landmark commercial address where considered architecture meets everyday convenience in the heart of Wan Chai." },
+      { name: "Nina Tower", location: "Tsuen Wan", type: "Commercial", image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=2200&q=92", description: "An enduring business landmark combining panoramic views, exceptional connectivity and a strong sense of arrival." },
+      { name: "Central Market", location: "Central", type: "Heritage", image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=2200&q=92", description: "A much-loved heritage landmark reimagined as an open, welcoming place for culture, discovery and everyday life." },
+      { name: "The Henley", location: "Kai Tak", type: "Residential", image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2200&q=92", description: "Refined urban homes balancing architectural clarity with warm interiors and the energy of the evolving Kai Tak district." },
+      { name: "Papillons", location: "Tseung Kwan O", type: "Residential", image: "https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2200&q=92", description: "Light-filled residences designed for relaxed family living, with nature, amenities and transport close at hand." }
+    ];
+
+    const cmpTrack = document.querySelector("#cmpPortfolioTrack");
+    const cmpViewport = document.querySelector("#cmpPortfolioViewport");
+    const cmpCursor = document.querySelector("#cmpViewCursor");
+
+    cmpTrack.innerHTML = [...cmpProperties, ...cmpProperties].map((property, index) => `
+      <article class="property-card" data-index="${index % cmpProperties.length}">
+        <a href="#" aria-haspopup="dialog" aria-label="View ${property.name}">
+          <div class="property-image"><img src="${property.image}" alt="${property.name}"></div>
+          <div class="property-info">
+            <h3 class="property-name">${property.name}</h3>
+            <div class="property-meta"><span>${property.location}</span><span>${property.type}</span></div>
+          </div>
+        </a>
+      </article>
+    `).join("");
+
+    let cmpX = 0;
+    let cmpSpeed = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : .9;
+    let cmpPaused = false;
+    let cmpDragging = false;
+    let cmpDragStartX = 0;
+    let cmpDragStartOffset = 0;
+    let cmpClickSuppressed = false;
+
+    function cmpLoop() {
+      if (!cmpPaused && !cmpDragging) cmpX -= cmpSpeed;
+      const half = cmpTrack.scrollWidth / 2;
+      if (Math.abs(cmpX) >= half) cmpX += half;
+      if (cmpX > 0) cmpX -= half;
+      cmpTrack.style.transform = `translate3d(${cmpX}px,0,0)`;
+      requestAnimationFrame(cmpLoop);
+    }
+
+    cmpViewport.addEventListener("pointerdown", e => {
+      cmpDragging = true; cmpPaused = true; cmpClickSuppressed = false;
+      cmpDragStartX = e.clientX; cmpDragStartOffset = cmpX;
+    });
+
+    cmpViewport.addEventListener("pointermove", e => {
+      if (!cmpDragging) return;
+      if (Math.abs(e.clientX - cmpDragStartX) > 6) {
+        cmpClickSuppressed = true;
+        if (!cmpViewport.hasPointerCapture(e.pointerId)) cmpViewport.setPointerCapture(e.pointerId);
+      }
+      cmpX = cmpDragStartOffset + (e.clientX - cmpDragStartX);
+    });
+
+    cmpViewport.addEventListener("pointerup", e => {
+      cmpDragging = false;
+      if (cmpViewport.hasPointerCapture(e.pointerId)) cmpViewport.releasePointerCapture(e.pointerId);
+      setTimeout(() => { cmpPaused = false; cmpClickSuppressed = false; }, 700);
+    });
+
+    cmpViewport.addEventListener("pointercancel", () => { cmpDragging = false; cmpClickSuppressed = false; cmpPaused = false; });
+
+    /* Property modal: production behaviour from index.html */
+    const cmpModal = document.querySelector("#cmpPropertyModal");
+    const cmpModalClose = document.querySelector("#cmpPropertyModalClose");
+    const cmpModalImage = document.querySelector("#cmpPropertyModalImage");
+    const cmpModalKicker = document.querySelector("#cmpPropertyModalKicker");
+    const cmpModalTitle = document.querySelector("#cmpPropertyModalTitle");
+    const cmpModalDescription = document.querySelector("#cmpPropertyModalDescription");
+    const cmpModalCta = document.querySelector("#cmpPropertyModalCta");
+
+    let cmpModalReturnFocus = null;
+
+    function cmpOpenModal(index, trigger) {
+      const property = cmpProperties[index];
+      if (!property) return;
+
+      cmpModalReturnFocus = trigger;
+      cmpPaused = true;
+      cmpCursor.classList.remove("active");
+
+      cmpModalImage.src = property.detailImage;
+      cmpModalImage.alt = `${property.name}, ${property.location}`;
+      cmpModalKicker.textContent = `${property.location} · ${property.type}`;
+      cmpModalTitle.textContent = property.name;
+      cmpModalDescription.textContent = property.description;
+
+      cmpModal.classList.add("is-open");
+      cmpModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      window.requestAnimationFrame(() => cmpModalClose.focus());
+    }
+
+    function cmpCloseModal() {
+      if (!cmpModal.classList.contains("is-open")) return;
+      cmpModal.classList.remove("is-open");
+      cmpModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      cmpPaused = false;
+      cmpModalReturnFocus?.focus({ preventScroll: true });
+      cmpModalReturnFocus = null;
+    }
+
+    cmpTrack.addEventListener("click", e => {
+      const link = e.target.closest(".property-card a");
+      if (!link) return;
+      e.preventDefault();
+      if (cmpClickSuppressed) return;
+      cmpOpenModal(Number(link.closest(".property-card").dataset.index), link);
+    });
+
+    cmpModalClose.addEventListener("click", cmpCloseModal);
+
+    cmpModal.addEventListener("pointerdown", e => {
+      if (e.target === cmpModal) cmpCloseModal();
+    });
+
+    cmpModal.addEventListener("keydown", e => {
+      if (e.key === "Escape") { e.preventDefault(); cmpCloseModal(); return; }
+      if (e.key !== "Tab") return;
+      const focusable = [cmpModalClose, cmpModalCta];
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
+    cmpTrack.querySelectorAll(".property-image").forEach(image => {
+      image.addEventListener("mouseenter", () => cmpCursor.classList.add("active"));
+      image.addEventListener("mouseleave", () => cmpCursor.classList.remove("active"));
+      image.addEventListener("mousemove", e => {
+        cmpCursor.style.left = `${e.clientX}px`;
+        cmpCursor.style.top = `${e.clientY}px`;
+      });
+    });
+
+    cmpLoop();
+
+    /* Impact stats carousel: production behaviour from index.html */
+    const cmpStatsTrack = document.querySelector("#cmpStatsTrack");
+    const cmpStats = [...cmpStatsTrack.querySelectorAll(".stat")];
+    const cmpStatsPrev = document.querySelector("#cmpStatsPrev");
+    const cmpStatsNext = document.querySelector("#cmpStatsNext");
+    const cmpStatsCurrent = document.querySelector("#cmpStatsCurrent");
+    const cmpStatsProgress = document.querySelector("#cmpStatsProgress");
+
+    let cmpStatsIndex = 0;
+    let cmpStatsCloneCount = 0;
+    let cmpStatsTimer;
+    let cmpStatsAnimating = false;
+
+    function cmpVisibleStats() {
+      if (window.innerWidth <= 680) return 1;
+      if (window.innerWidth <= 1000) return 2;
+      return 4;
+    }
+
+    function cmpLogicalStatsIndex() {
+      return ((cmpStatsIndex - cmpStatsCloneCount) % cmpStats.length + cmpStats.length) % cmpStats.length;
+    }
+
+    function cmpUpdateStatsUI() {
+      const logical = cmpLogicalStatsIndex();
+      cmpStatsCurrent.textContent = String(logical + 1).padStart(2, "0");
+      const progress = cmpStats.length <= 1 ? 0 : logical / (cmpStats.length - 1);
+      cmpStatsProgress.style.transform = `translateX(${progress * 566.67}%)`;
+    }
+
+    function cmpPositionStats(animate = true) {
+      const width = cmpStats[0].getBoundingClientRect().width;
+      cmpStatsTrack.style.transition = animate ? "transform .8s cubic-bezier(.22,.61,.36,1)" : "none";
+      cmpStatsTrack.style.transform = `translate3d(${-cmpStatsIndex * width}px,0,0)`;
+      cmpUpdateStatsUI();
+    }
+
+    function cmpBuildStatsLoop() {
+      cmpStatsTrack.querySelectorAll("[data-stat-clone]").forEach(clone => clone.remove());
+      cmpStatsCloneCount = Math.min(cmpVisibleStats(), cmpStats.length);
+      const leading = document.createDocumentFragment();
+      const trailing = document.createDocumentFragment();
+      cmpStats.slice(-cmpStatsCloneCount).forEach(stat => {
+        const c = stat.cloneNode(true); c.dataset.statClone = "true"; c.setAttribute("aria-hidden", "true"); leading.append(c);
+      });
+      cmpStats.slice(0, cmpStatsCloneCount).forEach(stat => {
+        const c = stat.cloneNode(true); c.dataset.statClone = "true"; c.setAttribute("aria-hidden", "true"); trailing.append(c);
+      });
+      cmpStatsTrack.insertBefore(leading, cmpStatsTrack.firstChild);
+      cmpStatsTrack.append(trailing);
+      cmpStatsIndex = cmpStatsCloneCount;
+      cmpStatsAnimating = false;
+      cmpPositionStats(false);
+    }
+
+    function cmpMoveStats(direction) {
+      if (cmpStatsAnimating) return;
+      cmpStatsAnimating = true;
+      cmpStatsIndex += direction;
+      cmpPositionStats(true);
+    }
+
+    function cmpStartStatsAutoplay() {
+      window.clearInterval(cmpStatsTimer);
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      cmpStatsTimer = window.setInterval(() => cmpMoveStats(1), 3000);
+    }
+
+    cmpStatsTrack.addEventListener("transitionend", event => {
+      if (event.propertyName !== "transform") return;
+      cmpStatsAnimating = false;
+      if (cmpStatsIndex >= cmpStatsCloneCount + cmpStats.length) {
+        cmpStatsIndex = cmpStatsCloneCount;
+        cmpPositionStats(false);
+      } else if (cmpStatsIndex < cmpStatsCloneCount) {
+        cmpStatsIndex = cmpStatsCloneCount + cmpStats.length - 1;
+        cmpPositionStats(false);
+      }
+    });
+
+    cmpStatsPrev.addEventListener("click", () => { cmpMoveStats(-1); cmpStartStatsAutoplay(); });
+    cmpStatsNext.addEventListener("click", () => { cmpMoveStats(1); cmpStartStatsAutoplay(); });
+
+    let cmpStatsResizeTimer;
+    window.addEventListener("resize", () => {
+      window.clearTimeout(cmpStatsResizeTimer);
+      cmpStatsResizeTimer = window.setTimeout(() => { cmpBuildStatsLoop(); cmpStartStatsAutoplay(); }, 150);
+    });
+
+    cmpBuildStatsLoop();
+    cmpStartStatsAutoplay();
+
+    /* Stories carousel: the shared engine, production init from index.html */
+    window.ccgCarousel({
+      track: document.querySelector("#cmpStoriesTrack"),
+      prev: document.querySelector("#cmpStoriesPrev"),
+      next: document.querySelector("#cmpStoriesNext"),
+      current: document.querySelector("#cmpStoriesCurrent"),
+      progress: document.querySelector("#cmpStoriesProgress"),
+      visible: () => window.innerWidth <= 680 ? 1 : window.innerWidth <= 1000 ? 2 : 3
+    });
+
+    /* Status tabs demo: one active per group */
+    document.querySelector("#cmpStatusTabs").addEventListener("click", e => {
+      const btn = e.target.closest(".status-tab");
+      if (!btn) return;
+      document.querySelectorAll("#cmpStatusTabs .status-tab").forEach(t => {
+        t.classList.toggle("is-active", t === btn);
+        t.setAttribute("aria-selected", String(t === btn));
+      });
+    });
+
+    /* Text filter demos: single-select per group */
+    ["cmpTextFilter", "cmpTextFilterSmall"].forEach(id => {
+      const group = document.querySelector("#" + id);
+      group.addEventListener("click", e => {
+        const btn = e.target.closest(".filter-display-item");
+        if (!btn) return;
+        group.querySelectorAll(".filter-display-item").forEach(item => {
+          item.classList.toggle("is-active", item === btn);
+          item.setAttribute("aria-pressed", String(item === btn));
+        });
+      });
+    });
+
+    /* Category pills demo: multi-select, checkbox behaviour */
+    document.querySelector("#cmpCategoryPills").addEventListener("click", e => {
+      const btn = e.target.closest(".category-pill");
+      if (!btn) return;
+      const on = btn.classList.toggle("is-active");
+      btn.setAttribute("aria-pressed", String(on));
+    });
+
+    /* Dropdown select demos: the standard binding pattern */
+    function cmpBindSelect(rootId) {
+      const root = document.querySelector("#" + rootId);
+      const trigger = root.querySelector(".year-select-trigger");
+      const value = root.querySelector(".year-select-trigger span:first-child");
+      const options = [...root.querySelectorAll(".year-option")];
+
+      const close = () => { root.dataset.open = "false"; trigger.setAttribute("aria-expanded", "false"); };
+
+      trigger.addEventListener("click", () => {
+        const open = root.dataset.open === "true";
+        root.dataset.open = String(!open);
+        trigger.setAttribute("aria-expanded", String(!open));
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener("click", () => {
+          value.textContent = opt.textContent.trim();
+          options.forEach(o => o.setAttribute("aria-selected", String(o === opt)));
+          close();
+          trigger.focus();
+        });
+      });
+
+      document.addEventListener("pointerdown", e => { if (!root.contains(e.target)) close(); });
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape" && root.dataset.open === "true") { close(); trigger.focus(); }
+      });
+    }
+
+    cmpBindSelect("cmpSelectLight");
+    cmpBindSelect("cmpSelectWide");
+    cmpBindSelect("cmpSelectDark");
+
+    /* Viewport switcher for the nav demo */
+    const vpFrame = document.querySelector("#cmpNavViewport");
+    const vpDesktop = document.querySelector("#cmpVpDesktop");
+    const vpMobile = document.querySelector("#cmpVpMobile");
+
+    function setViewport(mobile) {
+      vpFrame.classList.toggle("cmp-viewport--mobile", mobile);
+      vpDesktop.classList.toggle("is-active", !mobile);
+      vpMobile.classList.toggle("is-active", mobile);
+      vpDesktop.setAttribute("aria-pressed", String(!mobile));
+      vpMobile.setAttribute("aria-pressed", String(mobile));
+    }
+
+    vpDesktop.addEventListener("click", () => setViewport(false));
+    vpMobile.addEventListener("click", () => setViewport(true));
+  </script>
+
+</body>
+</html>

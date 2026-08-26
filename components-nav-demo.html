@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nav demo: CCG components</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../styles/system.css?v=2">
+  <link rel="stylesheet" href="../styles/components.css?v=16">
+
+  <style>
+    /* Demo scaffold only; the header itself is 100% production:
+       injected by scripts/components.js from data-component. */
+
+    .demo-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 var(--page-pad) var(--space-xl);
+      background:
+        linear-gradient(0deg, rgba(0, 27, 22, .75) 0%, rgba(0, 27, 22, .3) 60%),
+        var(--green);
+      color: var(--ink-inverse);
+    }
+
+    .demo-hero h1 {
+      margin: 0;
+      font-size: var(--text-h1);
+      line-height: var(--leading-h1);
+      font-weight: 400;
+    }
+
+    /* dark bands so the bar reads clearly in both states */
+    .demo-band {
+      padding: var(--space-section-standard) var(--page-pad);
+      background: var(--green);
+      color: var(--ink-inverse);
+    }
+
+    .demo-band h2 {
+      margin: 0 0 var(--space-md);
+      font-size: var(--text-h3);
+      line-height: var(--leading-h3);
+      font-weight: 400;
+      color: var(--ink-inverse);
+    }
+
+    .demo-band p {
+      margin: 0;
+      max-width: 620px;
+      font-size: var(--text-body);
+      line-height: var(--leading-relaxed);
+      color: var(--ink-inverse-soft);
+    }
+
+    .demo-band--cream { background: var(--green-dark); }
+  </style>
+</head>
+
+<body>
+
+  <div data-component="site-header"></div>
+
+  <header class="demo-hero">
+    <h1>Scroll this viewport</h1>
+  </header>
+
+  <section class="demo-band">
+    <h2>Scroll down and the header hides</h2>
+    <p>Past 92px, scrolling down slides the header away so content leads. It never hides while the mega menu is open.</p>
+  </section>
+
+  <section class="demo-band demo-band--cream">
+    <h2>Scroll up and it returns, solid</h2>
+    <p>Any upward scroll of more than 3px reveals the header as a fixed white bar with dark ink. Back at the very top it reattaches and turns transparent again.</p>
+  </section>
+
+  <section class="demo-band">
+    <h2>Keep scrolling</h2>
+    <p>Extra length so every state is reachable inside this contained viewport. Scroll back to the top and hover a nav item to open the mega menu.</p>
+  </section>
+
+  <script src="../scripts/components.js?v=9"></script>
+
+
+</body>
+</html>
