@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Text filter demo: CCG components</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+
+  <style>
+    /* Demo scaffold only. The filter rows themselves are the
+       production component; the wrappers are the ones the news
+       archive and the portfolio browser put around them, copied
+       so the responsive behaviour is the real one. */
+
+    body {
+      background: #fff;
+    }
+
+    .demo-band {
+      padding: var(--space-xl) var(--page-pad);
+    }
+
+    .demo-band + .demo-band {
+      border-top: 1px solid var(--line);
+    }
+
+    .demo-label {
+      margin: 0 0 var(--space-md);
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--green);
+    }
+
+    /* news.html — ARCHIVE FILTER, verbatim */
+    .archive-filter {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-xl);
+      padding: 0 0 var(--space-xl);
+    }
+
+    @media (max-width: 1000px) {
+      .archive-filter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-lg);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .archive-filter {
+        align-items: stretch;
+        padding-bottom: var(--space-lg);
+      }
+
+      .year-select,
+      .year-select-trigger {
+        width: 100%;
+      }
+    }
+
+    /* portfolio.html — the small variant sits in a control row */
+    .demo-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+
+    /* a ruled edge so any overflow past the content column is
+       obvious rather than something you have to guess at */
+    .demo-measure {
+      border-right: 1px dashed var(--ccg-gold);
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="demo-band">
+    <p class="demo-label">Standard &mdash; news archive category filter</p>
+
+    <div class="demo-measure">
+      <div class="archive-filter">
+        <div class="filter-display" role="group" aria-label="Demo filter">
+          <button class="filter-display-item is-active" type="button" aria-pressed="true">All</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">News</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">Events</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-band">
+    <p class="demo-label">Longer set &mdash; six categories</p>
+
+    <div class="demo-measure">
+      <div class="archive-filter">
+        <div class="filter-display" role="group" aria-label="Demo filter, longer set">
+          <button class="filter-display-item is-active" type="button" aria-pressed="true">All</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">News</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">Events</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">Awards</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">Sustainability</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">Community</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-band">
+    <p class="demo-label">Small variant &mdash; portfolio availability facet</p>
+
+    <div class="demo-measure">
+      <div class="demo-controls">
+        <div class="filter-display filter-display--small" role="group" aria-label="Demo small filter">
+          <button class="filter-display-item is-active" type="button" aria-pressed="true">All</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">For sale</button>
+          <button class="filter-display-item" type="button" aria-pressed="false">For lease</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- drag-to-scroll is auto-initialised from here -->
+  <script src="scripts/components.js"></script>
+
+  <script>
+    /* Single-select, the binding both production pages use */
+    document.querySelectorAll(".filter-display").forEach(group => {
+      group.addEventListener("click", event => {
+        const button = event.target.closest(".filter-display-item");
+        if (!button) return;
+
+        group.querySelectorAll(".filter-display-item").forEach(item => {
+          item.classList.toggle("is-active", item === button);
+          item.setAttribute("aria-pressed", String(item === button));
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

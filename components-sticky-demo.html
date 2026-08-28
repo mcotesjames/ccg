@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sticky panel demo: CCG components</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+
+  <style>
+    /* ---------------------------------------------
+       ENQUIRY LAYOUT + ROUTING PANEL
+       Source: core-pages/contact-us/contact.html,
+       verbatim. The form column is replaced by a
+       plain placeholder block — the panel is the
+       component under demonstration.
+       872px form + 448px panel + 64px gap = 1384
+    --------------------------------------------- */
+
+    .enquiry {
+      padding: var(--space-section-compact) var(--page-pad) var(--space-section-standard);
+      background: #fff;
+    }
+
+    .enquiry-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 448px;
+      gap: var(--space-layout);
+      /* WITHOUT THIS the panel stretches the full row height and
+         position:sticky has nothing to travel inside — it looks
+         applied but never sticks. */
+      align-items: start;
+    }
+
+    .enquiry-panel {
+      position: sticky;
+      top: var(--space-lg);
+      padding: var(--space-lg);
+      background: var(--ccg-green);
+      color: var(--ink-inverse);
+    }
+
+    .enquiry-panel-title {
+      margin: 0 0 var(--space-sm);
+      font-size: var(--text-h5);
+      line-height: var(--leading-h5);
+      font-weight: 400;
+      color: var(--ink-inverse);
+    }
+
+    .enquiry-panel-blurb {
+      margin: 0 0 var(--space-lg);
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: var(--ink-inverse-soft);
+    }
+
+    .enquiry-panel-label {
+      margin: 0 0 var(--space-sm);
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--ink-inverse-muted);
+    }
+
+    .enquiry-panel-contacts {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      margin: 0 0 var(--space-lg);
+    }
+
+    .enquiry-panel-contacts a {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--lime);
+      transition: color .25s ease;
+    }
+
+    .enquiry-panel-contacts a:hover,
+    .enquiry-panel-contacts a:focus-visible {
+      color: var(--ink-inverse);
+    }
+
+    .enquiry-panel-note {
+      margin: 0;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--line-dark);
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--ink-inverse-muted);
+    }
+
+    @media (max-width: 1000px) {
+      .enquiry-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      /* tablet: the panel leads, as an introduction to the form */
+      .enquiry-panel {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 680px) {
+      /* panel reads as a footnote to the form on phones — static,
+         after the form, not stuck */
+      .enquiry-panel {
+        position: static;
+        order: 0;
+      }
+    }
+
+    /* ---------------------------------------------
+       DEMO SCAFFOLD — stands in for the form column
+       and gives the frame something to scroll past
+    --------------------------------------------- */
+
+    .demo-form-block {
+      height: 1100px;
+      display: flex;
+      align-items: flex-start;
+      padding: var(--space-lg);
+      background: var(--sand);
+    }
+
+    .demo-form-block p,
+    .demo-band p {
+      margin: 0;
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: var(--green-dark);
+    }
+
+    .demo-band {
+      padding: var(--space-xl) var(--page-pad);
+      background: var(--cream);
+      border-top: 1px solid var(--line);
+    }
+
+    /* the closing band must be tall enough that the frame can
+       scroll past the panel's release point — otherwise the
+       panel sticks and the demo never shows it letting go */
+    .demo-band--tall {
+      min-height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="demo-band">
+    <p>Scroll this frame &mdash; the panel on the right holds while the form column runs past it.</p>
+  </section>
+
+  <section class="enquiry">
+    <div class="enquiry-layout">
+
+      <div class="demo-form-block">
+        <p>Form column (placeholder)</p>
+      </div>
+
+      <aside class="enquiry-panel" aria-live="polite">
+        <h3 class="enquiry-panel-title">Panel title</h3>
+        <p class="enquiry-panel-blurb">A short blurb that changes with the enquiry type chosen in the form beside it.</p>
+
+        <p class="enquiry-panel-label">Prefer to call or write?</p>
+        <div class="enquiry-panel-contacts">
+          <a href="#">+852 0000 0000</a>
+          <a href="#">team@example.com</a>
+        </div>
+
+        <p class="enquiry-panel-note">A closing note, set quieter than the rest of the panel.</p>
+      </aside>
+
+    </div>
+  </section>
+
+  <section class="demo-band demo-band--tall">
+    <p>Past the end of the form column the panel releases and scrolls away with the page.</p>
+  </section>
+
+</body>
+</html>

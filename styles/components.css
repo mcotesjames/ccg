@@ -21,8 +21,12 @@
      LOGO CAROUSEL
      FLAGSHIP
      DOCUMENT LIST
+     ACCORDION
      TEXT FILTER
      DROPDOWN SELECT
+     FORM FIELDS
+     FORM SELECT
+     FORM DECLARATIONS
      SECTION HEADERS
      PAGE HERO
      BREADCRUMB
@@ -632,14 +636,14 @@ body.menu-open {
   background: #fff;
   color: var(--ccg-green-dark);
   visibility: hidden;
-  transform: translateY(-100%);
+  transform: translateX(100%);
   pointer-events: none;
   transition: transform .55s cubic-bezier(.22,.61,.36,1), visibility .55s;
 }
 
 .mobile-menu.is-open {
   visibility: visible;
-  transform: translateY(0);
+  transform: translateX(0);
   pointer-events: auto;
 }
 
@@ -681,15 +685,15 @@ body.menu-open {
   cursor: pointer;
 }
 
-/* rows cascade in as the sheet lands */
+/* rows cascade in as the sheet lands, along the axis it travels */
 .mobile-menu .mobile-menu-head {
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateX(16px);
 }
 
 .mobile-menu.is-open .mobile-menu-head {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
   transition: opacity .3s ease, transform .4s cubic-bezier(.22,.61,.36,1);
 }
 
@@ -1224,6 +1228,141 @@ body.menu-open {
 .more-card:hover .more-card-view .inline-arrow,
 .more-card:focus-visible .more-card-view .inline-arrow {
   transform: translateX(4px) rotate(90deg);
+}
+
+@media (max-width: 680px) {
+  /* fixed desktop insets dominate a phone card — pull them in */
+  .more-card-plate {
+    padding: 20px 20px 24px;
+  }
+}
+
+/* =============================================================
+   CONTENT LIST — em-dash list for rich text
+   =============================================================
+   <ul class="content-list">
+     <li>Item</li> × N
+   </ul>
+   Gold em-dash markers on a rich-text rhythm. Text colour comes
+   from context; set li colour per ground if needed. */
+
+.content-list {
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.content-list li {
+  display: grid;
+  grid-template-columns: var(--space-card) minmax(0, 1fr);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--ink);
+}
+
+.content-list li::before {
+  content: "—";
+  color: var(--ccg-ground-yellow);
+  font-weight: 700;
+}
+
+/* =============================================================
+   OFFER CARDS — image cards with a titled white plate
+   =============================================================
+   A "four kinds of X" grid: a 3:2 image over a white plate
+   carrying a title and a description. Sits on a non-white
+   section ground (cream / cream-light) so the plates read as
+   cards.
+
+   <div class="offer-grid">                     (+ offer-grid--3 for three-up)
+     <article class="offer-card">
+       <div class="offer-card-image"><img …></div>   (empty = sand placeholder)
+       <div class="offer-card-body">
+         <h3 class="offer-card-title">Title</h3>
+         <p class="offer-card-desc">Description.</p>
+       </div>
+     </article> × N
+   </div>
+   Two-up by default; one column at ≤680. */
+
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xl);
+  padding: 0 var(--page-pad);
+}
+
+.offer-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-card-image {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.offer-card-image img {
+  transition: transform .8s cubic-bezier(.22,.61,.36,1);
+}
+
+.offer-card:hover .offer-card-image img,
+.offer-card:focus-within .offer-card-image img {
+  transform: scale(1.035);
+}
+
+.offer-card-body {
+  flex: 1 1 auto;
+  padding: var(--space-md) var(--space-md) var(--space-lg);
+  background: #fff;
+}
+
+.offer-card-title {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--text-h6);
+  line-height: var(--leading-h6);
+  font-weight: 400;
+  color: var(--green-dark);
+}
+
+.offer-card-desc {
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--grey);
+}
+
+.offer-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.offer-grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-grid);
+}
+
+@media (max-width: 1000px) {
+  .offer-grid--3,
+  .offer-grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .offer-grid,
+  .offer-grid--3,
+  .offer-grid--4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* the tight 4-up gap reads cramped once cards stack */
+  .offer-grid--4 {
+    gap: var(--space-lg);
+  }
 }
 
 /* =============================================================
@@ -1893,7 +2032,6 @@ body.menu-open {
 
 .service-tabs {
   display: flex;
-  gap: var(--space-xl);
   margin: 0 0 var(--space-xl);
   border-bottom: 1px solid var(--line);
   overflow-x: auto;
@@ -1904,11 +2042,12 @@ body.menu-open {
   display: none;
 }
 
+/* tab spacing comes from the tab's own padding, not a container gap */
 .service-tab {
   appearance: none;
   flex: 0 0 auto;
   margin-bottom: -1px;
-  padding: 0 0 var(--space-sm);
+  padding: var(--space-md);
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
@@ -2029,7 +2168,7 @@ body.menu-open {
   grid-template-columns: 48px minmax(0, 1fr);
   align-items: baseline;
   margin: 0;
-  padding: var(--space-lg) 0;
+  padding: var(--space-md) 0;
   border-bottom: 1px solid var(--line-dark);
   font-size: var(--text-h5);
   line-height: var(--leading-h5);
@@ -2155,33 +2294,11 @@ body.menu-open {
 }
 
 @media (max-width: 1000px) {
+  /* stage stacks; the numbered index stays a vertical list at
+     every width (never a horizontal row) */
   .service-stage {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-lg);
-  }
-
-  .service-tabs--index {
-    flex-direction: row;
-    gap: var(--space-lg);
-    border-top: 0;
-    border-bottom: 1px solid var(--line-dark);
-    overflow-x: auto;
-  }
-
-  .service-tabs--index .service-tab {
-    display: flex;
-    gap: var(--space-xs);
-    padding: 0 0 var(--space-sm);
-    margin-bottom: -1px;
-    border-bottom: 0;
-    font-size: var(--text-lead);
-    line-height: var(--leading-lead);
-    white-space: nowrap;
-  }
-
-  .service-tab-num {
-    font-size: var(--text-small);
-    line-height: var(--leading-lead);
   }
 
   .service-stage .service-panel {
@@ -2195,6 +2312,23 @@ body.menu-open {
 }
 
 @media (max-width: 680px) {
+  /* vertical index tightens one step from the desktop 48 / lg / h5 */
+  .service-tabs--index .service-tab {
+    grid-template-columns: 40px minmax(0, 1fr);
+    padding: var(--space-ms) 0;
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .service-tab-num {
+    font-size: var(--text-small);
+  }
+
+  /* list ends flush on the panel card */
+  .service-stage {
+    gap: 0;
+  }
+
   .service-stage .service-panel-media {
     aspect-ratio: 3 / 2;
   }
@@ -2228,7 +2362,7 @@ body.menu-open {
 
 @media (max-width: 680px) {
   .service-tabs {
-    gap: var(--space-lg);
+    gap: 0;
     margin-bottom: var(--space-lg);
   }
 
@@ -2289,7 +2423,7 @@ body.menu-open {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-layout);
   align-items: center;
-  padding: var(--space-section-standard) 0;
+  padding: var(--space-section-compact) 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -2595,8 +2729,18 @@ body.menu-open {
 }
 
 @media (max-width: 680px) {
+  /* image bleeds to the viewport edges; only the copy keeps the
+     page padding */
+  .flagship-inner {
+    padding: 0 0 var(--space-section-standard);
+  }
+
+  .flagship-copy {
+    padding: 0 var(--page-pad);
+  }
+
   .flagship-stats {
-    gap: var(--space-lg);
+    gap: var(--space-md) var(--space-lg);
   }
 }
 
@@ -2680,21 +2824,12 @@ body.menu-open {
   gap: var(--space-2xs);
 }
 
+/* plain title — the row's affordance is the view arrow */
 .doc-row-title {
   align-self: flex-start;
   font-size: var(--text-h6);
   line-height: var(--leading-h6);
   color: var(--green-dark);
-  background-image: linear-gradient(var(--ccg-ground-yellow), var(--ccg-ground-yellow));
-  background-position: left bottom;
-  background-repeat: no-repeat;
-  background-size: 0 1px;
-  transition: background-size .45s cubic-bezier(.22,.61,.36,1);
-}
-
-.doc-row:hover .doc-row-title,
-.doc-row:focus-visible .doc-row-title {
-  background-size: 100% 1px;
 }
 
 .doc-row-desc {
@@ -2741,6 +2876,130 @@ body.menu-open {
 }
 
 /* =============================================================
+   ACCORDION — ruled disclosure list
+   =============================================================
+   Native <details>/<summary>: no JavaScript, nothing to bind.
+   Several items may be open at once; mark the opening item
+   `open` so the block never reads as a wall of closed rows.
+
+   <details class="faq-item" open>
+     <summary class="faq-question">
+       Question
+       <span class="faq-toggle" aria-hidden="true"></span>
+     </summary>
+     <p class="faq-answer">Answer</p>
+   </details>  × N
+
+   <div class="faq-footer">                      (optional closing row)
+     <p class="faq-footer-note">Note</p>
+     <a class="secondary-link-cta link-arrow" href="…">Label</a>
+   </div>
+
+   The panel snaps — native disclosure cannot animate its own
+   height, and nothing here fakes it; only the toggle animates.
+   Set the section padding and ground on the wrapping section. */
+
+.faq-item {
+  border-top: 1px solid var(--line);
+}
+
+.faq-item:last-of-type {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq-question {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-lg);
+  padding: var(--space-lg) 0;
+  cursor: pointer;
+  list-style: none;
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+  color: var(--green-dark);
+  transition: color .25s ease;
+}
+
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-question:hover {
+  color: var(--green);
+}
+
+/* Toggle wears the site's button-chamber language:
+   hairline square, fills green-dark when open */
+.faq-toggle {
+  margin-left: auto;
+  flex: 0 0 auto;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  align-self: center;
+  border: 1px solid var(--line);
+  color: var(--green-dark);
+  transition: background-color .25s ease, border-color .25s ease, color .25s ease;
+}
+
+.faq-item[open] .faq-toggle {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: var(--ink-inverse);
+}
+
+/* plus made of two hairlines; vertical bar collapses when open */
+.faq-toggle::before,
+.faq-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 50% 9px auto 9px;
+  height: 1px;
+  background: currentColor;
+}
+
+.faq-toggle::after {
+  transform: rotate(90deg);
+  transition: transform .3s cubic-bezier(.22,.61,.36,1);
+}
+
+.faq-item[open] .faq-toggle::after {
+  transform: rotate(0deg);
+}
+
+.faq-answer {
+  margin: 0;
+  padding: 0 var(--space-card) var(--space-lg);
+  max-width: 780px;
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--grey);
+}
+
+/* Closing row — routes back to the enquiry form */
+.faq-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  padding-top: var(--space-lg);
+}
+
+.faq-footer-note {
+  margin: 0;
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+  color: var(--green-dark);
+}
+
+@media (max-width: 680px) {
+  .faq-answer {
+    padding-inline: 0;
+  }
+}
+
+/* =============================================================
    TEXT FILTER — lead-size filter tabs, gold active underline
    =============================================================
    <div class="filter-display" role="group" aria-label="…">
@@ -2754,10 +3013,37 @@ body.menu-open {
   display: flex;
   align-items: baseline;
   gap: var(--space-lg);
+  /* a set that outgrows its column scrolls rather than spilling
+     past both edges — the service-tabs treatment. Never pair this
+     with justify-content: center: centring an overflowing row
+     pushes the first options off the left edge, where no amount
+     of scrolling can reach them. */
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-display::-webkit-scrollbar {
+  display: none;
+}
+
+/* a mouse cannot flick a scroll container, so scripts/components.js
+   adds click-drag scrubbing and the cursor advertises it. Only a row
+   that actually overflows gets the grab cursor — set by the script,
+   which is also what suppresses the click at the end of a drag. */
+.filter-display[data-dragging="true"] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.filter-display[data-dragging="true"] .filter-display-item {
+  cursor: grabbing;
 }
 
 .filter-display-item {
   appearance: none;
+  position: relative;
+  /* hold their width inside the scroller instead of squeezing */
+  flex: 0 0 auto;
   border: 0;
   background: none;
   padding: 0 0 var(--space-xs);
@@ -2767,7 +3053,19 @@ body.menu-open {
   line-height: var(--leading-lead);
   font-weight: 400;
   color: var(--grey);
+  white-space: nowrap;
   border-bottom: 2px solid transparent;
+}
+
+/* interpunct separators sit centred in the gaps between options,
+   outside the click targets and untouched by hover/active tints */
+.filter-display-item + .filter-display-item::before {
+  content: "·";
+  position: absolute;
+  left: calc(var(--space-lg) / -2);
+  transform: translateX(-50%);
+  color: var(--grey);
+  pointer-events: none;
 }
 
 .filter-display-item:hover,
@@ -2789,6 +3087,10 @@ body.menu-open {
   font-size: var(--text-small);
   line-height: var(--leading-small);
   padding-bottom: var(--space-2xs);
+}
+
+.filter-display--small .filter-display-item + .filter-display-item::before {
+  left: calc(var(--space-md) / -2);
 }
 
 /* =============================================================
@@ -2878,15 +3180,16 @@ body.menu-open {
   background: #fff;
   border: 1px solid var(--line);
   visibility: hidden;
-  transform: translateY(-12px);
+  /* wipes open from the trigger's bottom edge. No upward offset:
+     starting above the resting position makes the reveal appear
+     to come out of the middle of the trigger. */
   clip-path: inset(0 0 100% 0);
-  transition: transform .25s cubic-bezier(.22,.61,.36,1), clip-path .25s cubic-bezier(.22,.61,.36,1), visibility .25s;
+  transition: clip-path .25s cubic-bezier(.22,.61,.36,1), visibility .25s;
 }
 
-/* slides down from behind the trigger rather than fading in */
+/* wipes down from the trigger rather than fading in */
 .year-select[data-open="true"] .year-select-panel {
   visibility: visible;
-  transform: translateY(0);
   clip-path: inset(0 0 0 0);
 }
 
@@ -2953,6 +3256,442 @@ body.menu-open {
 .year-select--light .year-select-trigger:hover,
 .year-select--light .year-select-trigger:focus-visible {
   border-bottom-color: #fff;
+}
+
+/* =============================================================
+   FORM FIELDS — underline controls, caption labels
+   =============================================================
+   The house treatment: no boxes, no fills, no radius. A control
+   is a caption label over a line, and the line darkens as you
+   approach it. Hover and focus look identical — the line IS the
+   focus indicator, so the UA outline is suppressed.
+
+   <form class="enquiry-form">
+     <div class="field-row">                    (optional two-up)
+       <div class="field">
+         <label class="field-label" for="…">Label</label>
+         <input class="field-input" id="…" type="email" autocomplete="email">
+         <p class="field-hint">Optional guidance</p>
+       </div> × 2
+     </div>
+     <div class="field">
+       <label class="field-label" for="…">Label</label>
+       <textarea class="field-textarea" id="…"></textarea>
+     </div>
+   </form>
+   type= and autocomplete= are part of the spec, not extras:
+   they set the mobile keyboard and let a browser fill the form.
+   There is no error or success state yet. */
+
+.enquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg) var(--space-card);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--grey);
+}
+
+.field-input,
+.field-textarea {
+  appearance: none;
+  width: 100%;
+  padding: 0 0 var(--space-sm);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  font: inherit;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--green-dark);
+  border-radius: 0;
+  transition: border-color .25s ease;
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--ccg-sage);
+}
+
+.field-input:hover,
+.field-textarea:hover {
+  border-bottom-color: var(--green-dark);
+}
+
+.field-input:focus-visible,
+.field-textarea:focus-visible {
+  outline: none;
+  border-bottom-color: var(--green-dark);
+}
+
+.field-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Custom dropdown — same pattern as the awards year filter,
+   but the panel spans the trigger's full width */
+
+@media (max-width: 680px) {
+  .field-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* =============================================================
+   FORM SELECT — labelled trigger + full-width listbox
+   =============================================================
+   Reads as a text field until opened. Same pattern as the
+   archive DROPDOWN SELECT, but the panel spans the trigger's
+   full width rather than sizing to its content.
+
+   <div class="type-select" data-open="false" id="…">
+     <span class="field-label" id="…Label">Label</span>
+     <button class="type-select-trigger" type="button" aria-haspopup="listbox"
+             aria-expanded="false" aria-labelledby="…Label …Value">
+       <span id="…Value">Current choice</span>
+       <span class="type-select-chevron" aria-hidden="true"></span>
+     </button>
+     <ul class="type-select-panel" role="listbox" aria-label="…">
+       <li class="type-option" role="option" tabindex="-1"
+           data-value="…" aria-selected="true">Option</li> × N
+     </ul>
+   </div>
+   Page JS drives open/close/choose. Gold bar marks the choice;
+   the panel caps at 264px and scrolls. NOTE: the roles promise a
+   listbox the keyboard does not yet deliver — no arrow keys,
+   Home/End or type-ahead. Same gap as DROPDOWN SELECT. */
+
+.type-select {
+  position: relative;
+}
+
+.type-select-trigger {
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  padding: 0 0 var(--space-sm);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--green-dark);
+  transition: border-color .25s ease;
+}
+
+.type-select-trigger:hover,
+.type-select-trigger:focus-visible {
+  border-bottom-color: var(--green-dark);
+}
+
+.type-select-chevron {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .25s ease;
+}
+
+.type-select[data-open="true"] .type-select-chevron {
+  transform: translateY(1px) rotate(-135deg);
+}
+
+.type-select-panel {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin: 0;
+  padding: var(--space-2xs);
+  max-height: 264px;
+  overflow-y: auto;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--line);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+}
+
+.type-select[data-open="true"] .type-select-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.type-option {
+  padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--grey);
+  border-left: 2px solid transparent;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.type-option:hover,
+.type-option:focus-visible {
+  background: var(--cream);
+  color: var(--green-dark);
+}
+
+.type-option[aria-selected="true"] {
+  color: var(--green-dark);
+  border-left-color: var(--ccg-gold);
+}
+
+.field-hint {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--grey);
+}
+
+/* =============================================================
+   FORM DECLARATIONS — consent plate, choice controls, consent panel
+   =============================================================
+   Radios stay native and round; checkboxes are custom-drawn and
+   square, because the UA radius is the one thing that cannot be
+   styled away. Round means one of these, square means any.
+   Every control sits inside its own <label>, so the whole row —
+   including wrapped text — is the hit area.
+
+   <div class="form-declarations">
+     <div class="declaration-row">
+       <span id="…Label">Gating question</span>
+       <span class="declaration-options" role="radiogroup" aria-labelledby="…Label">
+         <label class="check-option"><input type="radio" name="…" value="yes"> Yes</label>
+         <label class="check-option"><input type="radio" name="…" value="no" checked> No</label>
+       </span>
+     </div>
+
+     <div class="mainland-consent" id="…" data-open="false">      (conditional panel)
+       <div class="mainland-consent-inner">
+         <p class="mainland-consent-intro">…</p>
+         <p class="mainland-consent-required">…</p>
+         <p class="mainland-consent-group">Group heading</p>
+         <label class="check-option"><input type="checkbox"><span>…</span></label> × N
+       </div>
+     </div>
+
+     <label class="check-option"><input type="checkbox"><span>…</span></label> × N
+   </div>
+   Page JS sets data-open on the panel from the radio. It grows
+   by grid-template-rows, not height, so copy of any length works
+   with no measuring. Checkboxes keep a real focus ring — the one
+   place in the system that does; do not remove it.
+   NAMING: mainland-consent is named for its first use on the
+   contact page; the pattern is a generic conditional panel. */
+
+.form-declarations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-md);
+  background: var(--cream);
+}
+
+.declaration-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--ink);
+}
+
+.declaration-options {
+  display: flex;
+  gap: var(--space-md);
+  flex: 0 0 auto;
+}
+
+.check-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.check-option input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--ccg-green);
+  cursor: pointer;
+}
+
+/* checkbox rows get more breathing room than the radio pair */
+.check-option:has(input[type="checkbox"]) {
+  gap: var(--space-md);
+}
+
+/* Square checkboxes — custom-drawn so no UA border radius
+   (radios stay native; round is correct for them) */
+.check-option input[type="checkbox"] {
+  appearance: none;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fff;
+}
+
+.check-option input[type="checkbox"]:hover {
+  border-color: var(--green-dark);
+}
+
+.check-option input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.check-option input[type="checkbox"]:checked {
+  background: var(--ccg-green);
+  border-color: var(--ccg-green);
+}
+
+.check-option input[type="checkbox"]:checked::after {
+  content: "";
+  width: 10px;
+  height: 5px;
+  border-left: 1.5px solid #fff;
+  border-bottom: 1.5px solid #fff;
+  transform: translateY(-1px) rotate(-45deg);
+}
+
+.check-option a {
+  color: var(--green);
+  border-bottom: 1px solid rgba(7, 84, 69, .35);
+  transition: border-color .25s ease;
+}
+
+.check-option a:hover,
+.check-option a:focus-visible {
+  border-bottom-color: var(--green);
+}
+
+/* Mainland China consent — unfolds when Yes is selected */
+.mainland-consent {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  /* cancel the parent's flex gap while collapsed so the row
+     above sits flush with the checkboxes below — no phantom
+     hierarchy break */
+  margin-bottom: calc(-1 * var(--space-md));
+  transition: grid-template-rows .5s cubic-bezier(.22,.61,.36,1), margin-bottom .5s cubic-bezier(.22,.61,.36,1), visibility .5s;
+}
+
+.mainland-consent[data-open="true"] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  margin-bottom: 0;
+}
+
+.mainland-consent-inner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: 0 var(--space-md);
+  background: #fff;
+  border-left: 2px solid var(--ccg-gold);
+  transition: padding .5s cubic-bezier(.22,.61,.36,1);
+}
+
+.mainland-consent[data-open="true"] .mainland-consent-inner {
+  padding: var(--space-md);
+}
+
+.mainland-consent-intro {
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--ink);
+}
+
+.mainland-consent-intro a {
+  color: var(--green);
+  border-bottom: 1px solid rgba(7, 84, 69, .35);
+  transition: border-color .25s ease;
+}
+
+.mainland-consent-intro a:hover,
+.mainland-consent-intro a:focus-visible {
+  border-bottom-color: var(--green);
+}
+
+.mainland-consent-required {
+  margin: 0;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--ccg-lively-red);
+}
+
+.mainland-consent-group {
+  margin: var(--space-2xs) 0 0;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--green);
+}
+
+/* long legal labels align to the first line, not the middle */
+.mainland-consent .check-option {
+  align-items: flex-start;
+}
+
+.mainland-consent .check-option input {
+  margin-top: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mainland-consent {
+    transition: none;
+  }
+}
+
+.form-actions .primary-cta {
+  border: 0;
+  cursor: pointer;
+}
+
+@media (max-width: 680px) {
+  /* question over answers, rather than pinned to opposite ends */
+  .declaration-row {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
 }
 
 /* =============================================================
@@ -3429,8 +4168,11 @@ body.menu-open {
     padding: 0 0 var(--space-section-compact);
   }
 
-  /* every variant collapses to the same stacked pull-up */
-  .feature-split-layout {
+  /* every variant collapses to the same stacked pull-up —
+     variant selectors listed so they don't out-rank the reset */
+  .feature-split-layout,
+  .feature-split--reversed .feature-split-layout,
+  .feature-split--standout .feature-split-layout {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -3453,15 +4195,23 @@ body.menu-open {
 }
 
 @media (max-width: 680px) {
-  .feature-split-media {
+  /* full-width stack sits flush on the next section */
+  .feature-split {
+    padding-bottom: 0;
+  }
+
+  .feature-split-media,
+  .feature-split--reversed .feature-split-media,
+  .feature-split--standout .feature-split-media {
     height: 320px;
   }
 
+  /* modules stack full width — no pull-up overlap on phones */
   .feature-split-plate,
   .feature-split--reversed .feature-split-plate,
   .feature-split--standout .feature-split-plate {
-    margin: -40px var(--page-pad) 0;
-    padding: var(--space-card);
+    margin: 0;
+    padding: var(--space-card) var(--page-pad) var(--space-xl);
   }
 }
 
@@ -4111,10 +4861,12 @@ body.menu-open {
 /* post-nominals sit quieter than the name */
 .leader-honours {
   color: var(--ccg-sage);
+  /* honours never break across lines */
+  white-space: nowrap;
 }
 
 .leader-card-role {
-  margin: 0 0 var(--space-sm);
+  margin: var(--space-sm) 0 0;
   font-size: var(--text-small);
   line-height: var(--leading-small);
   color: var(--green);
@@ -4182,6 +4934,10 @@ body.menu-open {
   .leader-card-portrait,
   .leader-card--feature .leader-card-portrait {
     height: 360px;
+  }
+
+  .leader-group-header {
+    margin-bottom: var(--space-md);
   }
 }
 
@@ -4365,7 +5121,13 @@ body.has-drawer-open {
 @media (max-width: 680px) {
   .profile-drawer-layout {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-lg) 0;
+    gap: var(--space-md) 0;
+  }
+
+  /* hairline under the name, matching the business-card title */
+  .profile-drawer-name {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
   }
 
   .profile-drawer-back,
@@ -4705,6 +5467,16 @@ footer {
 }
 
 @media (max-width: 680px) {
+  /* Square card media on phones — context selectors listed so
+     they don't out-rank the reset (this block sits last in the
+     file for the same reason). Pages that pin fixed heights
+     must release them at 680 (height: auto). */
+  .business-card-image,
+  .onward .business-card-image {
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+
   /* heading + side link stack; authored <br> breaks give way to
      natural wrapping at phone measure */
   .section-header {

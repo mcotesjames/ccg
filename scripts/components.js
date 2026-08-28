@@ -356,12 +356,18 @@
       window.cancelAnimationFrame(headerRevealFrame);
 
       if (!siteHeader.classList.contains("is-sticky")) {
+        /* Jump to the hidden position with transitions off. Otherwise the
+           header transitions from its resting place UP to -100%, and the
+           reveal a frame later reverses a run already in flight — so it
+           barely moves and the background fade is all you see. Suppressing
+           the jump means the slide down is the whole animation. */
+        siteHeader.style.transition = "none";
         siteHeader.classList.add("is-sticky", "is-hidden", "is-solid");
+        void siteHeader.offsetHeight;
+        siteHeader.style.transition = "";
 
         headerRevealFrame = window.requestAnimationFrame(() => {
-          headerRevealFrame = window.requestAnimationFrame(() => {
-            siteHeader.classList.remove("is-hidden");
-          });
+          siteHeader.classList.remove("is-hidden");
         });
       } else {
         siteHeader.classList.remove("is-hidden");
@@ -720,6 +726,86 @@
     }
 
     select(Math.max(0, tabs.findIndex(tab => tab.classList.contains("is-active"))));
+  });
+
+  /* -----------------------------------------------------------
+     TEXT FILTER — drag to scroll, auto-initialised
+     Markup contract: TEXT FILTER banner in components.css.
+     A row that outgrows its column scrolls; touch and trackpad
+     get that for free, a mouse does not. This adds click-drag
+     scrubbing without costing the row its clicks: movement past
+     a small threshold marks the gesture a drag and swallows the
+     click that follows, so dragging never selects a filter.
+     ----------------------------------------------------------- */
+
+  document.querySelectorAll(".filter-display").forEach(row => {
+    let dragging = false;
+    let moved = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    const scrollable = () => row.scrollWidth > row.clientWidth;
+
+    row.addEventListener("pointerdown", event => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      if (!scrollable()) return;
+
+      dragging = true;
+      moved = false;
+      startX = event.clientX;
+      startScroll = row.scrollLeft;
+    });
+
+    row.addEventListener("pointermove", event => {
+      if (!dragging) return;
+
+      const delta = event.clientX - startX;
+
+      /* below the threshold this is still a click, not a drag */
+      if (!moved) {
+        if (Math.abs(delta) <= 5) return;
+        moved = true;
+        row.dataset.dragging = "true";
+      }
+
+      /* scroll first: capture is an enhancement and must never be
+         able to stop the row moving if it throws */
+      row.scrollLeft = startScroll - delta;
+
+      /* capture keeps the drag alive if the pointer leaves the row */
+      try {
+        if (!row.hasPointerCapture(event.pointerId)) row.setPointerCapture(event.pointerId);
+      } catch (error) {
+        /* no capture available; the drag still works within the row */
+      }
+    });
+
+    function finishDrag(event) {
+      if (!dragging) return;
+
+      dragging = false;
+      delete row.dataset.dragging;
+
+      try {
+        if (row.hasPointerCapture(event.pointerId)) row.releasePointerCapture(event.pointerId);
+      } catch (error) {
+        /* nothing captured */
+      }
+
+      /* the click lands after pointerup; drop it only if we dragged */
+      if (moved) {
+        row.addEventListener("click", swallow, { capture: true, once: true });
+        window.setTimeout(() => row.removeEventListener("click", swallow, { capture: true }), 0);
+      }
+    }
+
+    function swallow(event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+
+    row.addEventListener("pointerup", finishDrag);
+    row.addEventListener("pointercancel", finishDrag);
   });
 
   /* -----------------------------------------------------------
