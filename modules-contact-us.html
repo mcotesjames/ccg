@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Contact Us Modules</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Page modules for the Contact Us pages. Each stage is the production module.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Contact us modules</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Page modules</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production module</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · CONTACT US ═══ -->
+  <section class="cmp-category" aria-label="Category: Contact us modules">
+    <p class="eyebrow">Category</p>
+    <h2>Contact us</h2>
+    <p>Assembled page modules rather than building blocks: each one is a fixed arrangement of parts with behaviour of its own, built for a single job on a single page. Take a module whole &mdash; its layout, its timings and its keyboard handling are one piece. The reusable parts they are built from live in the <a href="components.html">component library</a>.</p>
+  </section>
+
+  <!-- CONTACT US · STICKY ENQUIRY PANEL -->
+  <section class="cmp-section" id="cmp-sticky-panel" aria-label="Sticky enquiry panel">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Sticky enquiry panel</h2>
+      <p class="cmp-head-note">Routing panel that holds beside a long form, then releases</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <div class="cmp-vp-controls" role="group" aria-label="Demo viewport width" data-vp-controls="#cmpStickyViewport">
+        <button class="cmp-vp-btn is-active" type="button" data-vp="desktop" aria-pressed="true">Desktop viewport</button>
+        <button class="cmp-vp-btn" type="button" data-vp="mobile" aria-pressed="false">Mobile viewport &middot; 414px</button>
+      </div>
+      <iframe class="cmp-viewport" id="cmpStickyViewport" src="components-sticky-demo.html" title="Sticky enquiry panel demo: scrollable viewport"></iframe>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The frame above is a real viewport. The form column is a plain placeholder block &mdash; the panel beside it is the production component. Scroll inside the frame to watch it hold, then release.</li>
+        <li><span class="cmp-event">Sticking:</span> the panel scrolls with the page until it reaches 32px from the top of the viewport, then holds there while the form column keeps moving past it. There is no JavaScript and no scroll listener &mdash; it is <code>position: sticky</code> and nothing else.</li>
+        <li><span class="cmp-event">Releasing:</span> the panel is only ever sticky <em>within its own grid cell</em>. When the bottom of that cell reaches the panel, the panel is carried away with it &mdash; so it never escapes the enquiry section and never overlaps what follows.</li>
+        <li><span class="cmp-event">The rule that makes it work:</span> the layout grid sets <code>align-items: start</code>. Without it, grid items stretch to the full height of the row, the panel's cell becomes exactly as tall as the panel, and there is no travel for it to stick inside &mdash; the rule looks applied but nothing ever sticks. This is the single most common way a sticky sidebar silently fails, and it is why the property belongs to the layout as much as to the panel.</li>
+        <li><span class="cmp-event">Layout:</span> a fluid form column and a fixed 448px panel with a 64px gap &mdash; 872 + 64 + 448 = 1384 at the design width.</li>
+        <li><span class="cmp-event">Anatomy:</span> a solid green plate in inverse ink: title, a short blurb, caption-size labels over lime contact links that turn white on hover, and a quieter closing note above a hairline.</li>
+        <li><span class="cmp-event">Live content:</span> the panel carries <code>aria-live="polite"</code>, because the form's enquiry-type select rewrites its title, blurb and contacts. A screen-reader user hears the routing change without leaving the field they are in.</li>
+        <li><span class="cmp-event">Responsive, in three steps:</span> below 1000 the layout collapses to one column and the panel takes <code>order: -1</code>, moving <em>above</em> the form as an introduction &mdash; still sticky, but with a single-row cell it no longer has anywhere to travel. Below 680 it drops to <code>position: static</code> and <code>order: 0</code>, returning below the form as a closing footnote. The mobile button shows that last state; the middle one appears between the two widths.</li>
+        <li>The reordering is deliberate: on a tablet the panel tells you where your enquiry will go before you start writing; on a phone, where it would eat the first screen, it waits until you have finished.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  </main>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+</body>
+</html>

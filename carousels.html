@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Carousels</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+
+
+  <style>
+    /* =============================================
+       DEMO SUPPORT — CAROUSELS
+       Shared gallery chrome lives in styles/guide.css.
+       This block holds only the styles that support
+       this page's demos — production values quoted
+       from the pages named on each chunk.
+    ============================================= */
+
+    /* ---------------------------------------------
+       PORTFOLIO SHOWCASE. Source: index.html
+       Strict card values made responsive: tokenised
+       type, breakpoint-stepped sizes.
+    --------------------------------------------- */
+
+    .cmp-portfolio-stage {
+      padding: var(--space-xl) 0;
+      background: var(--lime);
+      overflow: hidden;
+    }
+
+    .portfolio-viewport {
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      padding-left: var(--space-xl);
+    }
+
+    .portfolio-track {
+      display: flex;
+      gap: var(--space-grid);
+      width: max-content;
+      will-change: transform;
+      touch-action: pan-y;
+    }
+
+    .property-card {
+      width: 364px;
+      flex: 0 0 auto;
+    }
+
+    .property-image {
+      height: 416px;
+      overflow: hidden;
+      background: var(--sand);
+    }
+
+    .property-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .property-card:hover img {
+      transform: scale(1.025);
+    }
+
+    .property-info {
+      background: var(--green-dark);
+      padding: var(--space-card) var(--space-plate) var(--space-plate);
+    }
+
+    .property-card:hover .property-info,
+    .property-card:focus-within .property-info {
+      background: var(--green);
+    }
+
+    .property-name {
+      margin: 0 0 var(--space-sm);
+      font-size: var(--text-h4);
+      line-height: var(--leading-h4);
+      font-weight: 400;
+      color: var(--ink-inverse);
+    }
+
+    .property-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      color: var(--ink-inverse-soft);
+      font-size: var(--text-small);
+    }
+
+    .property-meta span + span::before {
+      content: "·";
+      margin-right: var(--space-xs);
+    }
+
+    /* mobile steps mirror the homepage's ≤680 treatment */
+    @media (max-width: 680px) {
+      .property-card {
+        width: 328px;
+      }
+
+      .property-image {
+        height: 344px;
+      }
+    }
+
+    /* ---------------------------------------------
+       IMPACT STATS CAROUSEL. Source: index.html
+       Card width fitted to the container (346 × 4 =
+       1384); colours tokenised (--line-dark borders).
+    --------------------------------------------- */
+
+    .cmp-impact-stage {
+      padding: var(--space-xl) 0;
+      background: var(--ccg-green);
+      color: var(--ink-inverse);
+      overflow: hidden;
+    }
+
+    .cmp-impact-stage .impact-heading {
+      padding: 0 var(--space-xl);
+      margin-bottom: var(--space-md);
+    }
+
+    .cmp-impact-stage .eyebrow {
+      margin-bottom: var(--space-sm);
+      color: var(--ink-inverse);
+    }
+
+    .cmp-impact-stage .section-divider {
+      background: rgba(255, 255, 255, .3);
+    }
+
+    .stats-window {
+      overflow: hidden;
+    }
+
+    .stats-track {
+      display: flex;
+      width: max-content;
+      transition: transform .8s cubic-bezier(.22,.61,.36,1);
+      will-change: transform;
+    }
+
+    .stat {
+      width: 346px;
+      height: 332px;
+      flex: 0 0 auto;
+      padding: var(--space-md) var(--space-lg) 0;
+      border-left: 1px solid var(--line-dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .stat:first-child {
+      border-left: 0;
+    }
+
+    .stat-description {
+      align-self: flex-start;
+      max-width: 264px;
+      margin: 0;
+      color: var(--ink-inverse);
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+    }
+
+    .stat-number {
+      align-self: flex-end;
+      max-width: 100%;
+      margin: auto 0 0;
+      color: var(--chinachem-beige);
+      font-size: 68px;
+      line-height: 58px;
+      font-weight: 400;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    @media (max-width: 680px) {
+      .stat {
+        width: 344px;
+        height: 252px;
+      }
+    }
+
+    .cmp-impact-stage .carousel-ui {
+      margin-top: 0;
+      padding: var(--space-md) var(--space-xl) 0;
+    }
+
+    .cmp-impact-stage .carousel-count,
+    .cmp-impact-stage .arrow {
+      color: var(--ink-inverse);
+    }
+
+    .cmp-impact-stage .progress-track {
+      background: var(--line-dark);
+    }
+
+    .cmp-impact-stage .progress-thumb {
+      background: var(--ink-inverse);
+    }
+
+    /* ---------------------------------------------
+       STORIES CAROUSEL. Source: index.html
+       Shared ccgCarousel engine + editorial cards.
+    --------------------------------------------- */
+
+    .cmp-stories-stage {
+      padding: var(--space-xl) 0;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .cmp-stories-stage .carousel-viewport {
+      padding: 0 var(--space-xl);
+    }
+
+    .story-grid article {
+      width: 444px;
+      flex: 0 0 auto;
+    }
+
+    .story-image {
+      aspect-ratio: 1;
+      overflow: hidden;
+      margin-bottom: var(--space-md);
+      background: var(--sand);
+    }
+
+    .story-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .story-grid article:hover .story-image img {
+      transform: scale(1.035);
+    }
+
+    .story-title {
+      max-width: 420px;
+      font-size: var(--text-h6);
+      line-height: var(--leading-h6);
+      color: var(--green-dark);
+    }
+
+    .story-link {
+      margin-top: var(--space-md);
+      font-size: var(--text-caption);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--green-dark);
+    }
+
+    .story-link .inline-arrow {
+      transition: transform .35s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .story-grid article:hover .story-link .inline-arrow {
+      transform: translateX(5px) rotate(90deg);
+    }
+
+    .cmp-stories-stage .carousel-ui {
+      padding: var(--space-lg) var(--space-xl) 0;
+    }
+
+    /* mobile step mirrors the homepage: one card short of the
+       column so the next peeks in */
+    @media (max-width: 680px) {
+      .story-grid article {
+        width: calc(100vw - (2 * var(--page-pad)) - 40px);
+      }
+    }
+
+
+    /* property modal: full-screen dialog over a blurred scrim */
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .property-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 60px;
+      background: rgba(3, 25, 22, .58);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .4s ease, visibility .4s ease;
+    }
+
+    .property-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .property-modal-panel {
+      position: relative;
+      width: min(1440px, calc(100vw - 120px));
+      height: min(820px, calc(100svh - 120px));
+      min-height: min(580px, calc(100svh - 40px));
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 472px;
+      overflow: hidden;
+      background: var(--cream);
+      color: var(--green-dark);
+      transform: translateY(24px) scale(.985);
+      transition: transform .55s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .property-modal.is-open .property-modal-panel {
+      transform: translateY(0) scale(1);
+    }
+
+    .property-modal-media {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      background: var(--sand);
+    }
+
+    .property-modal-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 72%, rgba(4, 29, 26, .13));
+      pointer-events: none;
+    }
+
+    .property-modal-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.04);
+      transition: transform 1s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .property-modal.is-open .property-modal-media img {
+      transform: scale(1);
+    }
+
+
+    .property-modal-content {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-xl);
+    }
+
+    .property-modal-kicker {
+      margin: 0 0 var(--space-lg);
+      color: rgba(7, 58, 52, .58);
+      font-size: var(--text-caption);
+    }
+
+    .property-modal-title {
+      margin: 0;
+      font-size: var(--text-h1);
+      line-height: var(--leading-h1);
+      font-weight: 400;
+    }
+
+    .property-modal-rule {
+      width: 100%;
+      height: 1px;
+      margin: var(--space-lg) 0;
+      background: rgba(7, 58, 52, .2);
+    }
+
+    .property-modal-description {
+      margin: 0;
+      max-width: 42ch;
+      color: rgba(7, 58, 52, .72);
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+    }
+
+    /* layout only; behaviour comes from the standard secondary CTA */
+    .property-modal-cta {
+      width: min(100%, 280px);
+      margin-top: auto;
+    }
+
+    .property-modal-close {
+      position: absolute;
+      top: var(--space-card);
+      right: var(--space-card);
+      z-index: 3;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(7, 58, 52, .22);
+      background: var(--cream);
+      color: var(--green-dark);
+      cursor: pointer;
+    }
+
+    .property-modal-close::before,
+    .property-modal-close::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .property-modal-close::before { transform: rotate(45deg); }
+    .property-modal-close::after { transform: rotate(-45deg); }
+
+    .property-modal-close:hover,
+    .property-modal-close:focus-visible {
+      background: var(--green-dark);
+      color: var(--cream);
+    }
+
+    .view-cursor {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      background: var(--ccg-lively-red);
+      color: var(--cream);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.8);
+      transition: transform .2s ease;
+      font-size: var(--text-small);
+    }
+
+    .view-cursor.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Library components: carousels. Each stage is the production component.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Carousels</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Component library</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · CAROUSELS ═══ -->
+  <section class="cmp-category" aria-label="Category: Carousels">
+    <p class="eyebrow">Category</p>
+    <h2>Carousels</h2>
+    <p>Three track behaviours: free-running showcase, stepped auto-advance, and the paged card carousel.</p>
+  </section>
+
+  <!-- CAROUSELS · SHOWCASE CAROUSEL -->
+  <section class="cmp-section" id="cmp-showcase-carousel" aria-label="Showcase carousel">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Showcase carousel</h2>
+      <p class="cmp-head-note">Infinite auto-scroll · drag · custom cursor · detail modal</p>
+    </div>
+
+    <div class="cmp-stage cmp-portfolio-stage" style="border: 0;">
+      <div class="portfolio-viewport" id="cmpPortfolioViewport">
+        <div class="portfolio-track" id="cmpPortfolioTrack"></div>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Autoplay:</span> the track drifts left continuously at about 54px per second, looping seamlessly and endlessly in both directions.</li>
+        <li><span class="cmp-event">Drag:</span> pressing pauses the drift and scrubs the track 1:1 with the pointer. Small movements still count as clicks; larger drags never open a card. The drift resumes shortly after release.</li>
+        <li><span class="cmp-event">Hover a card:</span> the image zooms gently over 0.8s; the deep green plate lightens instantly.</li>
+        <li><span class="cmp-event">Custom cursor:</span> over the images the native cursor is replaced by a red View disc that follows the pointer, scaling up with a quick fade.</li>
+        <li><span class="cmp-event">Click a card:</span> opens the detail modal, a full-screen dialog over a blurred deep-green scrim. The panel rises and settles over 0.55s while the hero image eases from a slight zoom to rest.</li>
+        <li><span class="cmp-event">While open:</span> the carousel pauses and page scrolling locks; keyboard focus stays inside the dialog.</li>
+        <li><span class="cmp-event">Close:</span> the cross button, a click on the backdrop, or Escape; focus returns to the card that opened it and the drift resumes.</li>
+        <li><span class="cmp-event">Responsive:</span> cards run 364px wide with a tall image crop on desktop, stepping down on mobile.</li>
+        <li>With reduced motion enabled the drift stops and the carousel becomes drag-only.</li>
+      </ul>
+      </details>
+  </section>
+
+  <!-- CAROUSELS · STATS CAROUSEL -->
+  <section class="cmp-section" id="cmp-stats-carousel" aria-label="Stats carousel">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Stats carousel</h2>
+      <p class="cmp-head-note">Clone loop · 3s autoplay · stepped slide</p>
+    </div>
+
+    <div class="cmp-stage cmp-impact-stage" style="border: 0;">
+      <div class="section-header impact-heading">
+        <div class="section-heading-copy">
+          <p class="eyebrow">Our Impact</p>
+          <div class="section-divider" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="stats-window">
+        <div class="stats-track" id="cmpStatsTrack">
+          <article class="stat">
+            <div class="stat-description">Commercial and mixed-use assets managed in Hong Kong.</div>
+            <div class="stat-number">4M sq ft</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Estates and single buildings under Group management.</div>
+            <div class="stat-number">90+</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Frontline and professional teams serving residents and tenants daily.</div>
+            <div class="stat-number">2,400</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Residential, commercial and mixed-use assets across Hong Kong.</div>
+            <div class="stat-number">24M sq ft</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Placeholder description for an additional Chinachem business statistic.</div>
+            <div class="stat-number">60+</div>
+          </article>
+          <article class="stat">
+            <div class="stat-description">Placeholder description for an additional Chinachem company statistic.</div>
+            <div class="stat-number">12K+</div>
+          </article>
+        </div>
+      </div>
+
+      <div class="carousel-ui">
+        <div class="carousel-count"><span id="cmpStatsCurrent">01</span> / 06</div>
+        <div class="progress-track"><div class="progress-thumb" id="cmpStatsProgress"></div></div>
+        <div class="carousel-arrows">
+          <button class="arrow arrow-prev" id="cmpStatsPrev" aria-label="Previous statistic"><span class="ui-arrow" aria-hidden="true"></span></button>
+          <button class="arrow arrow-next" id="cmpStatsNext" aria-label="Next statistic"><span class="ui-arrow" aria-hidden="true"></span></button>
+        </div>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Autoplay:</span> steps one stat every 3 seconds; each step slides the track over 0.8s on the house easing curve. Pressing an arrow moves immediately and restarts the timer.</li>
+        <li><span class="cmp-event">Endless:</span> the loop continues in both directions with no visible rewind.</li>
+        <li><span class="cmp-event">UI:</span> the count shows the current position, zero-padded; the thin white thumb travels the hairline track proportionally.</li>
+        <li><span class="cmp-event">Responsive:</span> four stats visible on desktop, two on tablet, one on mobile; numbers sit in warm beige at a display scale, bottom-right of each cell, with hairline dividers between cells.</li>
+        <li>With reduced motion enabled the autoplay never starts; the arrows still work.</li>
+      </ul>
+      </details>
+  </section>
+
+  <!-- CAROUSELS · CARD CAROUSEL -->
+  <section class="cmp-section" id="cmp-card-carousel" aria-label="Card carousel">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Manual carousel</h2>
+      <p class="cmp-head-note">Paged carousel · drag · arrows · count + progress</p>
+    </div>
+
+    <div class="cmp-stage cmp-stories-stage" style="border: 0;">
+      <div class="carousel-viewport">
+        <div class="story-grid carousel-track" id="cmpStoriesTrack">
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Central Market: Breathing new life into a historic landmark</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Our pathway to a low-carbon and resilient future</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Inspiring communities through arts and culture</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Designing workplaces around a more human rhythm</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">How thoughtful neighbourhoods create lasting value</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+          <article>
+            <div class="story-image"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85" alt=""></div>
+            <div class="story-title">Placemaking that starts with listening</div>
+            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="carousel-ui">
+        <div class="carousel-count"><span id="cmpStoriesCurrent">01</span> / 06</div>
+        <div class="progress-track"><div class="progress-thumb" id="cmpStoriesProgress"></div></div>
+        <div class="carousel-arrows">
+          <button class="arrow arrow-prev" id="cmpStoriesPrev" aria-label="Previous story"><span class="ui-arrow" aria-hidden="true"></span></button>
+          <button class="arrow arrow-next" id="cmpStoriesNext" aria-label="Next story"><span class="ui-arrow" aria-hidden="true"></span></button>
+        </div>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Arrows / drag:</span> one card per step over 0.7s on the house easing curve; the track drags 1:1 with grab cursors and snaps to the nearest card on release. The page still scrolls vertically over it.</li>
+        <li><span class="cmp-event">Ends:</span> this carousel stops at either end; it does not loop, unlike the stats carousel.</li>
+        <li><span class="cmp-event">On move:</span> the zero-padded count updates and the green progress thumb repositions along the hairline.</li>
+        <li><span class="cmp-event">Hover a card:</span> the image zooms gently over 0.8s; the read-more arrow nudges right.</li>
+        <li><span class="cmp-event">Responsive:</span> three cards across on desktop, two on tablet, one on mobile, where each card sits slightly short of the column so the next peeks in.</li>
+      </ul>
+      </details>
+  </section>
+
+
+  </main>
+
+  <div class="view-cursor" id="cmpViewCursor" aria-hidden="true">View</div>
+
+  <!-- PROPERTY MODAL -->
+  <div
+    class="property-modal"
+    id="cmpPropertyModal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="cmpPropertyModalTitle"
+  >
+    <div class="property-modal-panel" role="document">
+      <button class="property-modal-close" id="cmpPropertyModalClose" type="button" aria-label="Close property details"></button>
+
+      <div class="property-modal-media">
+        <img id="cmpPropertyModalImage" src="" alt="">
+      </div>
+
+      <div class="property-modal-content">
+        <p class="property-modal-kicker" id="cmpPropertyModalKicker"></p>
+        <h2 class="property-modal-title" id="cmpPropertyModalTitle"></h2>
+        <div class="property-modal-rule" aria-hidden="true"></div>
+        <p class="property-modal-description" id="cmpPropertyModalDescription"></p>
+
+        <a class="property-modal-cta secondary-link-cta link-arrow" id="cmpPropertyModalCta" href="#">
+          View property
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+  <script>
+    /* Portfolio showcase: production behaviour from index.html */
+    const cmpProperties = [
+      { name: "One Hennessy", location: "Wan Chai", type: "Commercial", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2200&q=92", description: "A landmark commercial address where considered architecture meets everyday convenience in the heart of Wan Chai." },
+      { name: "Nina Tower", location: "Tsuen Wan", type: "Commercial", image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=2200&q=92", description: "An enduring business landmark combining panoramic views, exceptional connectivity and a strong sense of arrival." },
+      { name: "Central Market", location: "Central", type: "Heritage", image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=2200&q=92", description: "A much-loved heritage landmark reimagined as an open, welcoming place for culture, discovery and everyday life." },
+      { name: "The Henley", location: "Kai Tak", type: "Residential", image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2200&q=92", description: "Refined urban homes balancing architectural clarity with warm interiors and the energy of the evolving Kai Tak district." },
+      { name: "Papillons", location: "Tseung Kwan O", type: "Residential", image: "https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2200&q=92", description: "Light-filled residences designed for relaxed family living, with nature, amenities and transport close at hand." }
+    ];
+
+    const cmpTrack = document.querySelector("#cmpPortfolioTrack");
+    const cmpViewport = document.querySelector("#cmpPortfolioViewport");
+    const cmpCursor = document.querySelector("#cmpViewCursor");
+
+    cmpTrack.innerHTML = [...cmpProperties, ...cmpProperties].map((property, index) => `
+      <article class="property-card" data-index="${index % cmpProperties.length}">
+        <a href="#" aria-haspopup="dialog" aria-label="View ${property.name}">
+          <div class="property-image"><img src="${property.image}" alt="${property.name}"></div>
+          <div class="property-info">
+            <h3 class="property-name">${property.name}</h3>
+            <div class="property-meta"><span>${property.location}</span><span>${property.type}</span></div>
+          </div>
+        </a>
+      </article>
+    `).join("");
+
+    let cmpX = 0;
+    let cmpSpeed = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : .9;
+    let cmpPaused = false;
+    let cmpDragging = false;
+    let cmpDragStartX = 0;
+    let cmpDragStartOffset = 0;
+    let cmpClickSuppressed = false;
+
+    function cmpLoop() {
+      if (!cmpPaused && !cmpDragging) cmpX -= cmpSpeed;
+      const half = cmpTrack.scrollWidth / 2;
+      if (Math.abs(cmpX) >= half) cmpX += half;
+      if (cmpX > 0) cmpX -= half;
+      cmpTrack.style.transform = `translate3d(${cmpX}px,0,0)`;
+      requestAnimationFrame(cmpLoop);
+    }
+
+    cmpViewport.addEventListener("pointerdown", e => {
+      cmpDragging = true; cmpPaused = true; cmpClickSuppressed = false;
+      cmpDragStartX = e.clientX; cmpDragStartOffset = cmpX;
+    });
+
+    cmpViewport.addEventListener("pointermove", e => {
+      if (!cmpDragging) return;
+      if (Math.abs(e.clientX - cmpDragStartX) > 6) {
+        cmpClickSuppressed = true;
+        if (!cmpViewport.hasPointerCapture(e.pointerId)) cmpViewport.setPointerCapture(e.pointerId);
+      }
+      cmpX = cmpDragStartOffset + (e.clientX - cmpDragStartX);
+    });
+
+    cmpViewport.addEventListener("pointerup", e => {
+      cmpDragging = false;
+      if (cmpViewport.hasPointerCapture(e.pointerId)) cmpViewport.releasePointerCapture(e.pointerId);
+      setTimeout(() => { cmpPaused = false; cmpClickSuppressed = false; }, 700);
+    });
+
+    cmpViewport.addEventListener("pointercancel", () => { cmpDragging = false; cmpClickSuppressed = false; cmpPaused = false; });
+
+    /* Property modal: production behaviour from index.html */
+    const cmpModal = document.querySelector("#cmpPropertyModal");
+    const cmpModalClose = document.querySelector("#cmpPropertyModalClose");
+    const cmpModalImage = document.querySelector("#cmpPropertyModalImage");
+    const cmpModalKicker = document.querySelector("#cmpPropertyModalKicker");
+    const cmpModalTitle = document.querySelector("#cmpPropertyModalTitle");
+    const cmpModalDescription = document.querySelector("#cmpPropertyModalDescription");
+    const cmpModalCta = document.querySelector("#cmpPropertyModalCta");
+
+    let cmpModalReturnFocus = null;
+
+    function cmpOpenModal(index, trigger) {
+      const property = cmpProperties[index];
+      if (!property) return;
+
+      cmpModalReturnFocus = trigger;
+      cmpPaused = true;
+      cmpCursor.classList.remove("active");
+
+      cmpModalImage.src = property.detailImage;
+      cmpModalImage.alt = `${property.name}, ${property.location}`;
+      cmpModalKicker.textContent = `${property.location} · ${property.type}`;
+      cmpModalTitle.textContent = property.name;
+      cmpModalDescription.textContent = property.description;
+
+      cmpModal.classList.add("is-open");
+      cmpModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      window.requestAnimationFrame(() => cmpModalClose.focus());
+    }
+
+    function cmpCloseModal() {
+      if (!cmpModal.classList.contains("is-open")) return;
+      cmpModal.classList.remove("is-open");
+      cmpModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      cmpPaused = false;
+      cmpModalReturnFocus?.focus({ preventScroll: true });
+      cmpModalReturnFocus = null;
+    }
+
+    cmpTrack.addEventListener("click", e => {
+      const link = e.target.closest(".property-card a");
+      if (!link) return;
+      e.preventDefault();
+      if (cmpClickSuppressed) return;
+      cmpOpenModal(Number(link.closest(".property-card").dataset.index), link);
+    });
+
+    cmpModalClose.addEventListener("click", cmpCloseModal);
+
+    cmpModal.addEventListener("pointerdown", e => {
+      if (e.target === cmpModal) cmpCloseModal();
+    });
+
+    cmpModal.addEventListener("keydown", e => {
+      if (e.key === "Escape") { e.preventDefault(); cmpCloseModal(); return; }
+      if (e.key !== "Tab") return;
+      const focusable = [cmpModalClose, cmpModalCta];
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
+    cmpTrack.querySelectorAll(".property-image").forEach(image => {
+      image.addEventListener("mouseenter", () => cmpCursor.classList.add("active"));
+      image.addEventListener("mouseleave", () => cmpCursor.classList.remove("active"));
+      image.addEventListener("mousemove", e => {
+        cmpCursor.style.left = `${e.clientX}px`;
+        cmpCursor.style.top = `${e.clientY}px`;
+      });
+    });
+
+    cmpLoop();
+
+    /* Impact stats carousel: production behaviour from index.html */
+    const cmpStatsTrack = document.querySelector("#cmpStatsTrack");
+    const cmpStats = [...cmpStatsTrack.querySelectorAll(".stat")];
+    const cmpStatsPrev = document.querySelector("#cmpStatsPrev");
+    const cmpStatsNext = document.querySelector("#cmpStatsNext");
+    const cmpStatsCurrent = document.querySelector("#cmpStatsCurrent");
+    const cmpStatsProgress = document.querySelector("#cmpStatsProgress");
+
+    let cmpStatsIndex = 0;
+    let cmpStatsCloneCount = 0;
+    let cmpStatsTimer;
+    let cmpStatsAnimating = false;
+
+    function cmpVisibleStats() {
+      if (window.innerWidth <= 680) return 1;
+      if (window.innerWidth <= 1000) return 2;
+      return 4;
+    }
+
+    function cmpLogicalStatsIndex() {
+      return ((cmpStatsIndex - cmpStatsCloneCount) % cmpStats.length + cmpStats.length) % cmpStats.length;
+    }
+
+    function cmpUpdateStatsUI() {
+      const logical = cmpLogicalStatsIndex();
+      cmpStatsCurrent.textContent = String(logical + 1).padStart(2, "0");
+      const progress = cmpStats.length <= 1 ? 0 : logical / (cmpStats.length - 1);
+      cmpStatsProgress.style.transform = `translateX(${progress * 566.67}%)`;
+    }
+
+    function cmpPositionStats(animate = true) {
+      const width = cmpStats[0].getBoundingClientRect().width;
+      cmpStatsTrack.style.transition = animate ? "transform .8s cubic-bezier(.22,.61,.36,1)" : "none";
+      cmpStatsTrack.style.transform = `translate3d(${-cmpStatsIndex * width}px,0,0)`;
+      cmpUpdateStatsUI();
+    }
+
+    function cmpBuildStatsLoop() {
+      cmpStatsTrack.querySelectorAll("[data-stat-clone]").forEach(clone => clone.remove());
+      cmpStatsCloneCount = Math.min(cmpVisibleStats(), cmpStats.length);
+      const leading = document.createDocumentFragment();
+      const trailing = document.createDocumentFragment();
+      cmpStats.slice(-cmpStatsCloneCount).forEach(stat => {
+        const c = stat.cloneNode(true); c.dataset.statClone = "true"; c.setAttribute("aria-hidden", "true"); leading.append(c);
+      });
+      cmpStats.slice(0, cmpStatsCloneCount).forEach(stat => {
+        const c = stat.cloneNode(true); c.dataset.statClone = "true"; c.setAttribute("aria-hidden", "true"); trailing.append(c);
+      });
+      cmpStatsTrack.insertBefore(leading, cmpStatsTrack.firstChild);
+      cmpStatsTrack.append(trailing);
+      cmpStatsIndex = cmpStatsCloneCount;
+      cmpStatsAnimating = false;
+      cmpPositionStats(false);
+    }
+
+    function cmpMoveStats(direction) {
+      if (cmpStatsAnimating) return;
+      cmpStatsAnimating = true;
+      cmpStatsIndex += direction;
+      cmpPositionStats(true);
+    }
+
+    function cmpStartStatsAutoplay() {
+      window.clearInterval(cmpStatsTimer);
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      cmpStatsTimer = window.setInterval(() => cmpMoveStats(1), 3000);
+    }
+
+    cmpStatsTrack.addEventListener("transitionend", event => {
+      if (event.propertyName !== "transform") return;
+      cmpStatsAnimating = false;
+      if (cmpStatsIndex >= cmpStatsCloneCount + cmpStats.length) {
+        cmpStatsIndex = cmpStatsCloneCount;
+        cmpPositionStats(false);
+      } else if (cmpStatsIndex < cmpStatsCloneCount) {
+        cmpStatsIndex = cmpStatsCloneCount + cmpStats.length - 1;
+        cmpPositionStats(false);
+      }
+    });
+
+    cmpStatsPrev.addEventListener("click", () => { cmpMoveStats(-1); cmpStartStatsAutoplay(); });
+    cmpStatsNext.addEventListener("click", () => { cmpMoveStats(1); cmpStartStatsAutoplay(); });
+
+    let cmpStatsResizeTimer;
+    window.addEventListener("resize", () => {
+      window.clearTimeout(cmpStatsResizeTimer);
+      cmpStatsResizeTimer = window.setTimeout(() => { cmpBuildStatsLoop(); cmpStartStatsAutoplay(); }, 150);
+    });
+
+    cmpBuildStatsLoop();
+    cmpStartStatsAutoplay();
+
+    /* Stories carousel: the shared engine, production init from index.html */
+    window.ccgCarousel({
+      track: document.querySelector("#cmpStoriesTrack"),
+      prev: document.querySelector("#cmpStoriesPrev"),
+      next: document.querySelector("#cmpStoriesNext"),
+      current: document.querySelector("#cmpStoriesCurrent"),
+      progress: document.querySelector("#cmpStoriesProgress"),
+      visible: () => window.innerWidth <= 680 ? 1 : window.innerWidth <= 1000 ? 2 : 3
+    });
+
+  </script>
+
+</body>
+</html>

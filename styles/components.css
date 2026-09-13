@@ -48,7 +48,7 @@
   align-items: center;
   gap: 28px;
   color: var(--ink);
-  font-size: 12px;
+  font-size: 20px;
 }
 
 .link-arrow::after {
@@ -91,8 +91,8 @@
   padding: 0;
   background: #fff;
   color: var(--green-dark);
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 20px;
+  line-height: 20px;
   font-weight: 400;
   white-space: nowrap;
 }
@@ -248,8 +248,8 @@
   padding: 0 0 20px;
   border-bottom: 1px solid rgba(7, 58, 52, .45);
   color: var(--ink);
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 20px;
+  line-height: 20px;
   text-transform: none;
 }
 
@@ -942,7 +942,7 @@ body.menu-open {
 
 .mega-link-list a {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   padding: 12px 0;
@@ -950,12 +950,6 @@ body.menu-open {
   transition: padding-left .28s ease;
 }
 
-.mega-link-number {
-  color: var(--green);
-  font-family: "EB Garamond", serif;
-  font-size: 16px;
-  font-style: italic;
-}
 
 .mega-link-list a::after {
   content: "";

@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Actions</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+
+
+  <style>
+    /* =============================================
+       DEMO SUPPORT — ACTIONS
+       Shared gallery chrome lives in styles/guide.css.
+       This block holds only the styles that support
+       this page's demos — production values quoted
+       from the pages named on each chunk.
+    ============================================= */
+
+    /* ---------------------------------------------
+       STATUS TABS: segmented filter tabs; the
+       active tab fuses with the band beneath.
+    --------------------------------------------- */
+
+    .status-tabs {
+      display: inline-flex;
+      background: #fff;
+    }
+
+    .status-tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--green-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: baseline;
+      gap: var(--space-xs);
+      padding: 16px 40px 20px;
+      font-size: var(--text-small);
+      font-family: inherit;
+    }
+
+    .status-tab + .status-tab {
+      border-left: 1px solid var(--line);
+    }
+
+    .status-tab .tab-count {
+      font-size: var(--text-caption);
+      opacity: .65;
+    }
+
+    .status-tab:hover:not(.is-active) {
+      background: var(--cream-light);
+    }
+
+    .status-tab.is-active {
+      background: var(--green-dark);
+      color: var(--lime);
+    }
+
+    /* ---------------------------------------------
+       CATEGORY PILLS: rounded outline filter on
+       dark grounds; active fills beige.
+    --------------------------------------------- */
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+
+    .category-pill {
+      appearance: none;
+      border: 1px solid var(--line-dark);
+      background: transparent;
+      color: var(--ink-inverse-soft);
+      padding: var(--space-xs) var(--space-ms);
+      font-size: var(--text-small);
+      font-family: inherit;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .category-pill:hover:not(.is-active) {
+      border-color: var(--ink-inverse-muted);
+      color: var(--ink-inverse);
+    }
+
+    .category-pill.is-active {
+      background: var(--ccg-lime);
+      border-color: var(--ccg-lime);
+      color: var(--green-dark);
+    }
+
+    /* dropdown demos: shrink-wrap the component as its flex-row
+       context does on real pages, so the panel hangs from the
+       trigger's bottom-right rather than the stage edge */
+    #cmpSelectLight,
+    #cmpSelectWide,
+    #cmpSelectDark {
+      display: inline-block;
+    }
+
+    /* wider trigger example: the panel tracks it automatically */
+    #cmpSelectWide .year-select-trigger {
+      min-width: 300px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Library components: actions. Each stage is the production component.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Actions</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Component library</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · ACTIONS ═══ -->
+  <section class="cmp-category" aria-label="Category: Actions">
+    <p class="eyebrow">Category</p>
+    <h2>Actions</h2>
+    <p>Buttons, links and filter controls. Everything the user presses.</p>
+  </section>
+
+  <!-- ACTIONS · CTAS & LINKS -->
+  <section class="cmp-section" id="cmp-ctas" aria-label="CTAs and links">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>CTAs &amp; links</h2>
+      <p class="cmp-head-note">Chamber sweep · underline sweep · arrow nudge</p>
+    </div>
+
+    <p class="cmp-sub">Light grounds</p>
+    <div class="cmp-stage">
+      <div class="cmp-row">
+        <a class="primary-cta primary-cta--solid" href="#">
+          <span class="primary-cta-label">Solid · light grounds</span>
+          <span class="primary-cta-arrow" aria-hidden="true"><span class="inline-arrow"></span></span>
+        </a>
+        <a class="secondary-link-cta link-arrow" href="#">Secondary link CTA</a>
+        <a class="link-arrow" href="#">Link arrow</a>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Hover / focus (primary):</span> the lime fill sweeps into the arrow chamber from the left over 0.4s on the house easing curve; the arrow flips to deep green.</li>
+        <li><span class="cmp-event">Hover / focus (secondary link):</span> a green underline sweeps left to right over 0.45s, replacing the resting hairline.</li>
+        <li><span class="cmp-event">Hover / focus (link arrow):</span> the arrow nudges 5px right over 0.35s; no underline.</li>
+      </ul>
+      </details>
+    </div>
+
+    <p class="cmp-sub">Dark grounds</p>
+    <div class="cmp-stage cmp-stage--dark">
+      <div class="cmp-row">
+        <a class="primary-cta" href="#">
+          <span class="primary-cta-label">Default · dark grounds</span>
+          <span class="primary-cta-arrow" aria-hidden="true"><span class="inline-arrow"></span></span>
+        </a>
+        <a class="primary-cta primary-cta--ghost" href="#">
+          <span class="primary-cta-label">Ghost · dark grounds</span>
+          <span class="primary-cta-arrow" aria-hidden="true"><span class="inline-arrow"></span></span>
+        </a>
+        <a class="secondary-link-cta secondary-link-cta--light link-arrow" href="#">Secondary · light variant</a>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes" style="border-left-color: var(--lime)">
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Hover / focus:</span> the default plate sweeps golden yellow; the ghost sweeps white; both flip the arrow to deep green. The light secondary underline fills white from left to right over 0.45s, matching the standard sweep.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACTIONS · STATUS TABS -->
+  <section class="cmp-section" id="cmp-status-tabs" aria-label="Status tabs">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Status tabs</h2>
+      <p class="cmp-head-note">Segmented filter: the active tab fuses with the band below</p>
+    </div>
+
+    <div class="cmp-stage cmp-stage--cream">
+      <div class="status-tabs" role="tablist" aria-label="Demo status filter" id="cmpStatusTabs">
+        <button class="status-tab" type="button" role="tab" aria-selected="false">First <span class="tab-count">(12)</span></button>
+        <button class="status-tab is-active" type="button" role="tab" aria-selected="true">Second <span class="tab-count">(07)</span></button>
+        <button class="status-tab" type="button" role="tab" aria-selected="false">Third <span class="tab-count">(05)</span></button>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Click:</span> the active plate flips white to deep green with lime text instantly; inactive tabs warm on hover, also instantly.</li>
+        <li><span class="cmp-event">Anatomy:</span> each tab pairs its label with a zero-padded count set smaller and lighter; tabs are divided by hairlines inside a hairline frame.</li>
+        <li><span class="cmp-event">In context:</span> the tab row sits flush against a deep green band so the active tab reads as one surface with the filtered content beneath it; switching resets dependent filters and pagination.</li>
+        <li><span class="cmp-event">Responsive:</span> below tablet width the row stretches full width with tabs sharing space equally; on mobile the padding tightens and the counts disappear.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACTIONS · TEXT FILTER -->
+  <section class="cmp-section" id="cmp-text-filter" aria-label="Text filter">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Text filter</h2>
+      <p class="cmp-head-note">Lead-size filter tabs: gold underline marks the active choice</p>
+    </div>
+
+    <div class="cmp-stage">
+      <p class="cmp-sub">Scroll or drag the rows &mdash; switch viewport to see the overflow</p>
+      <div class="cmp-vp-controls" role="group" aria-label="Demo viewport width" data-vp-controls="#cmpFilterViewport">
+        <button class="cmp-vp-btn is-active" type="button" data-vp="desktop" aria-pressed="true">Desktop viewport</button>
+        <button class="cmp-vp-btn" type="button" data-vp="mobile" aria-pressed="false">Mobile viewport &middot; 414px</button>
+      </div>
+      <iframe class="cmp-viewport cmp-viewport--short" id="cmpFilterViewport" src="components-filter-demo.html" title="Text filter demo: resizable viewport"></iframe>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The frame above is a real viewport running the production component inside the wrappers the news archive and portfolio browser put around it. The gold dashed rule marks the content edge, so the row's behaviour at that edge is visible rather than guessed at.</li>
+        <li><span class="cmp-event">Overflow:</span> a set that outgrows its column scrolls horizontally within the row &mdash; the same treatment the service tabs use. Switch to the mobile viewport and drag the six-option row sideways; the three-option row above it fits and stays put.</li>
+        <li><span class="cmp-event">Drag:</span> a row that overflows can be dragged with the pointer, scrubbing 1:1. Touch and trackpads can already flick a scroll container; a mouse cannot, so this exists for mouse users and is skipped entirely on rows that fit.</li>
+        <li><span class="cmp-event">Drag versus click:</span> movement under 5px is still a click and selects the filter. Past that the gesture becomes a drag, the cursor turns to a closed hand, text selection is suppressed, and the click that follows the release is swallowed &mdash; so dragging a row never changes the filter by accident.</li>
+        <li><span class="cmp-event">No scrollbar:</span> the scrollbar is hidden on purpose, so the row reads as text rather than as a control. The options that run past the edge are the affordance: never let the last visible option end flush with the column, or the row looks complete when it is not.</li>
+        <li><span class="cmp-event">Never centre this row.</span> The row must stay left-aligned at every width. Centring an overflowing row overflows it at <em>both</em> ends, pushing the first options past the left edge where scrolling cannot reach them &mdash; and a scroll container cannot rescue what sits before its own origin.</li>
+        <li><span class="cmp-event">Below tablet width:</span> the filter row and the year dropdown stop sitting side by side and stack, the row aligning left and the dropdown stretching to full width.</li>
+        <li><span class="cmp-event">Sizing:</span> at the 402 design width the content column is 354px, which shows roughly three to four short labels before the row starts scrolling. That is a display limit, not a content limit &mdash; the set can run as long as it needs to.</li>
+        <li><span class="cmp-event">Small variant:</span> narrow enough that the portfolio's three-option facet clears mobile without scrolling.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACTIONS · CATEGORY PILLS -->
+  <section class="cmp-section" id="cmp-category-pills" aria-label="Category pills">
+    <div class="cmp-head">
+      <span class="cmp-head-number">04</span>
+      <h2>Category pills</h2>
+      <p class="cmp-head-note">Rounded outline filter on dark grounds: active fills lime</p>
+    </div>
+
+    <div class="cmp-stage cmp-stage--dark">
+      <div class="category-pills" role="group" aria-label="Demo categories" id="cmpCategoryPills">
+        <button class="category-pill is-active" type="button" aria-pressed="true">All</button>
+        <button class="category-pill" type="button" aria-pressed="false">Category one</button>
+        <button class="category-pill" type="button" aria-pressed="false">Category two</button>
+        <button class="category-pill" type="button" aria-pressed="false">Category three</button>
+        <button class="category-pill" type="button" aria-pressed="false">Category four</button>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes" style="border-left-color: var(--lime)">
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Click:</span> toggles the pill on or off instantly; active pills fill lime with deep green text, and any number can be active at once.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Hover:</span> inactive pills brighten; both outline and text step up towards white.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Anatomy:</span> fully rounded (the only rounded element in the system), with small labels, tight gaps, wrapping to as many rows as needed.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Rule of use:</span> the dark-ground category facet in a filter stack: status tabs pick the primary set and category pills refine it by any combination; changing any facet re-filters and resets pagination.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACTIONS · DROPDOWN SELECT -->
+  <section class="cmp-section" id="cmp-dropdown" aria-label="Dropdown select">
+    <div class="cmp-head">
+      <span class="cmp-head-number">05</span>
+      <h2>Dropdown select</h2>
+      <p class="cmp-head-note">Custom select: trigger with a floating options panel</p>
+    </div>
+
+    <p class="cmp-sub">Standard and wide on light grounds; the panel always matches the trigger width</p>
+    <div class="cmp-stage" style="min-height: 260px;">
+      <div class="cmp-row" style="align-items: flex-start;">
+      <div class="year-select" data-open="false" id="cmpSelectLight">
+        <span class="year-select-label" id="cmpSelectLightLabel">Filter label</span>
+        <button class="year-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="cmpSelectLightLabel cmpSelectLightValue">
+          <span id="cmpSelectLightValue">All options</span>
+          <span class="year-select-chevron" aria-hidden="true"></span>
+        </button>
+        <ul class="year-select-panel" role="listbox" aria-label="Demo filter" id="cmpSelectLightPanel">
+          <li class="year-option" role="option" tabindex="-1" data-value="all" aria-selected="true">All options</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="a" aria-selected="false">Option one</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="b" aria-selected="false">Option two</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="c" aria-selected="false">Option three</li>
+        </ul>
+      </div>
+
+      <div class="year-select" data-open="false" id="cmpSelectWide">
+        <span class="year-select-label" id="cmpSelectWideLabel">Wider trigger</span>
+        <button class="year-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="cmpSelectWideLabel cmpSelectWideValue">
+          <span id="cmpSelectWideValue">A longer default value</span>
+          <span class="year-select-chevron" aria-hidden="true"></span>
+        </button>
+        <ul class="year-select-panel" role="listbox" aria-label="Demo wide filter" id="cmpSelectWidePanel">
+          <li class="year-option" role="option" tabindex="-1" data-value="all" aria-selected="true">A longer default value</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="a" aria-selected="false">Second choice</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="b" aria-selected="false">Third choice</li>
+        </ul>
+      </div>
+      </div>
+    </div>
+
+    <p class="cmp-sub">Light variant on dark grounds</p>
+    <div class="cmp-stage cmp-stage--dark" style="min-height: 260px;">
+      <div class="year-select year-select--light" data-open="false" id="cmpSelectDark">
+        <span class="year-select-label" id="cmpSelectDarkLabel">Filter label</span>
+        <button class="year-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="cmpSelectDarkLabel cmpSelectDarkValue">
+          <span id="cmpSelectDarkValue">All options</span>
+          <span class="year-select-chevron" aria-hidden="true"></span>
+        </button>
+        <ul class="year-select-panel" role="listbox" aria-label="Demo filter" id="cmpSelectDarkPanel">
+          <li class="year-option" role="option" tabindex="-1" data-value="all" aria-selected="true">All options</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="a" aria-selected="false">Option one</li>
+          <li class="year-option" role="option" tabindex="-1" data-value="b" aria-selected="false">Option two</li>
+        </ul>
+      </div>
+    </div>
+
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Click trigger:</span> the options panel slides down from behind the trigger over 0.25s on the house easing curve; the chevron flips in step and the options cascade in with a slight stagger.</li>
+        <li><span class="cmp-event">Click option:</span> the value swaps, the active row takes a gold rule and deep green ink, the panel closes and focus returns to the trigger.</li>
+        <li><span class="cmp-event">Outside click / Escape:</span> both close the panel; Escape also restores focus to the trigger.</li>
+        <li><span class="cmp-event">Width rule:</span> the options panel always matches the trigger width, however wide the trigger runs.</li>
+        <li><span class="cmp-event">Variants:</span> the options panel is always light, even on dark grounds; the light variant re-inks only the label and trigger, whose underline brightens to white on hover.</li>
+        <li>In stacked mobile filter bars the trigger stretches full width with the panel opening edge-to-edge beneath it.</li>
+      </ul>
+      </details>
+  </section>
+
+
+
+
+
+
+  </main>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+  <script>
+    /* Status tabs demo: one active per group */
+    document.querySelector("#cmpStatusTabs").addEventListener("click", e => {
+      const btn = e.target.closest(".status-tab");
+      if (!btn) return;
+      document.querySelectorAll("#cmpStatusTabs .status-tab").forEach(t => {
+        t.classList.toggle("is-active", t === btn);
+        t.setAttribute("aria-selected", String(t === btn));
+      });
+    });
+
+    /* Category pills demo: multi-select, checkbox behaviour */
+    document.querySelector("#cmpCategoryPills").addEventListener("click", e => {
+      const btn = e.target.closest(".category-pill");
+      if (!btn) return;
+      const on = btn.classList.toggle("is-active");
+      btn.setAttribute("aria-pressed", String(on));
+    });
+
+    /* Dropdown select demos: the standard binding pattern */
+    function cmpBindSelect(rootId) {
+      const root = document.querySelector("#" + rootId);
+      const trigger = root.querySelector(".year-select-trigger");
+      const value = root.querySelector(".year-select-trigger span:first-child");
+      const options = [...root.querySelectorAll(".year-option")];
+
+      const close = () => { root.dataset.open = "false"; trigger.setAttribute("aria-expanded", "false"); };
+
+      trigger.addEventListener("click", () => {
+        const open = root.dataset.open === "true";
+        root.dataset.open = String(!open);
+        trigger.setAttribute("aria-expanded", String(!open));
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener("click", () => {
+          value.textContent = opt.textContent.trim();
+          options.forEach(o => o.setAttribute("aria-selected", String(o === opt)));
+          close();
+          trigger.focus();
+        });
+      });
+
+      document.addEventListener("pointerdown", e => { if (!root.contains(e.target)) close(); });
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape" && root.dataset.open === "true") { close(); trigger.focus(); }
+      });
+    }
+
+    cmpBindSelect("cmpSelectLight");
+    cmpBindSelect("cmpSelectWide");
+    cmpBindSelect("cmpSelectDark");
+
+  </script>
+
+</body>
+</html>

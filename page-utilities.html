@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Page utilities</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Library components: page utilities. Each stage is the production component.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Page utilities</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Component library</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · PAGE UTILITIES ═══ -->
+  <section class="cmp-category" aria-label="Category: Page utilities">
+    <p class="eyebrow">Category</p>
+    <h2>Page utilities</h2>
+    <p>Small page-level furniture that supports orientation and flow.</p>
+  </section>
+
+  <!-- PAGE UTILITIES · BREADCRUMB -->
+  <section class="cmp-section" id="cmp-breadcrumb" aria-label="Breadcrumb">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Breadcrumb</h2>
+      <p class="cmp-head-note">Page trail: sits directly beneath the page hero</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Parent section</a></li>
+          <li><span aria-current="page">Current page</span></li>
+        </ol>
+      </nav>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Structure:</span> a trail of ancestor links ending in the current page, which is plain text and never a link. The interpunct separators are part of the design, not typed content.</li>
+        <li><span class="cmp-event">Hover / focus:</span> ancestor links darken from grey to deep green instantly; the current page sits in deep green permanently.</li>
+        <li><span class="cmp-event">Placement:</span> a full-width cream band directly beneath the page hero on core pages, with the standard page gutters.</li>
+        <li>Set small, with even breathing room around each separator.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+
+  </main>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Chrome</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Library components: chrome. Each stage is the production component.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Chrome</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Component library</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · CHROME ═══ -->
+  <section class="cmp-category" aria-label="Category: Chrome">
+    <p class="eyebrow">Category</p>
+    <h2>Chrome</h2>
+    <p>The shared page shell. One source, identical on every page.</p>
+  </section>
+
+  <!-- CHROME · SITE NAVIGATION -->
+  <section class="cmp-section" id="cmp-nav" aria-label="Site navigation">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Site navigation</h2>
+      <p class="cmp-head-note">Sticky reveal + mega menu: contained viewport below</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <div class="cmp-vp-controls" role="group" aria-label="Demo viewport width" data-vp-controls="#cmpNavViewport">
+        <button class="cmp-vp-btn is-active" type="button" data-vp="desktop" aria-pressed="true">Desktop viewport</button>
+        <button class="cmp-vp-btn" type="button" data-vp="mobile" aria-pressed="false">Mobile viewport · 414px</button>
+      </div>
+      <iframe class="cmp-viewport" id="cmpNavViewport" src="components-nav-demo.html" title="Site navigation demo: scrollable viewport"></iframe>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The frame above is a real viewport running the production header. Scroll inside it, and hover a nav item at the top to open the mega menu.</li>
+        <li><span class="cmp-event">At top:</span> the header is transparent over the hero, with white text and an inverted logo.</li>
+        <li><span class="cmp-event">Scroll down past 92px:</span> the header slides away upward over 0.42s on the house easing curve.</li>
+        <li><span class="cmp-event">Scroll up:</span> any upward scroll brings the header back as a fixed solid white bar with dark ink, the logo un-inverted and the CTA in its solid deep green form. Back at the very top it reattaches and turns transparent again.</li>
+        <li><span class="cmp-event">Nav links:</span> hover or focus draws a thin underline from the left over 0.3s; leaving retracts it to the right.</li>
+      </ul>
+      </details>
+
+      <p class="cmp-sub" style="margin-top: var(--space-lg);">Mobile navigation: switch to the 414px viewport above</p>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">The bar (mobile):</span> drops to 72px tall and keeps three elements: logo, a slimmed Sales &amp; Leasing plate, and the burger. Search moves into the menu panel.</li>
+        <li><span class="cmp-event">Burger:</span> three hairlines with the middle one shorter; hover extends it to full width. Open crosses the outer pair and retires the middle line.</li>
+        <li><span class="cmp-event">Tap burger:</span> a full-screen white panel slides down from the top over 0.55s; the section rows cascade in as the sheet lands, the bar fuses with it and page scrolling locks.</li>
+        <li><span class="cmp-event">Tap a section:</span> the five-row list sweeps left and fades as the child links cascade in from the right with a Back row and the section title. Back reverses; closing the panel resets to the top level.</li>
+        <li><span class="cmp-event">Utility foot:</span> a full-width Search row above Contact Us and the language toggle. The active language reads by weight, not underline.</li>
+        <li><span class="cmp-event">Escape:</span> closes the panel and returns focus to the burger.</li>
+      </ul>
+      </details>
+
+      <p class="cmp-sub" style="margin-top: var(--space-lg);">Mega menu: hover a nav item in the desktop viewport</p>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Open (hover / focus / click a nav item):</span> the panel fades in and drops 10px into place over roughly a third of a second. The header turns solid while open, and the open item keeps its underline.</li>
+        <li><span class="cmp-event">Moving between items:</span> repopulates the panel in place, with no close-and-reopen flicker.</li>
+        <li><span class="cmp-event">Layout:</span> four columns: overview (kicker, title, description), two numbered link lists split evenly, and a feature card with image, title and a read-the-story link. A utility row beneath carries Contact Us and the language toggle.</li>
+        <li><span class="cmp-event">Link rows:</span> hover or focus shifts the row slightly right, inks it green and fades in a green arrow. Numerals are set in the serif italic.</li>
+        <li><span class="cmp-event">Feature card:</span> the image zooms gently over 0.7s; the link underline darkens to green.</li>
+        <li><span class="cmp-event">Close:</span> a moment after the pointer leaves the header (brushing past never flickers it); immediately on an outside click; Escape closes and returns focus to the triggering item.</li>
+        <li>Below desktop width the mega menu does not exist; navigation moves to the mobile panel above.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+
+  <!-- CHROME · FOOTER -->
+  <section class="cmp-section" id="cmp-footer" aria-label="Footer">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Footer</h2>
+      <p class="cmp-head-note">Global footer: one source, identical on every page</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <div data-component="site-footer"></div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>One shared footer, identical on every page; the sitemap is maintained in a single place.</li>
+        <li><span class="cmp-event">Layout:</span> six equal columns on the deep green ground: five navigation groups mirroring the main menu, plus a contact column with address, phone and email. The bottom row holds the inverted wordmark, centred legal links and the social icons.</li>
+        <li><span class="cmp-event">Hover (social):</span> icons lift 2px over 0.25s. Navigation links rest at a softened white.</li>
+        <li><span class="cmp-event">Responsive:</span> the navigation grid steps from six columns to three, then two on mobile; the bottom row stacks and centres: the wordmark grows to three-quarters of the column, the legal row tightens, and the footer gains extra bottom padding.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- CHROME · HERO PARALLAX -->
+  <section class="cmp-section" id="cmp-hero-parallax" aria-label="Hero parallax">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Hero parallax</h2>
+      <p class="cmp-head-note">Scroll-linked exit: the hero lags at half speed and darkens as it goes</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <div class="cmp-vp-controls" role="group" aria-label="Demo viewport width" data-vp-controls="#cmpHeroViewport">
+        <button class="cmp-vp-btn is-active" type="button" data-vp="desktop" aria-pressed="true">Desktop viewport</button>
+        <button class="cmp-vp-btn" type="button" data-vp="mobile" aria-pressed="false">Mobile viewport &middot; 414px</button>
+      </div>
+      <iframe class="cmp-viewport" id="cmpHeroViewport" src="components-hero-demo.html" title="Hero parallax demo: scrollable viewport"></iframe>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The frame above is a real viewport. The lockup and video are placeholder copy and the poster frame &mdash; the scroll behaviour is the component. Scroll inside the frame to watch the hero fall behind and darken; scroll back slowly to watch it re-emerge.</li>
+        <li><span class="cmp-event">The lag:</span> on every frame the hero is translated down by half the scroll &mdash; <code>translateY(scrollY &times; 0.5)</code> &mdash; so it gives up only half of each scrolled pixel and the content after it slides up and <em>over</em> it rather than pushing it away. The hero sits at <code>z-index: 0</code> with <code>will-change: transform</code>; a sibling rule (<code>.hero ~ section, .hero ~ div</code>) lifts everything after it to <code>z-index: 1</code> so the overlap resolves the right way.</li>
+        <li><span class="cmp-event">The darkening:</span> a <code>.hero-scrim</code> layer &mdash; a gradient from solid <code>#05191d</code> at the foot to 75&percnt; at the top &mdash; fades from 0 towards an <strong>0.8 ceiling</strong>. Progress is <code>scrollY / heroHeight</code> clamped 0&ndash;1, so the scrim lands at 0.8 exactly as the hero's foot clears the viewport. It sits at <code>z-index: 3</code>, above the hero's own static scrims.</li>
+        <li><span class="cmp-event">Two kinds of scrim:</span> the hero's <code>::after</code> gradients (top for nav legibility, foot for the lockup) are static and always present; the darkening scrim is a separate layer that only exists while the effect is bound. Don't merge them.</li>
+        <li><span class="cmp-event">Injection:</span> the scrim is created and appended by the script, never authored in markup &mdash; the hero's markup contract stays clean and the effect is removable by deleting the script alone.</li>
+        <li><span class="cmp-event">Listener:</span> one passive scroll listener throttled through <code>requestAnimationFrame</code> &mdash; the handler sets a flag, the frame callback clears it, and layout reads (<code>offsetHeight</code>, <code>scrollY</code>) happen only inside the frame.</li>
+        <li><span class="cmp-event">Reduced motion:</span> the listener never binds &mdash; the hero scrolls away normally and the darkening scrim stays at opacity 0. This is checked once at load, not per frame.</li>
+        <li><span class="cmp-event">Source:</span> index.html, verbatim &mdash; the production hero runs a looping video behind the same layers. Currently the home page only; a second parallax hero is the trigger to promote the script into <code>scripts/components.js</code> beside <code>ccgParallax()</code>.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+
+  </main>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+</body>
+</html>

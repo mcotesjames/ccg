@@ -1,0 +1,498 @@
+/* =============================================================
+   COMPONENT GUIDE — SHARED CHROME
+   =============================================================
+   The gallery shell used by every guide page: components.html
+   (the library) and the modules-*.html satellites (page-specific
+   modules, one per site section). Loads after system.css and
+   components.css.
+
+   Every stage renders the REAL components from components.css/.js;
+   interactions are live, so the guide cannot drift from the build.
+   Styles that support one page's demos only stay in that page's
+   own <style> block, not here. */
+
+/* content sits in the design-width container so fixed-px
+   components (mega grid etc.) render at their intended values */
+.cmp-main {
+  max-width: 1512px;
+  margin: 0 auto;
+}
+
+/* aside menu: toggled overlay, never squeezes the content */
+.cmp-aside {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 95;
+  width: 260px;
+  overflow-y: auto;
+  padding: 72px var(--space-card) var(--space-lg);
+  background: var(--green-dark);
+  color: var(--ink-inverse);
+  transform: translateX(-100%);
+  transition: transform .4s cubic-bezier(.22,.61,.36,1);
+  box-shadow: 0 0 40px rgba(0, 20, 16, .35);
+}
+
+.cmp-aside.is-open {
+  transform: translateX(0);
+}
+
+.cmp-menu-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 96;
+  appearance: none;
+  padding: 12px 20px;
+  border: 1px solid rgba(255,255,255,.3);
+  background: var(--green-dark);
+  color: var(--lime);
+  font-family: inherit;
+  font-size: var(--text-caption);
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0, 20, 16, .3);
+  transition: background-color .25s ease;
+}
+
+.cmp-menu-toggle:hover {
+  background: var(--green);
+}
+
+.cmp-aside-title {
+  margin: 0 0 var(--space-2xs);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.cmp-aside-meta {
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--ink-inverse-muted);
+}
+
+.cmp-aside-label {
+  margin: var(--space-md) 0 var(--space-xs);
+  padding-bottom: var(--space-2xs);
+  border-bottom: 1px solid var(--line-dark);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--lime);
+}
+
+.cmp-aside a {
+  display: block;
+  padding: 5px 0;
+  color: var(--ink-inverse-soft);
+  font-size: 13px;
+  line-height: 18px;
+  transition: color .2s ease, padding-left .25s ease;
+}
+
+.cmp-aside a:hover {
+  color: var(--ink-inverse);
+  padding-left: 6px;
+}
+
+.cmp-aside a.is-active {
+  color: var(--lime);
+  border-left: 2px solid var(--lime);
+  padding-left: 10px;
+}
+
+/* page entries are disclosures: the summary names the guide page
+   and toggles it open; the component links inside do the actual
+   navigating. The whole tree is injected by scripts/guide.js. */
+.cmp-aside-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  padding: 5px 0;
+  color: var(--ink-inverse-soft);
+  font-size: 13px;
+  line-height: 18px;
+  cursor: pointer;
+  list-style: none;
+  transition: color .2s ease;
+}
+
+.cmp-aside-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.cmp-aside-item summary::after {
+  content: "▾";
+  font-size: 10px;
+  transition: transform .25s ease;
+}
+
+.cmp-aside-item[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+.cmp-aside-item summary:hover {
+  color: var(--ink-inverse);
+}
+
+.cmp-aside-item summary.is-active {
+  color: var(--lime);
+}
+
+.cmp-aside-item nav {
+  margin: 2px 0 8px;
+  padding-left: 12px;
+  border-left: 1px solid var(--line-dark);
+}
+
+/* category band: announces the group; sections beneath
+   belong to it until the next band */
+.cmp-category {
+  padding: var(--space-lg) var(--page-pad);
+  background: var(--green-dark);
+  color: var(--ink-inverse);
+}
+
+.cmp-category .eyebrow {
+  margin: 0 0 var(--space-2xs);
+  color: var(--lime);
+  font-size: var(--text-caption);
+}
+
+.cmp-category h2 {
+  margin: 0;
+  font-size: var(--text-h4);
+  line-height: var(--leading-h4);
+  font-weight: 400;
+}
+
+.cmp-category p {
+  margin: var(--space-xs) 0 0;
+  max-width: 640px;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--ink-inverse-soft);
+}
+
+/* a category band may route to another guide page (the page-module
+   satellites); links pick up the aside's link treatment */
+.cmp-category a {
+  color: var(--lime);
+}
+
+.cmp-section {
+  padding: var(--space-section-compact) var(--page-pad);
+  background: #fff;
+}
+
+.cmp-section + .cmp-section {
+  border-top: 1px solid var(--line);
+}
+
+.cmp-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-lg);
+}
+
+.cmp-head-number {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: var(--text-h5);
+  line-height: var(--leading-h5);
+  color: var(--ccg-ground-yellow);
+  font-variant-numeric: tabular-nums;
+}
+
+.cmp-head h2 {
+  margin: 0;
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  font-weight: 400;
+  color: var(--green-dark);
+}
+
+.cmp-head-note {
+  margin: 0 0 0 auto;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--grey);
+}
+
+/* the live rendering area */
+.cmp-stage {
+  padding: var(--space-xl);
+  border: 1px dashed var(--line);
+}
+
+.cmp-stage--dark {
+  background: var(--green-dark);
+  border: 0;
+}
+
+.cmp-stage--cream {
+  background: var(--cream);
+  border: 0;
+}
+
+.cmp-stage + .cmp-stage {
+  margin-top: var(--space-md);
+}
+
+.cmp-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.cmp-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+/* notes fold away behind a quiet summary */
+.cmp-notes-wrap {
+  margin-top: var(--space-md);
+}
+
+.cmp-notes-wrap summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--green);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+  list-style: none;
+}
+
+.cmp-notes-wrap summary::-webkit-details-marker {
+  display: none;
+}
+
+.cmp-notes-wrap summary::after {
+  content: "▾";
+  transition: transform .3s cubic-bezier(.22,.61,.36,1);
+}
+
+.cmp-notes-wrap[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.cmp-notes-wrap[open] summary {
+  color: var(--green-dark);
+  border-bottom-color: var(--green-dark);
+}
+
+.cmp-stage--dark .cmp-notes-wrap summary,
+.cmp-impact-stage .cmp-notes-wrap summary {
+  color: var(--lime);
+  border-bottom-color: var(--line-dark);
+}
+
+.cmp-notes-wrap .cmp-notes {
+  margin-top: var(--space-sm);
+}
+
+/* interaction spec: what the developer must reproduce */
+.cmp-notes {
+  margin: var(--space-md) 0 0;
+  padding: 0 0 0 var(--space-md);
+  border-left: 2px solid var(--ccg-gold);
+  list-style: none;
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.cmp-notes li {
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--ink);
+}
+
+.cmp-notes .cmp-event {
+  color: var(--green);
+}
+
+.cmp-sub {
+  margin: var(--space-xl) 0 var(--space-md);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--green);
+}
+
+.cmp-sub:first-of-type {
+  margin-top: 0;
+}
+
+/* contained viewport for viewport-bound components (sticky nav) */
+.cmp-viewport {
+  display: block;
+  width: 100%;
+  height: 620px;
+  border: 1px solid var(--line);
+  background: #fff;
+  transition: width .4s cubic-bezier(.22,.61,.36,1);
+}
+
+.cmp-viewport--mobile {
+  width: 414px;
+  height: 740px;
+}
+
+/* short frame: components whose demo is a row or two, not a
+   whole scrolling page */
+.cmp-viewport--short,
+.cmp-viewport--short.cmp-viewport--mobile {
+  height: 520px;
+}
+
+/* viewport switcher: deliberately loud so it can't be missed */
+.cmp-vp-controls {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.cmp-vp-btn {
+  appearance: none;
+  padding: 12px 20px;
+  border: 1px solid var(--green-dark);
+  background: #fff;
+  color: var(--green-dark);
+  font-family: inherit;
+  font-size: var(--text-small);
+  cursor: pointer;
+}
+
+.cmp-vp-btn:hover:not(.is-active) {
+  background: var(--cream);
+}
+
+.cmp-vp-btn.is-active {
+  background: var(--green-dark);
+  color: var(--lime);
+}
+
+/* ---------------------------------------------
+   VARIANT ROW: a card family shares one stage,
+   one card per setting, each named above it.
+   Cards are shown at the 364px design width the
+   three-up grids resolve to.
+--------------------------------------------- */
+
+.cmp-variants {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-xl) var(--space-lg);
+}
+
+.cmp-variant {
+  width: 364px;
+  max-width: 100%;
+}
+
+/* cards that take their width from the page grid */
+.cmp-variant > .more-card,
+.cmp-variant > .business-card {
+  width: 100%;
+}
+
+.cmp-variant-label {
+  margin: 0 0 var(--space-sm);
+  padding-bottom: var(--space-2xs);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--green);
+}
+
+/* full-bleed stage: a module that carries its own page
+   gutters renders at the true 1384 content width, not
+   inset again inside the section's own padding */
+.cmp-stage--bleed {
+  margin-left: calc(var(--page-pad) * -1);
+  margin-right: calc(var(--page-pad) * -1);
+  padding-left: var(--page-pad);
+  padding-right: var(--page-pad);
+  border: 0;
+}
+
+/* section-header self-pads to the page gutter, so inside any
+   stage that already supplies one the two double up and the
+   header sits inset from the module below it.
+   Zero the inline padding only: the component keeps its own
+   bottom padding and its ≤680 step. (property-services.html
+   clears all four sides here, then has to restate the
+   mobile step it just blocked.) */
+.cmp-stage--bleed .section-header,
+.cmp-stage--dark .section-header {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* cover header */
+.cmp-cover {
+  padding: var(--space-section-standard) var(--page-pad);
+  background: var(--green-dark);
+  color: var(--ink-inverse);
+  position: relative;
+  overflow: hidden;
+}
+
+.cmp-cover-mark {
+  position: absolute;
+  right: -80px;
+  bottom: -120px;
+  width: 560px;
+  height: 436px;
+  background: var(--green);
+  -webkit-mask: var(--hearts-mask) center / contain no-repeat;
+  mask: var(--hearts-mask) center / contain no-repeat;
+}
+
+.cmp-cover .eyebrow {
+  margin: 0 0 var(--space-md);
+  color: var(--ink-inverse-soft);
+}
+
+.cmp-cover h1 {
+  position: relative;
+  margin: 0 0 var(--space-lg);
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  font-weight: 400;
+}
+
+.cmp-cover-meta {
+  position: relative;
+  display: flex;
+  gap: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--line-dark);
+  max-width: 780px;
+}
+
+.cmp-cover-meta div p:first-child {
+  margin: 0 0 var(--space-2xs);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--ink-inverse-muted);
+}
+
+.cmp-cover-meta div p:last-child {
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--ink-inverse);
+}

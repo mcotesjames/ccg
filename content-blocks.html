@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Content blocks</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Library components: content blocks. Each stage is the production component.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Content blocks</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Component library</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · CONTENT BLOCKS ═══ -->
+  <section class="cmp-category" aria-label="Category: Content blocks">
+    <p class="eyebrow">Category</p>
+    <h2>Content blocks</h2>
+    <p>General page-building modules: figures, rows and editorial splits.</p>
+  </section>
+
+  <!-- CONTENT BLOCKS · STAT CELL -->
+  <section class="cmp-section" id="cmp-stat-cell" aria-label="Stat cell">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Stat cell</h2>
+      <p class="cmp-head-note">Key figures: numbers count up on scroll</p>
+    </div>
+
+    <div class="cmp-stage">
+      <div class="portfolio-stats-grid" style="grid-template-columns: 346px;">
+        <div class="pstat">
+          <span class="pstat-icon" aria-hidden="true">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 15L15 5l11 10M8 12.5V26h14V12.5M13 26v-7h4v7"/></svg>
+          </span>
+          <p class="pstat-number"><span data-count="2.8" data-decimals="1">0</span>M<span class="pstat-unit">sq ft</span></p>
+          <p class="pstat-label">One-line label describing the figure at small size</p>
+        </div>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Count-up:</span> the figure animates from zero to its value the first time the cell scrolls into view, once only; decimal figures animate with their precision. With reduced motion enabled the final value shows immediately.</li>
+        <li><span class="cmp-event">Anatomy:</span> a small green line-drawn icon, the number at a large display scale in tabular numerals with its unit dropping to its own line below in green, and a one-line grey label held to a readable measure.</li>
+        <li><span class="cmp-event">Framing:</span> cells sit in a hairline grid where the outer frame and inner dividers never double up.</li>
+        <li><span class="cmp-event">Grids:</span> three columns as standard, or a centred four-up row; both step to two columns on tablet and pairs on mobile.</li>
+        <li>The number runs at a deliberate display scale that sits outside the standard type ramp.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- CONTENT BLOCKS · ACCORDION -->
+  <section class="cmp-section" id="cmp-accordion" aria-label="Accordion">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Accordion</h2>
+      <p class="cmp-head-note">Ruled disclosure list &middot; native, no JavaScript</p>
+    </div>
+
+    <p class="cmp-sub">Settings</p>
+    <div class="cmp-stage cmp-stage--cream">
+      <div style="max-width: 1000px; margin: 0 auto;">
+
+        <details class="faq-item" open>
+          <summary class="faq-question">
+            A question, shown open &mdash; the first item ships expanded
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">The answer sits beneath the question in grey at a relaxed reading rhythm, indented from the question and held to a 780px measure however wide the column runs.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">
+            A closed question
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">Opening this one does not close the one above &mdash; any number of items can be open at once.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">
+            A question long enough to wrap onto a second line, showing how the row holds its toggle at the far right whatever the question does
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">The toggle is pushed to the right edge and centred against the question block, so a one-line and a three-line question both read correctly.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">
+            The last question, which carries the closing rule
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">Each item draws a hairline above itself and the last draws one below, so the set reads as a ruled stack rather than a row of separate panels.</p>
+        </details>
+
+        <div class="faq-footer">
+          <p class="faq-footer-note">An optional closing row</p>
+          <a class="secondary-link-cta link-arrow" href="#">Route onward</a>
+        </div>
+
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">No JavaScript.</span> This is a native <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code> pair. Open and close, keyboard operation, and the screen-reader announcement all come from the browser &mdash; there is nothing to bind and nothing to initialise. Do not reimplement it with a click handler.</li>
+        <li><span class="cmp-event">Open / close:</span> the panel snaps; there is no height animation. Native disclosure cannot animate its own height, and no attempt is made to fake one. Only the toggle animates.</li>
+        <li><span class="cmp-event">The toggle:</span> a 32px hairline square carrying a plus drawn from two 1px bars. Opening fills it deep green with a white plus, and the vertical bar rotates flat over 0.3s on the house easing curve, leaving a minus. The square is decorative and hidden from assistive tech &mdash; the summary already announces its own state.</li>
+        <li><span class="cmp-event">Hover:</span> the question moves from deep green to green over 0.25s. The whole summary row is the target, not just the words.</li>
+        <li><span class="cmp-event">Several open at once:</span> the native default is kept &mdash; opening one item never closes another. There is no single-open variant, so do not assume one.</li>
+        <li><span class="cmp-event">Opening state:</span> the first item ships open, so the block never presents as a wall of closed rows.</li>
+        <li><span class="cmp-event">Anatomy:</span> a hairline above every item and one below the last. The question runs at lead size with the toggle pushed to the right edge and centred against the row; the answer is grey, indented 24px and capped at 780px. On mobile that indent goes and the answer sits flush.</li>
+        <li><span class="cmp-event">Closing row:</span> optional, and not part of the accordion &mdash; a note left, a secondary link CTA right, wrapping when the pair will not fit. Both current uses route the reader on rather than leaving them at a dead end.</li>
+        <li><span class="cmp-event">Keyboard:</span> the summary is focusable by default and toggles on Enter or Space. The default marker is suppressed for WebKit, which is what lets the custom toggle stand in for it.</li>
+        <li><span class="cmp-event">Where the code lives:</span> <code>components.css</code>, under ACCORDION. The pages supply only the section band around it &mdash; its padding and its ground, which is cream on the contact page and white on the internship page.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+
+  </main>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Forms</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Library components: forms. Each stage is the production component.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Forms</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Component library</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · FORMS ═══ -->
+  <section class="cmp-category" aria-label="Category: Forms">
+    <p class="eyebrow">Category</p>
+    <h2>Forms</h2>
+    <p>Every input style and behaviour on the site, all of it currently living on the contact page. The house treatment is the underline: no boxes, no fills, no rounded corners &mdash; a control is a caption label over a line, and the line darkens as you approach it.</p>
+  </section>
+
+  <!-- FORMS · TEXT FIELDS -->
+  <section class="cmp-section" id="cmp-form-text" aria-label="Text fields">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Text fields</h2>
+      <p class="cmp-head-note">Caption label over an underline &middot; single line, multi-line, hint</p>
+    </div>
+
+    <p class="cmp-sub">Settings</p>
+    <div class="cmp-stage">
+      <form class="enquiry-form" style="max-width: 872px;" novalidate onsubmit="return false;">
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" for="cmpFirstName">Single line &mdash; empty</label>
+            <input class="field-input" id="cmpFirstName" type="text" placeholder="Placeholder text" autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="cmpLastName">Single line &mdash; filled</label>
+            <input class="field-input" id="cmpLastName" type="text" value="Entered value" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="cmpEmail">With a hint beneath</label>
+          <input class="field-input" id="cmpEmail" type="email" placeholder="name@example.com" autocomplete="off">
+          <p class="field-hint">A caption-size line under the control, for guidance rather than errors.</p>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="cmpMessage">Multi-line</label>
+          <textarea class="field-textarea" id="cmpMessage" placeholder="Placeholder text"></textarea>
+        </div>
+
+      </form>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Anatomy:</span> a caption-size grey label above the control, and the control itself stripped to a single hairline underneath. No border, no background, no radius &mdash; text sits directly on the page and the line does the work.</li>
+        <li><span class="cmp-event">Hover and focus:</span> the underline darkens from hairline grey to deep green over 0.25s. Focus and hover look identical, and the browser's own focus ring is suppressed &mdash; the line <em>is</em> the focus indicator.</li>
+        <li><span class="cmp-event">Placeholder:</span> set in sage, a step lighter than entered text, so a filled field and an empty one are told apart by colour as well as content.</li>
+        <li><span class="cmp-event">Multi-line:</span> the same control with a 120px floor. It resizes vertically only &mdash; horizontal resize would break the column.</li>
+        <li><span class="cmp-event">Hint:</span> caption size in grey, under the control. This is guidance, not validation &mdash; there is no error style in the system yet.</li>
+        <li><span class="cmp-event">Layout:</span> fields stack in a single column at a 32px rhythm. Pairs that belong together share a two-up row, which collapses to one column on mobile.</li>
+        <li><span class="cmp-event">Type attributes carry the weight:</span> <code>type="email"</code>, <code>type="tel"</code> and the matching <code>autocomplete</code> values are what give the right mobile keyboard and let a browser fill the form. They are part of the spec, not optional extras.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- FORMS · SELECT FIELD -->
+  <section class="cmp-section" id="cmp-form-select" aria-label="Select field">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Select field</h2>
+      <p class="cmp-head-note">Custom listbox: a field-width panel, gold marks the choice</p>
+    </div>
+
+    <p class="cmp-sub">Settings</p>
+    <div class="cmp-stage">
+      <div class="enquiry-form" style="max-width: 424px;">
+        <div class="field">
+          <span class="field-label" id="cmpTypeLabel">Enquiry type</span>
+
+          <div class="type-select" data-open="false" id="cmpTypeSelect">
+            <button class="type-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="cmpTypeLabel cmpTypeValue">
+              <span id="cmpTypeValue">First option</span>
+              <span class="type-select-chevron" aria-hidden="true"></span>
+            </button>
+            <ul class="type-select-panel" role="listbox" aria-label="Demo select" id="cmpTypePanel">
+              <li class="type-option" role="option" tabindex="-1" data-value="one" aria-selected="true">First option</li>
+              <li class="type-option" role="option" tabindex="-1" data-value="two" aria-selected="false">Second option</li>
+              <li class="type-option" role="option" tabindex="-1" data-value="three" aria-selected="false">Third option</li>
+              <li class="type-option" role="option" tabindex="-1" data-value="four" aria-selected="false">A fourth, longer option</li>
+              <li class="type-option" role="option" tabindex="-1" data-value="five" aria-selected="false">Fifth option</li>
+            </ul>
+          </div>
+
+          <p class="field-hint">Choosing an option can drive the rest of the page, not just the field.</p>
+        </div>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Resting:</span> reads exactly like a text field &mdash; caption label, current value, hairline underline &mdash; with a chevron pushed to the right edge.</li>
+        <li><span class="cmp-event">Open:</span> the chevron flips from down to up over 0.25s and a white panel drops from the underline, fading and sliding 6px into place over 0.2s. The panel spans the full width of the field, which is what separates this from the archive dropdown, where the panel is only as wide as its content.</li>
+        <li><span class="cmp-event">Options:</span> resting grey; hover or focus fills cream and inks deep green; the current choice keeps deep green ink and a 2px gold bar down its left edge. Past five or six options the panel caps at 264px and scrolls.</li>
+        <li><span class="cmp-event">Choose:</span> writes the label into the trigger, moves the gold bar, closes the panel and returns focus to the trigger.</li>
+        <li><span class="cmp-event">Close:</span> a click outside, or Escape &mdash; which also returns focus to the trigger.</li>
+        <li><span class="cmp-event">Beyond the field:</span> on the contact page the choice also rewrites the routing panel beside the form, so the reader sees the right team and address before they finish writing. Treat the select as a page control, not just an input.</li>
+        <li><span class="cmp-event">Keyboard gap:</span> the trigger and Escape work, but the panel has no arrow-key navigation, no Home or End, and no type-ahead. Options carry <code>role="option"</code> and <code>tabindex="-1"</code>, so the roles promise a listbox the keyboard does not yet deliver. The same gap exists on the archive dropdown.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- FORMS · CHOICE CONTROLS -->
+  <section class="cmp-section" id="cmp-form-choice" aria-label="Choice controls">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Choice controls</h2>
+      <p class="cmp-head-note">Round native radios, square custom checkboxes</p>
+    </div>
+
+    <p class="cmp-sub">Settings</p>
+    <div class="cmp-stage">
+      <div class="form-declarations" style="max-width: 872px;">
+
+        <div class="declaration-row">
+          <span id="cmpRadioLabel">A question answered by a radio pair</span>
+          <span class="declaration-options" role="radiogroup" aria-labelledby="cmpRadioLabel">
+            <label class="check-option"><input type="radio" name="cmpDemoRadio" value="yes"> Yes</label>
+            <label class="check-option"><input type="radio" name="cmpDemoRadio" value="no" checked> No</label>
+          </span>
+        </div>
+
+        <label class="check-option">
+          <input type="checkbox" checked>
+          <span>A checked consent line, with an <a href="#">inline link</a> inside the label.</span>
+        </label>
+
+        <label class="check-option">
+          <input type="checkbox">
+          <span>An unchecked line. Long legal wording wraps to the measure of the plate, and the whole row stays clickable because the control sits inside its own label.</span>
+        </label>
+
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">Two shapes, on purpose:</span> radios stay native and round; checkboxes are custom-drawn and square, because the UA radius is the one thing that cannot be styled away. Round means one of these, square means any of these &mdash; the shape is the affordance.</li>
+        <li><span class="cmp-event">Checkbox:</span> 20px, white with a hairline border. Hover darkens the border to deep green; checked fills solid green with a white tick drawn from two borders rather than an image.</li>
+        <li><span class="cmp-event">Radio:</span> the native control tinted green through <code>accent-color</code>. Nothing else is restyled.</li>
+        <li><span class="cmp-event">Focus:</span> checkboxes take a 2px green outline offset 2px &mdash; the one place in the system that keeps a visible focus ring rather than replacing it with an underline. Do not remove it.</li>
+        <li><span class="cmp-event">Hit area:</span> every control sits inside its own <code>&lt;label&gt;</code>, so the entire row including the wrapped text is clickable. Never place the label as a sibling.</li>
+        <li><span class="cmp-event">Spacing:</span> checkbox rows take a wider gap than the radio pair, since their labels run to full sentences while a radio's is a single word.</li>
+        <li><span class="cmp-event">Links inside labels:</span> green with a faint underline that solidifies on hover. Clicking the link still toggles the control &mdash; a known rough edge on the legal rows, where the reader may mean to open the policy.</li>
+        <li><span class="cmp-event">Long labels:</span> where the wording runs to several lines the control aligns to the first line rather than the middle of the block.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- FORMS · DECLARATIONS BLOCK -->
+  <section class="cmp-section" id="cmp-form-declarations" aria-label="Declarations block">
+    <div class="cmp-head">
+      <span class="cmp-head-number">04</span>
+      <h2>Declarations block</h2>
+      <p class="cmp-head-note">Consent plate with a conditional panel that unfolds on answer</p>
+    </div>
+
+    <p class="cmp-sub">Choose &ldquo;Yes&rdquo; to unfold the conditional panel</p>
+    <div class="cmp-stage">
+      <div class="form-declarations" style="max-width: 872px;">
+
+        <div class="declaration-row">
+          <span id="cmpResidencyLabel">A gating question &mdash; does a condition apply to you?</span>
+          <span class="declaration-options" role="radiogroup" aria-labelledby="cmpResidencyLabel">
+            <label class="check-option"><input type="radio" name="cmpResidency" value="yes"> Yes</label>
+            <label class="check-option"><input type="radio" name="cmpResidency" value="no" checked> No</label>
+          </span>
+        </div>
+
+        <div class="mainland-consent" id="cmpMainlandConsent" data-open="false">
+          <div class="mainland-consent-inner">
+            <p class="mainland-consent-intro">An introduction explaining what this panel covers and pointing at the <a href="#">policy it refers to</a>, shown only to the readers the condition applies to.</p>
+
+            <p class="mainland-consent-required">A required-fields warning, in the system's red.</p>
+
+            <p class="mainland-consent-group">A group heading</p>
+
+            <label class="check-option">
+              <input type="checkbox">
+              <span>The first consent under this heading. Wording of this kind is supplied by legal and is not designer copy &mdash; it wraps to whatever length it needs.</span>
+            </label>
+
+            <label class="check-option">
+              <input type="checkbox">
+              <span>A second consent under the same heading.</span>
+            </label>
+
+            <p class="mainland-consent-group">A second group heading</p>
+
+            <label class="check-option">
+              <input type="checkbox">
+              <span>A consent under the second heading, keeping the same rhythm as the first group.</span>
+            </label>
+          </div>
+        </div>
+
+        <label class="check-option">
+          <input type="checkbox" checked>
+          <span>An unconditional consent that every reader sees, below the panel.</span>
+        </label>
+
+        <label class="check-option">
+          <input type="checkbox">
+          <span>An opt-in that every reader sees, below the panel.</span>
+        </label>
+
+      </div>
+
+      <div class="form-actions" style="margin-top: var(--space-lg);">
+        <button class="primary-cta primary-cta--solid" type="button">
+          <span class="primary-cta-label">Submit label</span>
+          <span class="primary-cta-arrow" aria-hidden="true">
+            <span class="inline-arrow"></span>
+          </span>
+        </button>
+      </div>
+
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li><span class="cmp-event">The plate:</span> declarations sit on a cream plate inside the white form, so the legal block reads as a distinct region rather than more form. Rows run at a 20px rhythm inside it.</li>
+        <li><span class="cmp-event">The gating row:</span> question left, answers right, on one baseline. On mobile it stacks, question over answers.</li>
+        <li><span class="cmp-event">Unfold:</span> answering Yes opens the conditional panel &mdash; it grows from zero to its natural height over 0.5s on the house easing curve, its inner padding easing in with it. Answering No folds it away again. This is a grid-row animation, not a height one, so the panel never needs a measured height and copy of any length works.</li>
+        <li><span class="cmp-event">Closed state:</span> the panel is <code>visibility: hidden</code> while collapsed and pulls up a negative margin to cancel the parent's gap, so a folded panel leaves no phantom space between the question and the rows beneath.</li>
+        <li><span class="cmp-event">The panel:</span> white against the cream plate with a 2px gold bar down its left edge, marking it as conditional. Inside: an intro, a red required-fields warning, green group headings, and consent rows.</li>
+        <li><span class="cmp-event">Reduced motion:</span> the panel opens and closes with no transition.</li>
+        <li><span class="cmp-event">Submit:</span> the solid primary CTA as a <code>&lt;button type="submit"&gt;</code>, which needs its UA border removed and a pointer cursor added &mdash; the only difference between the button and the link form of that CTA.</li>
+        <li><span class="cmp-event">Not built yet:</span> the form carries <code>novalidate</code> and there is no client-side validation, no error state, no success state and no submit handler. The required-fields warning is static copy that shows whenever the panel is open, not a response to anything. Error and success styling has to be designed before this form can ship.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  </main>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+  <script>
+    /* Form select + conditional consent: production behaviour from
+       core-pages/contact-us/contact.html */
+    const cmpTypeSelect = document.querySelector("#cmpTypeSelect");
+    const cmpTypeTrigger = cmpTypeSelect.querySelector(".type-select-trigger");
+    const cmpTypeValue = document.querySelector("#cmpTypeValue");
+    const cmpTypeOptions = [...cmpTypeSelect.querySelectorAll(".type-option")];
+
+    function cmpCloseTypeMenu() {
+      cmpTypeSelect.dataset.open = "false";
+      cmpTypeTrigger.setAttribute("aria-expanded", "false");
+    }
+
+    cmpTypeTrigger.addEventListener("click", () => {
+      const open = cmpTypeSelect.dataset.open === "true";
+      cmpTypeSelect.dataset.open = String(!open);
+      cmpTypeTrigger.setAttribute("aria-expanded", String(!open));
+    });
+
+    cmpTypeOptions.forEach(opt => {
+      opt.addEventListener("click", () => {
+        cmpTypeValue.textContent = opt.textContent.trim();
+        cmpTypeOptions.forEach(o => o.setAttribute("aria-selected", String(o === opt)));
+        cmpCloseTypeMenu();
+        cmpTypeTrigger.focus();
+      });
+    });
+
+    document.addEventListener("pointerdown", event => {
+      if (!cmpTypeSelect.contains(event.target)) cmpCloseTypeMenu();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && cmpTypeSelect.dataset.open === "true") {
+        cmpCloseTypeMenu();
+        cmpTypeTrigger.focus();
+      }
+    });
+
+    /* Conditional consent panel: follows the Yes/No radio */
+    const cmpMainlandConsent = document.querySelector("#cmpMainlandConsent");
+
+    document.querySelectorAll('input[name="cmpResidency"]').forEach(radio => {
+      radio.addEventListener("change", () => {
+        cmpMainlandConsent.dataset.open = String(radio.value === "yes" && radio.checked);
+      });
+    });
+
+  </script>
+
+</body>
+</html>

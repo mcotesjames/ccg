@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hero parallax demo: CCG components</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+
+  <style>
+    /* ---------------------------------------------
+       HOME HERO + SCROLL-LINKED EXIT
+       Source: index.html, verbatim. The lockup and
+       video are replaced by placeholder copy and the
+       poster frame — the scroll behaviour is the
+       component under demonstration.
+    --------------------------------------------- */
+
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      color: white;
+      overflow: hidden;
+      background: #05191d;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        /* top scrim — keeps the nav + logo legible over the video */
+        linear-gradient(
+          180deg,
+          rgba(5, 25, 29, .76) 0%,
+          rgba(5, 25, 29, .45) 120px,
+          rgba(5, 25, 29, 0) 280px
+        ),
+        /* foot scrim — anchors the lockup + CTA; the mid-frame
+           stays untouched */
+        linear-gradient(
+          0deg,
+          rgba(5, 25, 29, .62) 0%,
+          rgba(5, 25, 29, .3) 22%,
+          rgba(5, 25, 29, 0) 45%
+        );
+    }
+
+    /* scroll-linked: the hero keeps half of each scrolled pixel,
+       and a scrim fades it towards dark as it goes */
+    .hero {
+      z-index: 0;
+      will-change: transform;
+    }
+
+    .hero-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(0deg, #05191d 0%, rgba(5, 25, 29, .75) 100%);
+    }
+
+    /* everything after the hero rides above its lagging exit */
+    .hero ~ section,
+    .hero ~ div {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---------------------------------------------
+       DEMO FURNITURE — this page's own. A simplified
+       hero-content stands in for the lockup, and two
+       placeholder bands supply the scroll runway the
+       effect needs.
+    --------------------------------------------- */
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-lg);
+      padding: 0 var(--page-pad) 48px;
+    }
+
+    .hero-content h1 {
+      margin: 0;
+      font-size: var(--text-h1);
+      line-height: var(--leading-h1);
+      font-weight: 400;
+      max-width: 14ch;
+    }
+
+    .runway {
+      min-height: 90svh;
+      padding: var(--space-section-standard) var(--page-pad);
+      background: #fff;
+    }
+
+    .runway--cream {
+      background: var(--cream);
+    }
+
+    .runway .eyebrow {
+      margin: 0 0 var(--space-sm);
+      color: var(--green);
+      font-size: var(--text-caption);
+    }
+
+    .runway p {
+      margin: 0;
+      max-width: 56ch;
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      color: var(--ink);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="hero">
+
+    <img class="hero-video" src="../images/hero-harbour-v2.png" alt="" aria-hidden="true">
+
+    <div class="hero-content">
+      <h1>Hero content stands in for the lockup</h1>
+      <a href="#" class="secondary-link-cta secondary-link-cta--light link-arrow">Hero CTA</a>
+    </div>
+
+  </header>
+
+  <section class="runway">
+    <p class="eyebrow">Scroll runway</p>
+    <p>Keep scrolling and watch the seam above: this band slides up and <em>over</em> the hero, because the hero keeps half of each scrolled pixel and everything after it rides at a higher z-index. The scrim is already fading the photograph towards dark behind you.</p>
+  </section>
+
+  <section class="runway runway--cream">
+    <p class="eyebrow">Scroll runway</p>
+    <p>By the time this band reaches the top of the viewport the hero's foot has cleared it, and the scrim has landed at its 0.8 ceiling &mdash; scroll back up slowly to watch the photograph re-emerge.</p>
+  </section>
+
+  <script>
+    /* Hero scroll-linked exit: production behaviour from
+       index.html, verbatim. */
+    const heroBlock = document.querySelector(".hero");
+    const heroScrim = document.createElement("div");
+    heroScrim.className = "hero-scrim";
+    heroScrim.setAttribute("aria-hidden", "true");
+    heroBlock.appendChild(heroScrim);
+
+    const heroReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let heroFrame = false;
+
+    function heroScroll() {
+      heroFrame = false;
+      const y = window.scrollY;
+      const height = heroBlock.offsetHeight;
+      const progress = Math.min(Math.max(y / height, 0), 1);
+
+      /* the hero keeps half of each scrolled pixel, so the intro
+         slides up and over it; the scrim lands at 0.8 as the
+         hero foot clears the viewport */
+      const lag = Math.round(Math.min(y, height * 4) * 0.5);
+      heroBlock.style.transform = "translateY(" + lag + "px)";
+      heroScrim.style.opacity = (progress * 0.8).toFixed(2);
+    }
+
+    if (!heroReduceMotion) {
+      window.addEventListener("scroll", () => {
+        if (!heroFrame) {
+          heroFrame = true;
+          window.requestAnimationFrame(heroScroll);
+        }
+      }, { passive: true });
+      heroScroll();
+    }
+  </script>
+
+</body>
+</html>

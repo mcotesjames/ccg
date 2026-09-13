@@ -313,11 +313,10 @@
     let lastHeaderScrollY = window.scrollY;
     let headerRevealFrame;
 
-    function renderMenuLinks(target, links, startIndex = 0) {
-      target.innerHTML = links.map((link, index) => `
+    function renderMenuLinks(target, links) {
+      target.innerHTML = links.map(link => `
         <li>
           <a href="#">
-            <span class="mega-link-number">${String(startIndex + index + 1).padStart(2, "0")}</span>
             <span>${link}</span>
           </a>
         </li>
@@ -332,7 +331,7 @@
       megaTitle.textContent = menu.title;
       megaDescription.textContent = menu.description;
       renderMenuLinks(megaLinksOne, menu.links.slice(0, splitIndex));
-      renderMenuLinks(megaLinksTwo, menu.links.slice(splitIndex), splitIndex);
+      renderMenuLinks(megaLinksTwo, menu.links.slice(splitIndex));
       megaFeatureLabel.textContent = menu.featureLabel;
       megaFeatureTitle.textContent = menu.featureTitle;
       megaFeatureImage.src = menu.featureImage;
@@ -363,6 +362,11 @@
            the jump means the slide down is the whole animation. */
         siteHeader.style.transition = "none";
         siteHeader.classList.add("is-sticky", "is-hidden", "is-solid");
+        /* is-preload parks the summoned menu off-canvas and outranks
+           is-hidden, so a scroll-up reveal has to clear it too or the
+           header never comes back down. Cleared inside the suppressed
+           window: both classes sit at -100%, so nothing jumps. */
+        siteHeader.classList.remove("is-preload");
         void siteHeader.offsetHeight;
         siteHeader.style.transition = "";
 
@@ -370,7 +374,7 @@
           siteHeader.classList.remove("is-hidden");
         });
       } else {
-        siteHeader.classList.remove("is-hidden");
+        siteHeader.classList.remove("is-preload", "is-hidden");
       }
     }
 
