@@ -66,27 +66,67 @@
     <div class="cmp-head">
       <span class="cmp-head-number">01</span>
       <h2>Stat cell</h2>
-      <p class="cmp-head-note">Key figures: numbers count up on scroll</p>
+      <p class="cmp-head-note">Key figures &middot; six cells in the standard three-column grid &middot; count-up on scroll</p>
     </div>
 
     <div class="cmp-stage">
-      <div class="portfolio-stats-grid" style="grid-template-columns: 346px;">
+      <div class="portfolio-stats-grid">
+        <div class="pstat">
+          <span class="pstat-icon" aria-hidden="true">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="8" y="3" width="14" height="24"/><path d="M12 8h2M16 8h2M12 13h2M16 13h2M12 18h2M16 18h2M13.5 27v-4h3v4"/></svg>
+          </span>
+          <p class="pstat-number"><span data-count="2.8" data-decimals="1">0</span>M<span class="pstat-unit">sq ft</span></p>
+          <p class="pstat-label">One-line label describing the figure at small size</p>
+        </div>
+
+        <div class="pstat">
+          <span class="pstat-icon" aria-hidden="true">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 11l2-6h16l2 6M5 11h20M5 11v16h20V11M12 27v-9h6v9"/></svg>
+          </span>
+          <p class="pstat-number"><span data-count="2.2" data-decimals="1">0</span>M<span class="pstat-unit">sq ft</span></p>
+          <p class="pstat-label">Labels hold one line at a readable measure</p>
+        </div>
+
+        <div class="pstat">
+          <span class="pstat-icon" aria-hidden="true">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 27V13l7 5v-5l7 5v-5l8 5.5V27H4Z"/><path d="M8 9V4h4v5"/></svg>
+          </span>
+          <p class="pstat-number"><span data-count="340">0</span>K<span class="pstat-unit">sq ft</span></p>
+          <p class="pstat-label">Whole numbers count in integer steps</p>
+        </div>
+
         <div class="pstat">
           <span class="pstat-icon" aria-hidden="true">
             <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 15L15 5l11 10M8 12.5V26h14V12.5M13 26v-7h4v7"/></svg>
           </span>
-          <p class="pstat-number"><span data-count="2.8" data-decimals="1">0</span>M<span class="pstat-unit">sq ft</span></p>
-          <p class="pstat-label">One-line label describing the figure at small size</p>
+          <p class="pstat-number"><span data-count="280">0</span>K<span class="pstat-unit">sq ft</span></p>
+          <p class="pstat-label">Decimal figures animate with their precision</p>
+        </div>
+
+        <div class="pstat">
+          <span class="pstat-icon" aria-hidden="true">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 26s-9-5.5-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.5-9 12-9 12Z"/></svg>
+          </span>
+          <p class="pstat-number"><span data-count="98">0</span>%</p>
+          <p class="pstat-label">A figure may run unitless</p>
+        </div>
+
+        <div class="pstat">
+          <span class="pstat-icon" aria-hidden="true">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="15" cy="11" r="7"/><path d="M11 16.5L8 27l7-4 7 4-3-10.5"/></svg>
+          </span>
+          <p class="pstat-number"><span data-count="1500">0</span>+<span class="pstat-unit">people</span></p>
+          <p class="pstat-label">The hairline frame closes around the final cell</p>
         </div>
       </div>
       <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li><span class="cmp-event">Count-up:</span> the figure animates from zero to its value the first time the cell scrolls into view, once only; decimal figures animate with their precision. With reduced motion enabled the final value shows immediately.</li>
-        <li><span class="cmp-event">Anatomy:</span> a small green line-drawn icon, the number at a large display scale in tabular numerals with its unit dropping to its own line below in green, and a one-line grey label held to a readable measure.</li>
+        <li><span class="cmp-event">Count-up:</span> the figure animates from zero to its value the first time the cell scrolls into view, once only &mdash; 2s on an expo ease-out, so it moves fast early and glides into its final value; decimal figures animate with their precision. With reduced motion enabled the final value shows immediately.</li>
+        <li><span class="cmp-event">Anatomy:</span> a green line-drawn icon centred on a 56px cream plate, the number at a large display scale in tabular numerals with its unit running inline beside it in green, and a one-line ink-black label held to a readable measure.</li>
         <li><span class="cmp-event">Framing:</span> cells sit in a hairline grid where the outer frame and inner dividers never double up.</li>
-        <li><span class="cmp-event">Grids:</span> three columns as standard, or a centred four-up row; both step to two columns on tablet and pairs on mobile.</li>
-        <li>The number runs at a deliberate display scale that sits outside the standard type ramp.</li>
+        <li><span class="cmp-event">Grids:</span> three columns as standard &mdash; shown here at the full six-cell module, two rows of three &mdash; or a centred four-up row (<code>portfolio-stats-grid--row</code>); both step to two columns on tablet and pairs on mobile.</li>
+        <li>The number runs at the h1 scale, so it steps down with the type ramp at each breakpoint.</li>
       </ul>
       </details>
     </div>

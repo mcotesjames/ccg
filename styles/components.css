@@ -1815,7 +1815,6 @@ body.menu-open {
 
 .spot-a-detail {
   max-width: 560px;
-  padding-bottom: var(--space-md);
 }
 
 .spot-a-detail-inner {
@@ -1828,6 +1827,7 @@ body.menu-open {
   font-weight: 400;
   line-height: 40px;
 }
+
 
 .spot-a-desc {
   margin: 0 0 var(--space-lg);
@@ -1864,6 +1864,17 @@ body.menu-open {
       gap: var(--space-lg);
     }
 
+  /* detail leads on mobile — the story copy reads before the
+     index that switches it */
+  .spot-a-detail {
+      order: -1;
+    }
+
+  .spot-a-title {
+      font-size: 28px;
+      line-height: 30px;
+    }
+
   .spot-a-media {
       height: 288px;
     }
@@ -1882,10 +1893,6 @@ body.menu-open {
       font-size: 14px;
     }
 
-  .spot-a-title {
-      font-size: 28px;
-      line-height: 30px;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1962,6 +1969,7 @@ body.menu-open {
 
 .progress-thumb {
   height: 1px;
+  /* resting fallback — the carousel driver sets 100% / slide count */
   width: 15%;
   position: absolute;
   left: 0;
@@ -3992,30 +4000,34 @@ body.menu-open {
   gap: var(--space-md);
 }
 
+/* icon sits centred on a cream plate */
 .pstat-icon {
-  width: 30px;
-  height: 30px;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  background: var(--cream);
   color: var(--green);
 }
 
 .pstat-icon svg {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 30px;
+  height: 30px;
 }
 
 .pstat-number {
   margin: 0;
-  font-size: 60px;
-  line-height: 56px;
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
   font-weight: 400;
   color: var(--green-dark);
   font-variant-numeric: tabular-nums;
 }
 
-/* unit drops to its own line under the number */
+/* unit runs inline beside the number */
 .pstat-number .pstat-unit {
-  display: block;
+  margin-left: 10px;
   font-size: 32px;
   white-space: pre;
   color: var(--green);
@@ -4026,7 +4038,7 @@ body.menu-open {
   max-width: 300px;
   font-size: var(--text-small);
   line-height: var(--leading-small);
-  color: var(--grey);
+  color: var(--ink);
 }
 
 /* =============================================================
@@ -5381,10 +5393,6 @@ footer {
       padding: 32px 28px;
     }
 
-  .pstat-number {
-      font-size: 48px;
-      line-height: 46px;
-    }
 }
 
 @media (max-width: 1000px) {
@@ -5426,10 +5434,6 @@ footer {
       line-height: var(--leading-h3);
     }
 
-  .pstat-number {
-      font-size: 48px;
-      line-height: 46px;
-    }
 
   .page-intro {
       grid-template-columns: 1fr;
@@ -5573,10 +5577,6 @@ footer {
       padding: 28px 24px;
     }
 
-  .pstat-number {
-      font-size: 40px;
-      line-height: 38px;
-    }
 
   .portfolio-stats-grid {
       grid-template-columns: 1fr 1fr;

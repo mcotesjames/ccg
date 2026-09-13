@@ -60,7 +60,7 @@
     }
 
     .property-image {
-      height: 416px;
+      aspect-ratio: 1 / 1;
       overflow: hidden;
       background: var(--sand);
     }
@@ -77,13 +77,13 @@
     }
 
     .property-info {
-      background: var(--green-dark);
+      background: var(--green);
       padding: var(--space-card) var(--space-plate) var(--space-plate);
     }
 
     .property-card:hover .property-info,
     .property-card:focus-within .property-info {
-      background: var(--green);
+      background: var(--green-dark);
     }
 
     .property-name {
@@ -107,14 +107,14 @@
       margin-right: var(--space-xs);
     }
 
+    .cmp-portfolio-stage .carousel-ui {
+      padding: var(--space-lg) var(--space-xl) 0;
+    }
+
     /* mobile steps mirror the homepage's ≤680 treatment */
     @media (max-width: 680px) {
       .property-card {
         width: 328px;
-      }
-
-      .property-image {
-        height: 344px;
       }
     }
 
@@ -219,7 +219,9 @@
 
     /* ---------------------------------------------
        STORIES CAROUSEL. Source: index.html
-       Shared ccgCarousel engine + editorial cards.
+       Shared ccgCarousel engine + the editorial full
+       card (business-card, static setting) with the
+       title arrow, role and spec rows dropped.
     --------------------------------------------- */
 
     .cmp-stories-stage {
@@ -237,46 +239,11 @@
       flex: 0 0 auto;
     }
 
-    .story-image {
-      aspect-ratio: 1;
-      overflow: hidden;
-      margin-bottom: var(--space-md);
-      background: var(--sand);
-    }
-
-    .story-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform .8s cubic-bezier(.22,.61,.36,1);
-    }
-
-    .story-grid article:hover .story-image img {
-      transform: scale(1.035);
-    }
-
-    .story-title {
-      max-width: 420px;
-      font-size: var(--text-h6);
-      line-height: var(--leading-h6);
-      color: var(--green-dark);
-    }
-
-    .story-link {
-      margin-top: var(--space-md);
-      font-size: var(--text-caption);
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-sm);
-      color: var(--green-dark);
-    }
-
-    .story-link .inline-arrow {
-      transition: transform .35s cubic-bezier(.22,.61,.36,1);
-    }
-
-    .story-grid article:hover .story-link .inline-arrow {
-      transform: translateX(5px) rotate(90deg);
+    /* the card family's 4/3.4 default re-cropped for the track;
+       demo cards run grey placeholders instead of imagery */
+    .story-grid .business-card-image {
+      aspect-ratio: 16 / 9;
+      background: #D9D9D9;
     }
 
     .cmp-stories-stage .carousel-ui {
@@ -371,15 +338,15 @@
     }
 
     .property-modal-kicker {
-      margin: 0 0 var(--space-lg);
+      margin: 0 0 var(--space-sm);
       color: rgba(7, 58, 52, .58);
       font-size: var(--text-caption);
     }
 
     .property-modal-title {
       margin: 0;
-      font-size: var(--text-h1);
-      line-height: var(--leading-h1);
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
       font-weight: 400;
     }
 
@@ -447,8 +414,8 @@
       z-index: 50;
       display: grid;
       place-items: center;
-      background: var(--ccg-lively-red);
-      color: var(--cream);
+      background: var(--ccg-ground-yellow);
+      color: var(--green-dark);
       pointer-events: none;
       opacity: 0;
       transform: translate(-50%, -50%) scale(.8);
@@ -510,26 +477,37 @@
     <div class="cmp-head">
       <span class="cmp-head-number">01</span>
       <h2>Showcase carousel</h2>
-      <p class="cmp-head-note">Infinite auto-scroll · drag · custom cursor · detail modal</p>
+      <p class="cmp-head-note">Infinite loop · drag · arrows · custom cursor · detail modal · control bar</p>
     </div>
 
     <div class="cmp-stage cmp-portfolio-stage" style="border: 0;">
       <div class="portfolio-viewport" id="cmpPortfolioViewport">
         <div class="portfolio-track" id="cmpPortfolioTrack"></div>
       </div>
+
+      <div class="carousel-ui">
+        <div class="carousel-count"><span id="cmpPortfolioCurrent">01</span> / <span id="cmpPortfolioTotal">05</span></div>
+        <div class="progress-track"><div class="progress-thumb" id="cmpPortfolioProgress"></div></div>
+        <div class="carousel-arrows">
+          <button class="arrow arrow-prev" id="cmpPortfolioPrev" aria-label="Previous property"><span class="ui-arrow" aria-hidden="true"></span></button>
+          <button class="arrow arrow-next" id="cmpPortfolioNext" aria-label="Next property"><span class="ui-arrow" aria-hidden="true"></span></button>
+        </div>
+      </div>
     </div>
     <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li><span class="cmp-event">Autoplay:</span> the track drifts left continuously at about 54px per second, looping seamlessly and endlessly in both directions.</li>
-        <li><span class="cmp-event">Drag:</span> pressing pauses the drift and scrubs the track 1:1 with the pointer. Small movements still count as clicks; larger drags never open a card. The drift resumes shortly after release.</li>
-        <li><span class="cmp-event">Hover a card:</span> the image zooms gently over 0.8s; the deep green plate lightens instantly.</li>
-        <li><span class="cmp-event">Custom cursor:</span> over the images the native cursor is replaced by a red View disc that follows the pointer, scaling up with a quick fade.</li>
+        <li><span class="cmp-event">Resting track:</span> no auto-scroll &mdash; the track sits still until dragged or stepped, and loops seamlessly and endlessly in both directions.</li>
+        <li><span class="cmp-event">Control bar:</span> the standard count &middot; progress &middot; arrows row. The count is driver-owned on the shared logic &mdash; positions the track can rest at &mdash; and the marquee loop makes every card a resting position, so the total is the property count. The count and thumb tick live as cards pass the left edge, dragged or stepped; the thumb spans one slide (100&percnt; / count).</li>
+        <li><span class="cmp-event">Arrows:</span> step one card, easing the track to the next boundary. With reduced motion the step is an instant jump.</li>
+        <li><span class="cmp-event">Drag:</span> pressing scrubs the track 1:1 with the pointer, cancelling any arrow step in flight. Small movements still count as clicks; larger drags never open a card.</li>
+        <li><span class="cmp-event">Hover a card:</span> the image zooms gently over 0.8s; the green plate deepens instantly.</li>
+        <li><span class="cmp-event">Custom cursor:</span> over the images the native cursor is replaced by a ground-yellow View disc in deep green ink that follows the pointer, scaling up with a quick fade.</li>
         <li><span class="cmp-event">Click a card:</span> opens the detail modal, a full-screen dialog over a blurred deep-green scrim. The panel rises and settles over 0.55s while the hero image eases from a slight zoom to rest.</li>
-        <li><span class="cmp-event">While open:</span> the carousel pauses and page scrolling locks; keyboard focus stays inside the dialog.</li>
-        <li><span class="cmp-event">Close:</span> the cross button, a click on the backdrop, or Escape; focus returns to the card that opened it and the drift resumes.</li>
+        <li><span class="cmp-event">While open:</span> page scrolling locks and keyboard focus stays inside the dialog.</li>
+        <li><span class="cmp-event">Close:</span> the cross button, a click on the backdrop, or Escape; focus returns to the card that opened it.</li>
         <li><span class="cmp-event">Responsive:</span> cards run 364px wide with a tall image crop on desktop, stepping down on mobile.</li>
-        <li>With reduced motion enabled the drift stops and the carousel becomes drag-only.</li>
+        <li>With reduced motion enabled the arrow step lands instantly instead of easing; drag is unaffected.</li>
       </ul>
       </details>
   </section>
@@ -580,7 +558,7 @@
       </div>
 
       <div class="carousel-ui">
-        <div class="carousel-count"><span id="cmpStatsCurrent">01</span> / 06</div>
+        <div class="carousel-count"><span id="cmpStatsCurrent">01</span> / <span id="cmpStatsTotal">06</span></div>
         <div class="progress-track"><div class="progress-thumb" id="cmpStatsProgress"></div></div>
         <div class="carousel-arrows">
           <button class="arrow arrow-prev" id="cmpStatsPrev" aria-label="Previous statistic"><span class="ui-arrow" aria-hidden="true"></span></button>
@@ -593,7 +571,7 @@
         <ul class="cmp-notes">
         <li><span class="cmp-event">Autoplay:</span> steps one stat every 3 seconds; each step slides the track over 0.8s on the house easing curve. Pressing an arrow moves immediately and restarts the timer.</li>
         <li><span class="cmp-event">Endless:</span> the loop continues in both directions with no visible rewind.</li>
-        <li><span class="cmp-event">UI:</span> the count shows the current position, zero-padded; the thin white thumb travels the hairline track proportionally.</li>
+        <li><span class="cmp-event">UI:</span> the count shows the current position, zero-padded, and its total is driver-owned like the manual carousel's &mdash; positions the track can rest at. Because the seamless loop makes every card a resting position, that total equals the slide count at every width. The thumb spans one slide (100&percnt; / count) and advances by its own width per step.</li>
         <li><span class="cmp-event">Responsive:</span> four stats visible on desktop, two on tablet, one on mobile; numbers sit in warm beige at a display scale, bottom-right of each cell, with hairline dividers between cells.</li>
         <li>With reduced motion enabled the autoplay never starts; the arrows still work.</li>
       </ul>
@@ -611,41 +589,71 @@
     <div class="cmp-stage cmp-stories-stage" style="border: 0;">
       <div class="carousel-viewport">
         <div class="story-grid carousel-track" id="cmpStoriesTrack">
-          <article>
-            <div class="story-image"><img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=85" alt=""></div>
-            <div class="story-title">Central Market: Breathing new life into a historic landmark</div>
-            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          <article class="business-card business-card--static">
+            <div class="business-card-image cmp-img"></div>
+            <p class="news-meta">
+              <span class="news-meta-category">News</span>
+              <span class="news-meta-date">12 Jul 2026</span>
+            </p>
+            <span class="business-card-title">Central Market: Breathing new life into a historic landmark</span>
+            <p class="business-card-desc">A much-loved heritage landmark reimagined as an open, welcoming place for everyday life.</p>
+            <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
           </article>
-          <article>
-            <div class="story-image"><img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1200&q=85" alt=""></div>
-            <div class="story-title">Our pathway to a low-carbon and resilient future</div>
-            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          <article class="business-card business-card--static">
+            <div class="business-card-image cmp-img"></div>
+            <p class="news-meta">
+              <span class="news-meta-category">Sustainability</span>
+              <span class="news-meta-date">5 Jul 2026</span>
+            </p>
+            <span class="business-card-title">Our pathway to a low-carbon and resilient future</span>
+            <p class="business-card-desc">The commitments and milestones shaping the Group's route to net zero.</p>
+            <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
           </article>
-          <article>
-            <div class="story-image"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=85" alt=""></div>
-            <div class="story-title">Inspiring communities through arts and culture</div>
-            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          <article class="business-card business-card--static">
+            <div class="business-card-image cmp-img"></div>
+            <p class="news-meta">
+              <span class="news-meta-category">Community</span>
+              <span class="news-meta-date">28 Jun 2026</span>
+            </p>
+            <span class="business-card-title">Inspiring communities through arts and culture</span>
+            <p class="business-card-desc">Programmes that bring residents together around shared creative ground.</p>
+            <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
           </article>
-          <article>
-            <div class="story-image"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85" alt=""></div>
-            <div class="story-title">Designing workplaces around a more human rhythm</div>
-            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          <article class="business-card business-card--static">
+            <div class="business-card-image cmp-img"></div>
+            <p class="news-meta">
+              <span class="news-meta-category">Workplace</span>
+              <span class="news-meta-date">21 Jun 2026</span>
+            </p>
+            <span class="business-card-title">Designing workplaces around a more human rhythm</span>
+            <p class="business-card-desc">What a people-first office asks of its architecture and its operators.</p>
+            <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
           </article>
-          <article>
-            <div class="story-image"><img src="https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=1200&q=85" alt=""></div>
-            <div class="story-title">How thoughtful neighbourhoods create lasting value</div>
-            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          <article class="business-card business-card--static">
+            <div class="business-card-image cmp-img"></div>
+            <p class="news-meta">
+              <span class="news-meta-category">Insights</span>
+              <span class="news-meta-date">14 Jun 2026</span>
+            </p>
+            <span class="business-card-title">How thoughtful neighbourhoods create lasting value</span>
+            <p class="business-card-desc">Long-term stewardship measured in more than floor area.</p>
+            <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
           </article>
-          <article>
-            <div class="story-image"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85" alt=""></div>
-            <div class="story-title">Placemaking that starts with listening</div>
-            <div class="story-link">Read more <span class="inline-arrow" aria-hidden="true"></span></div>
+          <article class="business-card business-card--static">
+            <div class="business-card-image cmp-img"></div>
+            <p class="news-meta">
+              <span class="news-meta-category">Community</span>
+              <span class="news-meta-date">7 Jun 2026</span>
+            </p>
+            <span class="business-card-title">Placemaking that starts with listening</span>
+            <p class="business-card-desc">Consultation as the first act of design, not the last.</p>
+            <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
           </article>
         </div>
       </div>
 
       <div class="carousel-ui">
-        <div class="carousel-count"><span id="cmpStoriesCurrent">01</span> / 06</div>
+        <div class="carousel-count"><span id="cmpStoriesCurrent">01</span> / <span id="cmpStoriesTotal">04</span></div>
         <div class="progress-track"><div class="progress-thumb" id="cmpStoriesProgress"></div></div>
         <div class="carousel-arrows">
           <button class="arrow arrow-prev" id="cmpStoriesPrev" aria-label="Previous story"><span class="ui-arrow" aria-hidden="true"></span></button>
@@ -658,8 +666,9 @@
         <ul class="cmp-notes">
         <li><span class="cmp-event">Arrows / drag:</span> one card per step over 0.7s on the house easing curve; the track drags 1:1 with grab cursors and snaps to the nearest card on release. The page still scrolls vertically over it.</li>
         <li><span class="cmp-event">Ends:</span> this carousel stops at either end; it does not loop, unlike the stats carousel.</li>
-        <li><span class="cmp-event">On move:</span> the zero-padded count updates and the green progress thumb repositions along the hairline.</li>
-        <li><span class="cmp-event">Hover a card:</span> the image zooms gently over 0.8s; the read-more arrow nudges right.</li>
+        <li><span class="cmp-event">On move:</span> the zero-padded count updates and the green progress thumb repositions along the hairline. The count is <strong>positions, not cards</strong>: the total is how many places the track can rest at (cards &minus; visible + 1, recomputed on resize), so three-up with six cards reads 01 / 04 and ends on 04 / 04.</li>
+        <li><span class="cmp-event">Cards:</span> the <a href="cards.html#cmp-editorial-card">editorial full card</a> in its static setting, with the title arrow, role and spec rows dropped &mdash; image, meta row, title, excerpt and read-more remain &mdash; and the image re-cropped from the family's 4/3.4 default to 16/9 for the track.</li>
+        <li><span class="cmp-event">Hover a card:</span> the read-more arrow nudges right. The static setting drops the image zoom and the title sweep &mdash; inside a drag track the card presents rather than navigates.</li>
         <li><span class="cmp-event">Responsive:</span> three cards across on desktop, two on tablet, one on mobile, where each card sits slightly short of the column so the next peeks in.</li>
       </ul>
       </details>
@@ -729,24 +738,60 @@
     `).join("");
 
     let cmpX = 0;
-    let cmpSpeed = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : .9;
-    let cmpPaused = false;
     let cmpDragging = false;
     let cmpDragStartX = 0;
     let cmpDragStartOffset = 0;
     let cmpClickSuppressed = false;
+    let cmpTween = null;
+
+    /* Control bar: the marquee loop makes every card a resting
+       position, so the driver-owned total is the property count */
+    const cmpPortfolioCurrent = document.querySelector("#cmpPortfolioCurrent");
+    const cmpPortfolioTotal = document.querySelector("#cmpPortfolioTotal");
+    const cmpPortfolioProgress = document.querySelector("#cmpPortfolioProgress");
+
+    cmpPortfolioTotal.textContent = String(cmpProperties.length).padStart(2, "0");
+    cmpPortfolioProgress.style.width = (100 / cmpProperties.length) + "%";
+
+    function cmpCardStep() {
+      return cmpTrack.children[1].offsetLeft - cmpTrack.children[0].offsetLeft;
+    }
+
+    let cmpLastLogical = -1;
+
+    function cmpUpdatePortfolioUI() {
+      const logical = ((Math.round(-cmpX / cmpCardStep()) % cmpProperties.length) + cmpProperties.length) % cmpProperties.length;
+      if (logical === cmpLastLogical) return;
+      cmpLastLogical = logical;
+      cmpPortfolioCurrent.textContent = String(logical + 1).padStart(2, "0");
+      cmpPortfolioProgress.style.transform = `translateX(${logical * 100}%)`;
+    }
 
     function cmpLoop() {
-      if (!cmpPaused && !cmpDragging) cmpX -= cmpSpeed;
+      if (cmpTween !== null) {
+        /* arrow step: ease to the next card boundary */
+        cmpX += (cmpTween - cmpX) * .12;
+        if (Math.abs(cmpTween - cmpX) < .5) { cmpX = cmpTween; cmpTween = null; }
+      }
       const half = cmpTrack.scrollWidth / 2;
-      if (Math.abs(cmpX) >= half) cmpX += half;
-      if (cmpX > 0) cmpX -= half;
+      if (Math.abs(cmpX) >= half) { cmpX += half; if (cmpTween !== null) cmpTween += half; }
+      if (cmpX > 0) { cmpX -= half; if (cmpTween !== null) cmpTween -= half; }
       cmpTrack.style.transform = `translate3d(${cmpX}px,0,0)`;
+      cmpUpdatePortfolioUI();
       requestAnimationFrame(cmpLoop);
     }
 
+    function cmpStepPortfolio(direction) {
+      const target = -(Math.round(-cmpX / cmpCardStep()) + direction) * cmpCardStep();
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) cmpX = target;
+      else cmpTween = target;
+    }
+
+    document.querySelector("#cmpPortfolioPrev").addEventListener("click", () => cmpStepPortfolio(-1));
+    document.querySelector("#cmpPortfolioNext").addEventListener("click", () => cmpStepPortfolio(1));
+
     cmpViewport.addEventListener("pointerdown", e => {
-      cmpDragging = true; cmpPaused = true; cmpClickSuppressed = false;
+      cmpDragging = true; cmpClickSuppressed = false; cmpTween = null;
       cmpDragStartX = e.clientX; cmpDragStartOffset = cmpX;
     });
 
@@ -762,10 +807,10 @@
     cmpViewport.addEventListener("pointerup", e => {
       cmpDragging = false;
       if (cmpViewport.hasPointerCapture(e.pointerId)) cmpViewport.releasePointerCapture(e.pointerId);
-      setTimeout(() => { cmpPaused = false; cmpClickSuppressed = false; }, 700);
+      setTimeout(() => { cmpClickSuppressed = false; }, 700);
     });
 
-    cmpViewport.addEventListener("pointercancel", () => { cmpDragging = false; cmpClickSuppressed = false; cmpPaused = false; });
+    cmpViewport.addEventListener("pointercancel", () => { cmpDragging = false; cmpClickSuppressed = false; });
 
     /* Property modal: production behaviour from index.html */
     const cmpModal = document.querySelector("#cmpPropertyModal");
@@ -783,7 +828,6 @@
       if (!property) return;
 
       cmpModalReturnFocus = trigger;
-      cmpPaused = true;
       cmpCursor.classList.remove("active");
 
       cmpModalImage.src = property.detailImage;
@@ -803,7 +847,6 @@
       cmpModal.classList.remove("is-open");
       cmpModal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("modal-open");
-      cmpPaused = false;
       cmpModalReturnFocus?.focus({ preventScroll: true });
       cmpModalReturnFocus = null;
     }
@@ -848,6 +891,7 @@
     const cmpStatsPrev = document.querySelector("#cmpStatsPrev");
     const cmpStatsNext = document.querySelector("#cmpStatsNext");
     const cmpStatsCurrent = document.querySelector("#cmpStatsCurrent");
+    const cmpStatsTotal = document.querySelector("#cmpStatsTotal");
     const cmpStatsProgress = document.querySelector("#cmpStatsProgress");
 
     let cmpStatsIndex = 0;
@@ -868,8 +912,13 @@
     function cmpUpdateStatsUI() {
       const logical = cmpLogicalStatsIndex();
       cmpStatsCurrent.textContent = String(logical + 1).padStart(2, "0");
-      const progress = cmpStats.length <= 1 ? 0 : logical / (cmpStats.length - 1);
-      cmpStatsProgress.style.transform = `translateX(${progress * 566.67}%)`;
+      /* the loop makes every card a resting position, so the
+         driver-owned total is the slide count at every width */
+      cmpStatsTotal.textContent = String(cmpStats.length).padStart(2, "0");
+      /* thumb spans one slide (100% / count); each step advances it
+         by exactly its own width */
+      cmpStatsProgress.style.width = (100 / cmpStats.length) + "%";
+      cmpStatsProgress.style.transform = `translateX(${logical * 100}%)`;
     }
 
     function cmpPositionStats(animate = true) {
@@ -940,6 +989,7 @@
       prev: document.querySelector("#cmpStoriesPrev"),
       next: document.querySelector("#cmpStoriesNext"),
       current: document.querySelector("#cmpStoriesCurrent"),
+      total: document.querySelector("#cmpStoriesTotal"),
       progress: document.querySelector("#cmpStoriesProgress"),
       visible: () => window.innerWidth <= 680 ? 1 : window.innerWidth <= 1000 ? 2 : 3
     });

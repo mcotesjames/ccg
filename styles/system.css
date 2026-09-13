@@ -95,7 +95,7 @@
   --leading-h6: 28px;
   --text-lead: 20px;
   --leading-lead: 28px;
-  --text-body: 16px;
+  --text-body: 18px;
   --leading-body: 24px;
   --leading-relaxed: 28px;
   --text-small: 14px;
@@ -194,7 +194,8 @@ img {
 }
 
 .eyebrow {
-  font-size: var(--text-small);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   font-weight: 400;
   text-transform: capitalize;
 }

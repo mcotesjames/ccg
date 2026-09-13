@@ -28,6 +28,10 @@ const GUIDE_NAV = [
       ["cmp-stats-carousel", "Stats carousel"],
       ["cmp-card-carousel", "Manual carousel"]
     ]},
+    { file: "spotlights.html", name: "Spotlights", components: [
+      ["cmp-cover-story", "Cover story"],
+      ["cmp-spotlight-split", "Spotlight split"]
+    ]},
     { file: "cards.html", name: "Cards", components: [
       ["cmp-plate-card", "Plate card"],
       ["cmp-editorial-card", "Editorial card"],

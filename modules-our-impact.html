@@ -153,19 +153,9 @@
       <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li><span class="cmp-event">Rotation:</span> the module advances every 6 seconds and wraps. A gold hairline fills each index row over exactly that interval, running right to left, so the reader can see how long the current story has left.</li>
-        <li><span class="cmp-event">Media change:</span> the photographs are stacked and cross-faded, the outgoing one dissolving into the incoming over 0.9s. Each photograph also drifts from a 5&percnt; zoom back to rest over 6.5s, so the image is never quite still while its story is showing.</li>
-        <li><span class="cmp-event">Detail change:</span> the copy block is replaced, fading in and rising 14px over 0.7s. It is a live region, so a screen reader announces each new story as it arrives.</li>
-        <li><span class="cmp-event">Click an index row:</span> jumps to that story and restarts the timer.</li>
-        <li><span class="cmp-event">Pause:</span> the whole band pauses on hover and the gold line freezes where it is; leaving resumes and restarts the line. <strong>Hover only</strong> &mdash; see the keyboard note below.</li>
-        <li><span class="cmp-event">Index anatomy:</span> a right-aligned column at the foot of the stage. Each row pairs a zero-padded numeral with its label; resting rows sit at 48&percnt; white, hover lifts them to 85&percnt;, and the active row is solid white with a gold numeral and a full-width hairline beneath.</li>
-        <li><span class="cmp-event">Stage anatomy:</span> detail left, index right, both pinned to the bottom of the band. Two crossed gradients sit over the photograph &mdash; one vertical, one horizontal &mdash; so type stays readable wherever the image is light.</li>
+        <li><span class="cmp-event">Engine:</span> this is the shared <a href="spotlights.html#cmp-cover-story">cover story</a> component &mdash; its rotation, pausing, anatomy, responsive behaviour and build gotchas are documented there. The notes below cover only what this page adds.</li>
         <li><span class="cmp-event">Framing header:</span> this page's addition, not part of the component. It sits above the stage in the module's own dark ground, carries a counting figure in warm beige, and steps the statement down one scale. The gradient is retuned to suit it: dark at the top for the statement, clear through the middle so the photograph reads, dark again at the foot for the rotating detail.</li>
         <li><span class="cmp-event">Compression:</span> the page also pulls the band from the component's 800px floor down to 680px, and steps the story title down from the h2 scale to h3, so the header and the spotlight can share one screen.</li>
-        <li><span class="cmp-event">Responsive:</span> below 1000 the stage flips to a single column with the index <em>above</em> the detail and both aligned left. On mobile the title drops to 40/44 and the index rows to 16px.</li>
-        <li><span class="cmp-event">Reduced motion:</span> the rotation never starts and the module rests on its first story. Clicking the index still works.</li>
-        <li><span class="cmp-event">Two gotchas for the build:</span> the component ships <code>display: none</code> and does nothing until a page turns it on, and it ships <em>empty</em> &mdash; media, index and detail are all written by page JS from a story array. There is no markup contract for a story, so the array is the contract.</li>
-        <li><span class="cmp-event">Keyboard gap:</span> index rows are buttons, so they focus and activate, but there are no arrow keys and the band does not pause on focus &mdash; only on hover. A keyboard user tabbing the index has stories changing under them. The service tabs handle this correctly and are the pattern to copy.</li>
         </ul>
       </details>
     </div>
