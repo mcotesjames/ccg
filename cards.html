@@ -20,10 +20,10 @@
 
   <style>
     /* =============================================
-       DEMO SUPPORT — CARDS
+       DEMO SUPPORT - CARDS
        Shared gallery chrome lives in styles/guide.css.
        This block holds only the styles that support
-       this page's demos — production values quoted
+       this page's demos - production values quoted
        from the pages named on each chunk.
     ============================================= */
 
@@ -31,7 +31,7 @@
        STAY SPEC. Source: core-pages/our-work/
        hospitality-entertainment.html, verbatim.
        Lives in that page's own <style> block, not in
-       components.css — see the section's notes.
+       components.css - see the section's notes.
     --------------------------------------------- */
 
     .stay-spec {
@@ -49,7 +49,7 @@
        PROPERTY PLATE. Source: core-pages/our-work/
        portfolio.html (.dev-card--plate), verbatim.
        Lives in that page's own <style> block, not in
-       components.css — see the section's notes.
+       components.css - see the section's notes.
     --------------------------------------------- */
 
     .dev-card {
@@ -213,7 +213,7 @@
   <section class="cmp-category" aria-label="Category: Cards">
     <p class="eyebrow">Category</p>
     <h2>Cards</h2>
-    <p>Two families and the rule that separates them: a plate means the card is a door to a place; a green title sweep means content to read. Almost every card in the design is one of these two with rows added or dropped &mdash; so each section below shows the family, then its settings.</p>
+    <p>Two families and the rule that separates them: a plate means the card is a door to a place; a green title sweep means content to read. Almost every card in the design is one of these two with rows added or dropped, so each section below shows the family, then its settings.</p>
   </section>
 
   <!-- CARDS · PLATE CARD -->
@@ -226,7 +226,7 @@
 
     <p class="cmp-sub">Rule of use</p>
     <ul class="cmp-notes">
-      <li><span class="cmp-event">The plate means navigation.</span> Use this family wherever the card is a door to a place or a section &mdash; a property, a similar property, a chapter of the site. Content you scan and read uses the editorial card instead.</li>
+      <li><span class="cmp-event">The plate means navigation.</span> Use this family wherever the card is a door to a place or a section, a property, a similar property, a chapter of the site. Content you scan and read uses the editorial card instead.</li>
       <li><span class="cmp-event">Pick by how much the destination needs explaining:</span> the full plate carries a description and an explicit invitation; the property plate carries a name, its district and its type, and nothing else.</li>
       <li>No card in this family sweeps its title. The plate shift <em>is</em> the hover state, which is what separates it from the editorial family at a glance.</li>
     </ul>
@@ -268,14 +268,14 @@
       <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li><span class="cmp-event">Hover / focus (both settings):</span> the image zooms gently over 0.8s, the plate shifts ground instantly, and the arrow on the view row nudges 4px right over 0.35s. The whole card is one link.</li>
-        <li><span class="cmp-event">Full plate:</span> a 260px image above a deep green plate carrying the title, one line of meta or description in softened white, and a lime view row. The plate lightens to green on hover.</li>
+        <li><span class="cmp-event">Hover / focus (both settings):</span> the image zooms gently over 0.8s, the plate shifts ground instantly, and the arrow on the view row nudges right over 0.35s. The whole card is one link.</li>
+        <li><span class="cmp-event">Full plate:</span> an image above a deep green plate carrying the title, one line of meta or description in softened white, and a lime view row. The plate lightens to green on hover.</li>
         <li><span class="cmp-event">Property plate:</span> a 4:3 image above a white plate carrying the name, then a foot row that pushes the meta left and the view row right. The plate fills warm beige on hover; the image zooms 4%. Meta values are separated by an interpunct that is part of the design, not typed content.</li>
-        <li><span class="cmp-event">Property plate, on entry:</span> cards fade up 22px over 0.65s as the grid renders, each one starting 0.06s after the last for the first nine cards. With reduced motion enabled they appear immediately.</li>
-        <li><span class="cmp-event">Choosing between them:</span> the full plate where the destination needs a line of explanation and an explicit invitation &mdash; chapter routing, a featured place. The property plate for the development and property listings, where the name, its district and its type are the whole message.</li>
+        <li><span class="cmp-event">Property plate, on entry:</span> cards fade up into place over 0.65s as the grid renders, each one starting a beat after the last for the first nine cards. With reduced motion enabled they appear immediately.</li>
+        <li><span class="cmp-event">Choosing between them:</span> the full plate where the destination needs a line of explanation and an explicit invitation, chapter routing, a featured place. The property plate for the development and property listings, where the name, its district and its type are the whole message.</li>
         <li><span class="cmp-event">Grids:</span> the full plate fills the column the page gives it. The property plate runs the developments grid: three across, stepping to two on tablet and one on mobile.</li>
-        <li><span class="cmp-event">Responsive:</span> the full plate's insets pull in on mobile so the fixed desktop padding does not swamp a phone-width card; the property plate drops its 4:3 ratio for a fixed 264px image.</li>
-        <li><span class="cmp-event">Where the code lives:</span> the property plate is <code>.dev-card--plate</code>, defined in <code>core-pages/our-work/portfolio.html</code>&rsquo;s own style block rather than in <code>components.css</code>. The rules above are that page&rsquo;s, verbatim.</li>
+        <li><span class="cmp-event">Responsive:</span> the full plate's insets pull in on mobile so the desktop padding does not swamp a phone-width card; the property plate trades its landscape ratio for a shallower fixed-height crop.</li>
+        <li><span class="cmp-event">Source:</span> the property plate is the portfolio page&rsquo;s own variant rather than a shared component; the demo above quotes that page, verbatim.</li>
         </ul>
       </details>
     </div>
@@ -291,7 +291,7 @@
 
     <p class="cmp-sub">Rule of use</p>
     <ul class="cmp-notes">
-      <li><span class="cmp-event">The green title sweep means editorial.</span> Use this family for content the reader scans and reads &mdash; news, awards, stories, businesses &mdash; and for cross-page routing at the end of a section. Doors to a property or a place use the plate card.</li>
+      <li><span class="cmp-event">The green title sweep means editorial.</span> Use this family for content the reader scans and reads, news, awards, stories, businesses, and for cross-page routing at the end of a section. Doors to a property or a place use the plate card.</li>
       <li><span class="cmp-event">One card, seven rows.</span> Every row beneath the image is optional, so the same component runs from a bare title-and-arrow up to the fully loaded card below. Build it by dropping rows, never by restyling them or resetting their order.</li>
       <li>Whatever the setting, the hover is identical: image zoom, green underline sweep, arrow nudge. That consistency is the point of keeping them one family.</li>
     </ul>
@@ -301,7 +301,7 @@
       <div class="cmp-variants">
 
         <div class="cmp-variant">
-          <p class="cmp-variant-label">Full &mdash; every row the card can carry</p>
+          <p class="cmp-variant-label">Full, every row the card can carry</p>
           <a class="business-card" href="#">
             <div class="business-card-image cmp-img"></div>
             <p class="news-meta">
@@ -320,7 +320,7 @@
         </div>
 
         <div class="cmp-variant">
-          <p class="cmp-variant-label">Simplified &mdash; title and arrow only</p>
+          <p class="cmp-variant-label">Simplified, title and arrow only</p>
           <a class="business-card" href="#">
             <div class="business-card-image cmp-img"></div>
             <span class="business-card-title">
@@ -335,17 +335,17 @@
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
         <li><span class="cmp-event">Hover / focus (all settings):</span> the image zooms gently over 0.8s, a green underline sweeps under the title over 0.45s, and the title and read-more arrows nudge right. The whole card is one link.</li>
-        <li><span class="cmp-event">Full setting:</span> the card above carries <strong>every row it can</strong>, so nothing is hidden from the build. No real card uses all of them at once &mdash; drop the rows you do not need and the rest close up on their own margins. The order below is fixed; do not reorder rows to suit a page.</li>
-        <li><span class="cmp-event">1 &middot; Image</span> &mdash; <code>business-card-image</code>. Required. 4/3.4 by default; a page may re-crop it (the onward pair runs 16/7).</li>
-        <li><span class="cmp-event">2 &middot; Meta row</span> &mdash; <code>news-meta</code>, holding <code>news-meta-category</code> in green and <code>news-meta-date</code> in grey. Optional. Used by the news archive and article listings.</li>
-        <li><span class="cmp-event">3 &middot; Title</span> &mdash; <code>business-card-title</code>. Required. This is the row that sweeps. It is a flex row that pushes an optional <code>inline-arrow</code> to its right edge, so anything else placed inside it will be pushed apart too &mdash; the board page adds honours to the title only by overriding it to <code>display: block</code> first.</li>
-        <li><span class="cmp-event">4 &middot; Role</span> &mdash; <code>leader-card-role</code>. Optional. A green sub-title under the name; the board listings use it for a director&rsquo;s role.</li>
-        <li><span class="cmp-event">5 &middot; Description</span> &mdash; <code>business-card-desc</code>. Optional. Grey, capped at a 480px measure regardless of how wide the column runs.</li>
-        <li><span class="cmp-event">6 &middot; Spec row</span> &mdash; <code>stay-spec</code>, holding <code>stay-spec-location</code> in green followed by an interpunct and a free-text detail. Optional. The hotel and residences register uses it for location and room count.</li>
-        <li><span class="cmp-event">7 &middot; Link row</span> &mdash; <code>business-card-link</code>. Optional, and the label is free text: Read more, Visit, View profile. It anchors to the card bottom, so a grid of uneven cards keeps its link rows on one line.</li>
-        <li><span class="cmp-event">Where the code lives:</span> every row above is in <code>components.css</code> except <code>stay-spec</code>, which sits in <code>core-pages/our-work/hospitality-entertainment.html</code>&rsquo;s own style block. The rules used here are that page&rsquo;s, verbatim.</li>
+        <li><span class="cmp-event">Full setting:</span> the card above carries <strong>every row it can</strong>, so nothing is hidden from the build. No real card uses all of them at once. Drop the rows you do not need and the rest close up on their own margins. The order below is fixed; do not reorder rows to suit a page.</li>
+        <li><span class="cmp-event">1 &middot; Image</span>, required. A tall-ish landscape crop by default; a page may re-crop it (the onward pair runs a much wider letterbox, the carousel runs 16:9).</li>
+        <li><span class="cmp-event">2 &middot; Meta row</span>, optional. Category in green beside the date in grey. Used by the news archive and article listings.</li>
+        <li><span class="cmp-event">3 &middot; Title</span>, required. This is the row that sweeps. An optional arrow sits pushed to its right edge, and anything else placed in the row is pushed apart the same way, the board page adds honours to the title only by opting out of that row behaviour first.</li>
+        <li><span class="cmp-event">4 &middot; Role</span>, optional. A green sub-title under the name; the board listings use it for a director&rsquo;s role.</li>
+        <li><span class="cmp-event">5 &middot; Description</span>, optional. Grey, held to a readable measure regardless of how wide the column runs.</li>
+        <li><span class="cmp-event">6 &middot; Spec row</span>, optional. The location in green followed by an interpunct and a free-text detail. The hotel and residences register uses it for location and room count.</li>
+        <li><span class="cmp-event">7 &middot; Link row</span>, optional, and the label is free text: Read more, Visit, View profile. It anchors to the card bottom, so a grid of uneven cards keeps its link rows on one line.</li>
+        <li><span class="cmp-event">Source:</span> every row above is shared except the spec row, which is the hospitality page&rsquo;s own; the demo quotes that page, verbatim.</li>
         <li><span class="cmp-event">Simplified setting:</span> the same component with the meta row, the excerpt and the read-more row dropped, leaving the image and a title carrying an inline arrow. Nothing is restyled. This is the &ldquo;keep exploring&rdquo; row at the end of a page, where the destinations are page names and the title is the whole message.</li>
-        <li><span class="cmp-event">Static setting:</span> used for awards, where the card presents without navigating &mdash; no zoom, no sweep, default cursor. It is a div, not a link.</li>
+        <li><span class="cmp-event">Static setting:</span> used for awards, where the card presents without navigating, no zoom, no sweep, default cursor. It is a div, not a link.</li>
         <li><span class="cmp-event">Grounds:</span> the full setting runs on white. The simplified setting sits on cream by default, and a page may set its own ground.</li>
         <li><span class="cmp-event">Grids:</span> the full setting takes the three-up archive grid; the simplified setting has its own onward grid, three across by default with a two-across variant. Both step to two columns on tablet and one on mobile.</li>
         </ul>
@@ -366,14 +366,14 @@
       <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li>The link above stands in for the card. In production the whole card is the trigger &mdash; the leader cards on the board page &mdash; and it carries <code>aria-haspopup="dialog"</code> so the behaviour is announced rather than read as a link to another page.</li>
+        <li>The link above stands in for the card. In production the whole card is the trigger, the leader cards on the board page, and it announces itself to assistive technology as opening a dialog rather than reading as a link to another page.</li>
         <li><span class="cmp-event">Open:</span> the panel slides in from the right edge over 0.55s on the house easing curve while a deep green scrim fades up behind it over 0.45s. Page scrolling locks, the panel starts at its top, and focus moves to the back row.</li>
-        <li><span class="cmp-event">Layout:</span> an 880px panel against the right edge, full height and scrollable on its own. The back row and the portrait share the top row so the image aligns with the top of the panel; the name and role sit in the 220px left column with the bio beside them.</li>
-        <li><span class="cmp-event">Back row:</span> a grey return link with a left-pointing arrow, standing in for a close button. Hover or focus inks it deep green and nudges the arrow 4px left over 0.35s.</li>
+        <li><span class="cmp-event">Layout:</span> a wide panel against the right edge, full height and scrollable on its own. The back row and the portrait share the top row so the image aligns with the top of the panel; the name and role sit in a narrow left column with the bio beside them.</li>
+        <li><span class="cmp-event">Back row:</span> a grey return link with a left-pointing arrow, standing in for a close button. Hover or focus inks it deep green and nudges the arrow left over 0.35s.</li>
         <li><span class="cmp-event">Close:</span> the back row, a click on the scrim, or Escape. Focus returns to the card that opened it and page scrolling unlocks.</li>
         <li><span class="cmp-event">While open:</span> Tab cycles inside the panel and never reaches the page behind it.</li>
         <li><span class="cmp-event">Content:</span> the panel is a single instance per page; page JS fills the name, role, portrait and bio from the chosen card, so one panel serves the whole listing.</li>
-        <li><span class="cmp-event">Responsive:</span> the panel runs the full width below tablet. On mobile it becomes one column &mdash; portrait, name, role, bio &mdash; with a hairline under the name and the portrait dropping to 340px.</li>
+        <li><span class="cmp-event">Responsive:</span> the panel runs the full width below tablet. On mobile it becomes one column, portrait, name, role, bio, with a hairline under the name and a shorter portrait.</li>
         <li>With reduced motion enabled the panel and scrim appear without the slide or the fade.</li>
         </ul>
       </details>

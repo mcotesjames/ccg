@@ -343,6 +343,26 @@
   transform: translateY(-100%);
 }
 
+/* summoned menu — hidden off-canvas until the top edge is
+   hovered (or the header receives keyboard focus) */
+.site-header.is-preload {
+  transform: translateY(-100%);
+}
+
+.site-header.is-preload:focus-within {
+  transform: translateY(0);
+}
+
+/* invisible strip along the top edge that summons the menu */
+.menu-hover-zone {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 48px;
+  z-index: 19;
+}
+
 .nav {
   height: var(--nav-height);
   padding: 0 var(--page-pad);
@@ -893,11 +913,13 @@ body.menu-open {
   pointer-events: auto;
 }
 
-/* fr ratios land on the design integers (380/304/304/396) at the
-   1512 capture width, and flex proportionally when contained */
+/* fr ratios land on the design integers (480/424/480) at the
+   1512 capture width, and flex proportionally when contained.
+   One link column: short menus (two links) read wrong split
+   across a pair of columns. */
 .mega-grid {
   display: grid;
-  grid-template-columns: minmax(0, 380fr) minmax(0, 304fr) minmax(0, 304fr) minmax(0, 396fr);
+  grid-template-columns: minmax(0, 480fr) minmax(0, 424fr) minmax(0, 480fr);
   padding: 48px var(--page-pad);
 }
 
@@ -933,47 +955,43 @@ body.menu-open {
   line-height: var(--leading-small);
 }
 
+/* the link list is the panel's content, so it takes the house
+   numbered-index treatment (services index, spotlight split
+   rail): serif numerals, content-scale labels, hairline rows */
 .mega-link-list {
   margin: 0;
-  padding: 0 0 0 24px;
-  border-left: 1px solid var(--line);
+  padding: 0;
   list-style: none;
+}
+
+.mega-link-list li + li {
+  border-top: 1px solid var(--line);
 }
 
 .mega-link-list a {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: baseline;
   padding: 12px 0;
-  font-size: 16px;
-  transition: padding-left .28s ease;
-}
-
-
-.mega-link-list a::after {
-  content: "";
-  width: 10px;
-  height: 12px;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   color: var(--green);
-  background: currentColor;
-  -webkit-mask: var(--arrow-mask) center / contain no-repeat;
-  mask: var(--arrow-mask) center / contain no-repeat;
-  opacity: 0;
-  transform: translateX(-5px) rotate(90deg);
-  transition: transform .28s ease;
+  transition: color .2s ease, padding-left .28s ease;
 }
 
+.mega-link-num {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ccg-ground-yellow);
+  font-variant-numeric: tabular-nums;
+}
+
+/* hover keeps to the ink change and the slight shift — no arrow */
 .mega-link-list a:hover,
 .mega-link-list a:focus-visible {
-  color: var(--green);
+  color: var(--green-dark);
   padding-left: 6px;
-}
-
-.mega-link-list a:hover::after,
-.mega-link-list a:focus-visible::after {
-  opacity: 1;
-  transform: translateX(0) rotate(90deg);
 }
 
 .mega-feature-image {
@@ -1162,12 +1180,13 @@ body.menu-open {
    editorial business-card instead. */
 
 .more-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .more-card-image {
   position: relative;
-  height: 260px;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--sand);
 }
@@ -1181,15 +1200,21 @@ body.menu-open {
   transform: scale(1.035);
 }
 
+/* the plate grows to fill the card, so cards in a grid row
+   stay equal height with their view rows pinned to the bottom */
 .more-card-plate {
-  background: var(--green-dark);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  background: var(--green);
   color: #fff;
   padding: 24px 28px 28px;
 }
 
 .more-card:hover .more-card-plate,
 .more-card:focus-visible .more-card-plate {
-  background: var(--green);
+  background: var(--green-dark);
 }
 
 .more-card-plate h3 {
@@ -1206,10 +1231,31 @@ body.menu-open {
   color: var(--ink-inverse-soft);
 }
 
+/* Variant — cream: a quiet plate for non-navigational or
+   lighter groupings; hover warms to sand */
+.more-card--cream .more-card-plate {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.more-card--cream:hover .more-card-plate,
+.more-card--cream:focus-within .more-card-plate {
+  background: var(--sand);
+}
+
+.more-card--cream .more-card-plate h3 {
+  color: var(--green-dark);
+}
+
+.more-card--cream .more-card-plate p {
+  color: var(--grey);
+}
+
 .more-card-view {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  margin-top: auto;
   font-size: 14px;
   line-height: 14px;
   color: var(--lime);
@@ -1229,6 +1275,7 @@ body.menu-open {
   .more-card-plate {
     padding: 20px 20px 24px;
   }
+
 }
 
 /* =============================================================
@@ -1276,7 +1323,7 @@ body.menu-open {
        <div class="offer-card-image"><img …></div>   (empty = sand placeholder)
        <div class="offer-card-body">
          <h3 class="offer-card-title">Title</h3>
-         <p class="offer-card-desc">Description.</p>
+         <p class="offer-card-desc">Description.</p>   (repeatable)
        </div>
      </article> × N
    </div>
@@ -1311,14 +1358,14 @@ body.menu-open {
 
 .offer-card-body {
   flex: 1 1 auto;
-  padding: var(--space-md) var(--space-md) var(--space-lg);
+  padding: var(--space-lg);
   background: #fff;
 }
 
 .offer-card-title {
   margin: 0 0 var(--space-sm);
-  font-size: var(--text-h6);
-  line-height: var(--leading-h6);
+  font-size: var(--text-h5);
+  line-height: var(--leading-h5);
   font-weight: 400;
   color: var(--green-dark);
 }
@@ -1330,6 +1377,10 @@ body.menu-open {
   color: var(--grey);
 }
 
+.offer-card-desc + .offer-card-desc {
+  margin-top: var(--space-sm);
+}
+
 .offer-grid--3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -1337,6 +1388,25 @@ body.menu-open {
 .offer-grid--4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-grid);
+}
+
+/* Variant — static: a grid of non-navigational cards; hover
+   states switch off since nothing is clickable */
+.offer-grid--static .offer-card:hover .offer-card-image img,
+.offer-grid--static .offer-card:focus-within .offer-card-image img,
+.offer-grid--static .more-card:hover .more-card-image img,
+.offer-grid--static .more-card:focus-visible .more-card-image img {
+  transform: none;
+}
+
+.offer-grid--static .more-card:hover .more-card-plate,
+.offer-grid--static .more-card:focus-visible .more-card-plate {
+  background: var(--green);
+}
+
+.offer-grid--static .more-card--cream:hover .more-card-plate,
+.offer-grid--static .more-card--cream:focus-within .more-card-plate {
+  background: var(--cream);
 }
 
 @media (max-width: 1000px) {
@@ -1351,10 +1421,6 @@ body.menu-open {
   .offer-grid--3,
   .offer-grid--4 {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  /* the tight 4-up gap reads cramped once cards stack */
-  .offer-grid--4 {
     gap: var(--space-lg);
   }
 }
@@ -1407,7 +1473,7 @@ body.menu-open {
 }
 
 .business-card-image {
-  aspect-ratio: 4 / 3.4;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--sand);
 }
@@ -2223,6 +2289,51 @@ body.menu-open {
   to {
     transform: scaleX(1);
   }
+}
+
+/* Colourway — light: white ground, cream copy plate. Set on the
+   .service-stage element alongside the base class. */
+.service-stage--light {
+  color: var(--ink);
+}
+
+.service-stage--light .service-tabs--index {
+  border-top-color: var(--line);
+}
+
+.service-stage--light .service-tabs--index .service-tab {
+  border-bottom-color: var(--line);
+  color: var(--grey);
+}
+
+.service-stage--light .service-tabs--index .service-tab:hover,
+.service-stage--light .service-tabs--index .service-tab:focus-visible {
+  color: var(--ink);
+}
+
+.service-stage--light .service-tabs--index .service-tab.is-active {
+  color: var(--ccg-green);
+  border-bottom-color: var(--line);
+}
+
+/* chained class outranks the base .service-stage panel rules
+   that follow this block in the cascade */
+.service-stage.service-stage--light .service-panel-media,
+.service-stage.service-stage--light .service-panel-copy {
+  background: var(--cream);
+}
+
+.service-stage.service-stage--light .service-panel-copy h3 {
+  color: var(--green-dark);
+}
+
+.service-stage.service-stage--light .service-panel-copy p,
+.service-stage.service-stage--light .service-panel-list li {
+  color: var(--grey);
+}
+
+.service-stage.service-stage--light .service-panel-list li::before {
+  background: var(--ccg-green);
 }
 
 /* Split panel — a 16:9 card (816 × 459 at 1512): image left,
@@ -3093,6 +3204,21 @@ body.menu-open {
 
 .filter-display--small .filter-display-item + .filter-display-item::before {
   left: calc(var(--space-md) / -2);
+}
+
+/* Variant — inverse: facet row on dark bands */
+.filter-display--inverse .filter-display-item {
+  color: var(--ink-inverse-soft);
+}
+
+.filter-display--inverse .filter-display-item + .filter-display-item::before {
+  color: var(--ink-inverse-muted);
+}
+
+.filter-display--inverse .filter-display-item:hover,
+.filter-display--inverse .filter-display-item:focus-visible,
+.filter-display--inverse .filter-display-item.is-active {
+  color: var(--ink-inverse);
 }
 
 /* =============================================================
@@ -4872,7 +4998,7 @@ body.menu-open {
 }
 
 .leader-card-role {
-  margin: var(--space-sm) 0 0;
+  margin: 0 0 var(--space-sm);
   font-size: var(--text-small);
   line-height: var(--leading-small);
   color: var(--green);
@@ -5195,6 +5321,151 @@ body.has-drawer-open {
 }
 
 /* =============================================================
+   FILM PLATE — poster film frame with a gold play control
+   =============================================================
+   A 16:9 film poster with the gold-node play button centred on
+   it. Pages set the width: framed within the page pad, or full
+   bleed. Wire the button to the player when film assets land.
+
+   <div class="film-plate">
+     <img src="…poster…" alt="">
+     <div class="film-plate-overlay">
+       <button class="play-gold" type="button" aria-label="Play …"></button>
+     </div>
+   </div> */
+
+.film-plate {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--green-dark);
+}
+
+.film-plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .8s cubic-bezier(.22,.61,.36,1);
+}
+
+.film-plate:hover img,
+.film-plate:focus-within img {
+  transform: scale(1.02);
+}
+
+.film-plate-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* the timeline's gold node grown into a control */
+.play-gold {
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ccg-gold);
+  cursor: pointer;
+  transition: transform .3s cubic-bezier(.22,.61,.36,1);
+}
+
+.play-gold::before {
+  content: "";
+  margin-left: 5px;
+  border-left: 18px solid #fff;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+}
+
+.play-gold:hover,
+.play-gold:focus-visible {
+  transform: scale(1.08);
+}
+
+@media (max-width: 680px) {
+  .play-gold {
+    width: 64px;
+    height: 64px;
+  }
+
+  .play-gold::before {
+    margin-left: 4px;
+    border-left: 14px solid #fff;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+  }
+}
+
+/* =============================================================
+   TEXT PLATE — generic rich-text notice module
+   =============================================================
+   The general text block: quieter than the page-intro statement.
+   A cream plate carrying a title, prose and an optional
+   link-arrow route. Suits notices, policies and contact routes.
+
+   <section class="text-block">
+     <div class="text-block-plate">
+       <h2 class="text-block-title">Title</h2>
+       <p>Prose.</p> × N
+       <a class="link-arrow" href="…">Route</a>   (optional)
+     </div>
+   </section>
+
+   Sits on white; the plate provides its own ground. */
+
+.text-block {
+  padding: var(--space-section-standard) var(--page-pad);
+  background: #fff;
+}
+
+.text-block p {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--ink);
+}
+
+.text-block p + p {
+  margin-top: var(--space-md);
+}
+
+.text-block a {
+  color: var(--ccg-green);
+}
+
+.text-block-plate {
+  padding: var(--space-xl);
+  background: var(--cream);
+}
+
+.text-block-title {
+  margin: 0 0 var(--space-lg);
+  font-size: var(--text-h4);
+  line-height: var(--leading-h4);
+  font-weight: 400;
+  color: var(--green-dark);
+}
+
+.text-block-plate .link-arrow {
+  margin-top: var(--space-lg);
+}
+
+@media (max-width: 680px) {
+  .text-block-plate {
+    padding: var(--space-lg);
+  }
+
+  .text-block-title {
+    margin-bottom: var(--space-md);
+  }
+}
+
+/* =============================================================
    ONWARD / QUICK LINKS — editorial cross-page navigation
    =============================================================
    The standard "keep exploring" block: a section-header over a
@@ -5219,10 +5490,6 @@ body.has-drawer-open {
 
 .onward--white {
   background-color: #fff;
-}
-
-.onward .business-card-image {
-  aspect-ratio: 4/3.4;
 }
 
 .onward-grid {
@@ -5253,16 +5520,8 @@ body.has-drawer-open {
    SCROLL REVEAL
    ============================================================= */
 
-.reveal {
-  opacity: 0;
-  transform: translateY(26px);
-  transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
-}
-
-.reveal.is-in {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* Motion system pending: .reveal is currently inert — pages keep
+   the class and their observers, ready for the new grammar. */
 
 /* =============================================================
    FOOTER
@@ -5594,9 +5853,4 @@ footer {
       animation-delay: 0s;
     }
 
-  .reveal {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
 }

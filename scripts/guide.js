@@ -1,64 +1,64 @@
 /* =============================================================
-   COMPONENT GUIDE — SHARED CHROME BEHAVIOUR
+   COMPONENT GUIDE - SHARED CHROME BEHAVIOUR
    =============================================================
    Loads on every guide page after ../scripts/components.js.
    Page-specific demo wiring stays in that page's own <script>. */
 
 /* Aside navigation: authored once here, injected on every page.
    Each page entry becomes a disclosure whose sub-items are that
-   page's components — the links the reader actually navigates by.
+   page's components - the links the reader actually navigates by.
    Adding a component to the guide means adding one line here. */
 const GUIDE_NAV = [
-  { label: "Library", pages: [
+  { label: "Library", intro: "Reusable components, one page per category. Every stage is the production component. Open a category, or jump straight to a component.", pages: [
     { file: "components.html", name: "Guide home" },
-    { file: "actions.html", name: "Actions", components: [
+    { file: "actions.html", desc: "Buttons, links and filter controls. Everything the user presses.", name: "Actions", components: [
       ["cmp-ctas", "CTAs & links"],
       ["cmp-status-tabs", "Status tabs"],
       ["cmp-text-filter", "Text filter"],
       ["cmp-category-pills", "Category pills"],
       ["cmp-dropdown", "Dropdown select"]
     ]},
-    { file: "chrome.html", name: "Chrome", components: [
+    { file: "chrome.html", desc: "The shared page shell. One source, identical on every page.", name: "Chrome", components: [
       ["cmp-nav", "Site navigation"],
       ["cmp-footer", "Footer"],
       ["cmp-hero-parallax", "Hero parallax"]
     ]},
-    { file: "carousels.html", name: "Carousels", components: [
+    { file: "carousels.html", desc: "Three track behaviours: free-running, stepped auto-advance, and paged.", name: "Carousels", components: [
       ["cmp-showcase-carousel", "Showcase carousel"],
       ["cmp-stats-carousel", "Stats carousel"],
       ["cmp-card-carousel", "Manual carousel"]
     ]},
-    { file: "spotlights.html", name: "Spotlights", components: [
+    { file: "spotlights.html", desc: "Full-band story rotators. Stories cross-fade in place, never tracking sideways.", name: "Spotlights", components: [
       ["cmp-cover-story", "Cover story"],
       ["cmp-spotlight-split", "Spotlight split"]
     ]},
-    { file: "cards.html", name: "Cards", components: [
+    { file: "cards.html", desc: "Two families, one rule: the plate is a door to a place; the title sweep is content to read.", name: "Cards", components: [
       ["cmp-plate-card", "Plate card"],
       ["cmp-editorial-card", "Editorial card"],
       ["cmp-card-drawer", "Card slide-out"]
     ]},
-    { file: "page-utilities.html", name: "Page utilities", components: [
+    { file: "page-utilities.html", desc: "Small page-level furniture that supports orientation and flow.", name: "Page utilities", components: [
       ["cmp-breadcrumb", "Breadcrumb"]
     ]},
-    { file: "content-blocks.html", name: "Content blocks", components: [
+    { file: "content-blocks.html", desc: "General page-building modules: figures, rows and editorial splits.", name: "Content blocks", components: [
       ["cmp-stat-cell", "Stat cell"],
       ["cmp-accordion", "Accordion"]
     ]},
-    { file: "forms.html", name: "Forms", components: [
+    { file: "forms.html", desc: "The house treatment is the underline: a caption label over a line, no boxes.", name: "Forms", components: [
       ["cmp-form-text", "Text fields"],
       ["cmp-form-select", "Select field"],
       ["cmp-form-choice", "Choice controls"],
       ["cmp-form-declarations", "Declarations block"]
     ]}
   ]},
-  { label: "Page modules", pages: [
-    { file: "modules-our-work.html", name: "Our work", components: [
+  { label: "Page modules", intro: "Fixed page-specific assemblies with behaviour of their own, one page per site section. Take a module whole: layout, timings and keyboard handling are one piece.", pages: [
+    { file: "modules-our-work.html", desc: "Services index and the assemblies to come from the Our Work pages.", name: "Our work", components: [
       ["cmp-services-index", "Services index"]
     ]},
-    { file: "modules-our-impact.html", name: "Our impact", components: [
+    { file: "modules-our-impact.html", desc: "The people spotlight framing, and future Our Impact assemblies.", name: "Our impact", components: [
       ["cmp-people-spotlight", "People spotlight"]
     ]},
-    { file: "modules-contact-us.html", name: "Contact us", components: [
+    { file: "modules-contact-us.html", desc: "The sticky enquiry panel beside the contact form.", name: "Contact us", components: [
       ["cmp-sticky-panel", "Sticky enquiry panel"]
     ]}
   ]}
@@ -107,6 +107,39 @@ ${links}
       a.classList.toggle("is-active", a.getAttribute("href") === target);
     });
   });
+})();
+
+/* Guide home directory: rendered from the same GUIDE_NAV so the
+   hub can never drift from the asides. Only components.html
+   carries the #dirRoot container. */
+(function buildDirectory() {
+  const root = document.querySelector("#dirRoot");
+  if (!root) return;
+
+  root.innerHTML = GUIDE_NAV.map(group => {
+    const pages = group.pages.filter(page => page.components);
+    const componentCount = pages.reduce((n, page) => n + page.components.length, 0);
+
+    const cards = pages.map((page, i) => `
+      <article class="dir-card">
+        <p class="dir-num" aria-hidden="true">${String(i + 1).padStart(2, "0")}</p>
+        <h3 class="dir-title"><a href="${page.file}">${page.name}</a></h3>
+        <p class="dir-desc">${page.desc}</p>
+        <nav class="dir-links" aria-label="${page.name} components">
+          ${page.components.map(([id, name]) => `<a href="${page.file}#${id}">${name}</a>`).join("\n          ")}
+        </nav>
+      </article>`).join("");
+
+    return `
+    <section class="dir-group" aria-label="${group.label}">
+      <div class="dir-group-head">
+        <p class="eyebrow">${group.label} \u00b7 ${pages.length} pages \u00b7 ${componentCount} ${group.label === "Library" ? "components" : "modules"}</p>
+        <p class="dir-group-intro">${group.intro}</p>
+      </div>
+      <div class="dir-grid">${cards}
+      </div>
+    </section>`;
+  }).join("");
 })();
 
 function setAside(open) {

@@ -122,10 +122,10 @@
       <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li><span class="cmp-event">Count-up:</span> the figure animates from zero to its value the first time the cell scrolls into view, once only &mdash; 2s on an expo ease-out, so it moves fast early and glides into its final value; decimal figures animate with their precision. With reduced motion enabled the final value shows immediately.</li>
-        <li><span class="cmp-event">Anatomy:</span> a green line-drawn icon centred on a 56px cream plate, the number at a large display scale in tabular numerals with its unit running inline beside it in green, and a one-line ink-black label held to a readable measure.</li>
+        <li><span class="cmp-event">Count-up:</span> the figure animates from zero to its value the first time the cell scrolls into view, once only, 2s on an expo ease-out, so it moves fast early and glides into its final value; decimal figures animate with their precision. With reduced motion enabled the final value shows immediately.</li>
+        <li><span class="cmp-event">Anatomy:</span> a green line-drawn icon centred on a small square cream plate, the number at the h1 scale in tabular numerals with its unit running inline beside it in green, and a one-line ink-black label held to a readable measure.</li>
         <li><span class="cmp-event">Framing:</span> cells sit in a hairline grid where the outer frame and inner dividers never double up.</li>
-        <li><span class="cmp-event">Grids:</span> three columns as standard &mdash; shown here at the full six-cell module, two rows of three &mdash; or a centred four-up row (<code>portfolio-stats-grid--row</code>); both step to two columns on tablet and pairs on mobile.</li>
+        <li><span class="cmp-event">Grids:</span> three columns as standard, shown here at the full six-cell module, two rows of three, or a centred four-up row variant; both step to two columns on tablet and pairs on mobile.</li>
         <li>The number runs at the h1 scale, so it steps down with the type ramp at each breakpoint.</li>
       </ul>
       </details>
@@ -146,7 +146,7 @@
 
         <details class="faq-item" open>
           <summary class="faq-question">
-            A question, shown open &mdash; the first item ships expanded
+            A question, shown open, the first item ships expanded
             <span class="faq-toggle" aria-hidden="true"></span>
           </summary>
           <p class="faq-answer">The answer sits beneath the question in grey at a relaxed reading rhythm, indented from the question and held to a 780px measure however wide the column runs.</p>
@@ -157,7 +157,7 @@
             A closed question
             <span class="faq-toggle" aria-hidden="true"></span>
           </summary>
-          <p class="faq-answer">Opening this one does not close the one above &mdash; any number of items can be open at once.</p>
+          <p class="faq-answer">Opening this one does not close the one above, any number of items can be open at once.</p>
         </details>
 
         <details class="faq-item">
@@ -185,16 +185,16 @@
       <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li><span class="cmp-event">No JavaScript.</span> This is a native <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code> pair. Open and close, keyboard operation, and the screen-reader announcement all come from the browser &mdash; there is nothing to bind and nothing to initialise. Do not reimplement it with a click handler.</li>
+        <li><span class="cmp-event">No JavaScript.</span> This is the browser's native disclosure element. Open and close, keyboard operation, and the screen-reader announcement all come from the browser, there is nothing to bind and nothing to initialise. Do not reimplement it with a click handler.</li>
         <li><span class="cmp-event">Open / close:</span> the panel snaps; there is no height animation. Native disclosure cannot animate its own height, and no attempt is made to fake one. Only the toggle animates.</li>
-        <li><span class="cmp-event">The toggle:</span> a 32px hairline square carrying a plus drawn from two 1px bars. Opening fills it deep green with a white plus, and the vertical bar rotates flat over 0.3s on the house easing curve, leaving a minus. The square is decorative and hidden from assistive tech &mdash; the summary already announces its own state.</li>
+        <li><span class="cmp-event">The toggle:</span> a small hairline square carrying a plus drawn from two thin bars. Opening fills it deep green with a white plus, and the vertical bar rotates flat over 0.3s on the house easing curve, leaving a minus. The square is decorative and hidden from assistive tech, the summary already announces its own state.</li>
         <li><span class="cmp-event">Hover:</span> the question moves from deep green to green over 0.25s. The whole summary row is the target, not just the words.</li>
-        <li><span class="cmp-event">Several open at once:</span> the native default is kept &mdash; opening one item never closes another. There is no single-open variant, so do not assume one.</li>
+        <li><span class="cmp-event">Several open at once:</span> the native default is kept, opening one item never closes another. There is no single-open variant, so do not assume one.</li>
         <li><span class="cmp-event">Opening state:</span> the first item ships open, so the block never presents as a wall of closed rows.</li>
-        <li><span class="cmp-event">Anatomy:</span> a hairline above every item and one below the last. The question runs at lead size with the toggle pushed to the right edge and centred against the row; the answer is grey, indented 24px and capped at 780px. On mobile that indent goes and the answer sits flush.</li>
-        <li><span class="cmp-event">Closing row:</span> optional, and not part of the accordion &mdash; a note left, a secondary link CTA right, wrapping when the pair will not fit. Both current uses route the reader on rather than leaving them at a dead end.</li>
+        <li><span class="cmp-event">Anatomy:</span> a hairline above every item and one below the last. The question runs at lead size with the toggle pushed to the right edge and centred against the row; the answer is grey, gently indented and held to a readable measure. On mobile that indent goes and the answer sits flush.</li>
+        <li><span class="cmp-event">Closing row:</span> optional, and not part of the accordion, a note left, a secondary link CTA right, wrapping when the pair will not fit. Both current uses route the reader on rather than leaving them at a dead end.</li>
         <li><span class="cmp-event">Keyboard:</span> the summary is focusable by default and toggles on Enter or Space. The default marker is suppressed for WebKit, which is what lets the custom toggle stand in for it.</li>
-        <li><span class="cmp-event">Where the code lives:</span> <code>components.css</code>, under ACCORDION. The pages supply only the section band around it &mdash; its padding and its ground, which is cream on the contact page and white on the internship page.</li>
+        <li><span class="cmp-event">Source:</span> a shared component. The pages supply only the section band around it, its padding and its ground, which is cream on the contact page and white on the internship page.</li>
         </ul>
       </details>
     </div>

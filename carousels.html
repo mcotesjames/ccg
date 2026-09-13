@@ -20,10 +20,10 @@
 
   <style>
     /* =============================================
-       DEMO SUPPORT — CAROUSELS
+       DEMO SUPPORT - CAROUSELS
        Shared gallery chrome lives in styles/guide.css.
        This block holds only the styles that support
-       this page's demos — production values quoted
+       this page's demos - production values quoted
        from the pages named on each chunk.
     ============================================= */
 
@@ -497,8 +497,8 @@
     <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li><span class="cmp-event">Resting track:</span> no auto-scroll &mdash; the track sits still until dragged or stepped, and loops seamlessly and endlessly in both directions.</li>
-        <li><span class="cmp-event">Control bar:</span> the standard count &middot; progress &middot; arrows row. The count is driver-owned on the shared logic &mdash; positions the track can rest at &mdash; and the marquee loop makes every card a resting position, so the total is the property count. The count and thumb tick live as cards pass the left edge, dragged or stepped; the thumb spans one slide (100&percnt; / count).</li>
+        <li><span class="cmp-event">Resting track:</span> no auto-scroll, the track sits still until dragged or stepped, and loops seamlessly and endlessly in both directions.</li>
+        <li><span class="cmp-event">Control bar:</span> the standard count &middot; progress &middot; arrows row. The count is driver-owned on the shared logic, positions the track can rest at, and the marquee loop makes every card a resting position, so the total is the property count. The count and thumb tick live as cards pass the left edge, dragged or stepped; the thumb spans exactly one slide of the track.</li>
         <li><span class="cmp-event">Arrows:</span> step one card, easing the track to the next boundary. With reduced motion the step is an instant jump.</li>
         <li><span class="cmp-event">Drag:</span> pressing scrubs the track 1:1 with the pointer, cancelling any arrow step in flight. Small movements still count as clicks; larger drags never open a card.</li>
         <li><span class="cmp-event">Hover a card:</span> the image zooms gently over 0.8s; the green plate deepens instantly.</li>
@@ -506,7 +506,7 @@
         <li><span class="cmp-event">Click a card:</span> opens the detail modal, a full-screen dialog over a blurred deep-green scrim. The panel rises and settles over 0.55s while the hero image eases from a slight zoom to rest.</li>
         <li><span class="cmp-event">While open:</span> page scrolling locks and keyboard focus stays inside the dialog.</li>
         <li><span class="cmp-event">Close:</span> the cross button, a click on the backdrop, or Escape; focus returns to the card that opened it.</li>
-        <li><span class="cmp-event">Responsive:</span> cards run 364px wide with a tall image crop on desktop, stepping down on mobile.</li>
+        <li><span class="cmp-event">Responsive:</span> cards run at a fixed width with a square image crop on desktop, stepping down slightly on mobile.</li>
         <li>With reduced motion enabled the arrow step lands instantly instead of easing; drag is unaffected.</li>
       </ul>
       </details>
@@ -571,7 +571,7 @@
         <ul class="cmp-notes">
         <li><span class="cmp-event">Autoplay:</span> steps one stat every 3 seconds; each step slides the track over 0.8s on the house easing curve. Pressing an arrow moves immediately and restarts the timer.</li>
         <li><span class="cmp-event">Endless:</span> the loop continues in both directions with no visible rewind.</li>
-        <li><span class="cmp-event">UI:</span> the count shows the current position, zero-padded, and its total is driver-owned like the manual carousel's &mdash; positions the track can rest at. Because the seamless loop makes every card a resting position, that total equals the slide count at every width. The thumb spans one slide (100&percnt; / count) and advances by its own width per step.</li>
+        <li><span class="cmp-event">UI:</span> the count shows the current position, zero-padded, and its total is driver-owned like the manual carousel's, positions the track can rest at. Because the seamless loop makes every card a resting position, that total equals the slide count at every width. The thumb spans exactly one slide of the track and advances by its own width per step.</li>
         <li><span class="cmp-event">Responsive:</span> four stats visible on desktop, two on tablet, one on mobile; numbers sit in warm beige at a display scale, bottom-right of each cell, with hairline dividers between cells.</li>
         <li>With reduced motion enabled the autoplay never starts; the arrows still work.</li>
       </ul>
@@ -666,9 +666,9 @@
         <ul class="cmp-notes">
         <li><span class="cmp-event">Arrows / drag:</span> one card per step over 0.7s on the house easing curve; the track drags 1:1 with grab cursors and snaps to the nearest card on release. The page still scrolls vertically over it.</li>
         <li><span class="cmp-event">Ends:</span> this carousel stops at either end; it does not loop, unlike the stats carousel.</li>
-        <li><span class="cmp-event">On move:</span> the zero-padded count updates and the green progress thumb repositions along the hairline. The count is <strong>positions, not cards</strong>: the total is how many places the track can rest at (cards &minus; visible + 1, recomputed on resize), so three-up with six cards reads 01 / 04 and ends on 04 / 04.</li>
-        <li><span class="cmp-event">Cards:</span> the <a href="cards.html#cmp-editorial-card">editorial full card</a> in its static setting, with the title arrow, role and spec rows dropped &mdash; image, meta row, title, excerpt and read-more remain &mdash; and the image re-cropped from the family's 4/3.4 default to 16/9 for the track.</li>
-        <li><span class="cmp-event">Hover a card:</span> the read-more arrow nudges right. The static setting drops the image zoom and the title sweep &mdash; inside a drag track the card presents rather than navigates.</li>
+        <li><span class="cmp-event">On move:</span> the zero-padded count updates and the green progress thumb repositions along the hairline. The count is <strong>positions, not cards</strong>: the total is how many places the track can rest at, recomputed on resize, so three-up with six cards reads 01 / 04 and ends on 04 / 04.</li>
+        <li><span class="cmp-event">Cards:</span> the <a href="cards.html#cmp-editorial-card">editorial full card</a> in its static setting, with the title arrow, role and spec rows dropped, image, meta row, title, excerpt and read-more remain, and the image re-cropped from the family's 4/3.4 default to 16/9 for the track.</li>
+        <li><span class="cmp-event">Hover a card:</span> the read-more arrow nudges right. The static setting drops the image zoom and the title sweep, inside a drag track the card presents rather than navigates.</li>
         <li><span class="cmp-event">Responsive:</span> three cards across on desktop, two on tablet, one on mobile, where each card sits slightly short of the column so the next peeks in.</li>
       </ul>
       </details>

@@ -1,5 +1,5 @@
 /* =============================================================
-   COMPONENT GUIDE — SHARED CHROME
+   COMPONENT GUIDE - SHARED CHROME
    =============================================================
    The gallery shell used by every guide page: components.html
    (the library) and the modules-*.html satellites (page-specific
@@ -442,8 +442,11 @@
 }
 
 /* cover header */
+/* the cover bleeds to the viewport edge; its content stays on
+   the container's own gutters */
 .cmp-cover {
-  padding: var(--space-section-standard) var(--page-pad);
+  margin-inline: calc(50% - 50vw);
+  padding: var(--space-section-standard) calc(50vw - 50% + var(--page-pad));
   background: var(--green-dark);
   color: var(--ink-inverse);
   position: relative;
@@ -495,4 +498,126 @@
   font-size: var(--text-small);
   line-height: var(--leading-small);
   color: var(--ink-inverse);
+}
+
+/* ---------------------------------------------
+   GUIDE HOME DIRECTORY - cards on a light ground,
+   hairline-framed like the stat grid, rendered by
+   scripts/guide.js from GUIDE_NAV.
+--------------------------------------------- */
+
+.dir-group {
+  padding: var(--space-section-compact) var(--page-pad);
+  background: #fff;
+}
+
+.dir-group + .dir-group {
+  padding-top: 0;
+}
+
+.dir-group-head {
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+}
+
+.dir-group-head .eyebrow {
+  margin: 0 0 var(--space-2xs);
+  color: var(--green);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+.dir-group-intro {
+  margin: 0;
+  max-width: 560px;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--grey);
+}
+
+/* hairline grid: outer frame from the grid, inner
+   dividers from the cells - lines never double up */
+.dir-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-left: 1px solid var(--line);
+}
+
+.dir-card {
+  padding: var(--space-lg) var(--space-lg) var(--space-xl);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.dir-num {
+  margin: 0 0 var(--space-md);
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: var(--text-h5);
+  line-height: var(--leading-h5);
+  color: var(--ccg-ground-yellow);
+  font-variant-numeric: tabular-nums;
+}
+
+.dir-title {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--text-h5);
+  line-height: var(--leading-h5);
+  font-weight: 400;
+}
+
+.dir-title a {
+  color: var(--green-dark);
+  transition: color .2s ease;
+}
+
+.dir-title a:hover,
+.dir-title a:focus-visible {
+  color: var(--green);
+}
+
+.dir-desc {
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--grey);
+}
+
+/* component rows share the nav's hover affordance:
+   ink change and a slight shift, no arrow */
+.dir-links {
+  border-top: 1px solid var(--line);
+}
+
+.dir-links a {
+  display: block;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--green);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  transition: padding-left .28s ease, color .2s ease;
+}
+
+.dir-links a:hover,
+.dir-links a:focus-visible {
+  color: var(--green-dark);
+  padding-left: 6px;
+}
+
+@media (max-width: 1000px) {
+  .dir-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .dir-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dir-card {
+    padding: var(--space-md) var(--space-md) var(--space-lg);
+  }
 }

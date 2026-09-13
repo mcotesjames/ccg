@@ -21,7 +21,7 @@
        ENQUIRY LAYOUT + ROUTING PANEL
        Source: core-pages/contact-us/contact.html,
        verbatim. The form column is replaced by a
-       plain placeholder block — the panel is the
+       plain placeholder block - the panel is the
        component under demonstration.
        872px form + 448px panel + 64px gap = 1384
     --------------------------------------------- */
@@ -36,7 +36,7 @@
       grid-template-columns: minmax(0, 1fr) 448px;
       gap: var(--space-layout);
       /* WITHOUT THIS the panel stretches the full row height and
-         position:sticky has nothing to travel inside — it looks
+         position:sticky has nothing to travel inside - it looks
          applied but never sticks. */
       align-items: start;
     }
@@ -111,7 +111,7 @@
     }
 
     @media (max-width: 680px) {
-      /* panel reads as a footnote to the form on phones — static,
+      /* panel reads as a footnote to the form on phones - static,
          after the form, not stuck */
       .enquiry-panel {
         position: static;
@@ -120,7 +120,7 @@
     }
 
     /* ---------------------------------------------
-       DEMO SCAFFOLD — stands in for the form column
+       DEMO SCAFFOLD - stands in for the form column
        and gives the frame something to scroll past
     --------------------------------------------- */
 
@@ -147,7 +147,7 @@
     }
 
     /* the closing band must be tall enough that the frame can
-       scroll past the panel's release point — otherwise the
+       scroll past the panel's release point - otherwise the
        panel sticks and the demo never shows it letting go */
     .demo-band--tall {
       min-height: 400px;
@@ -158,7 +158,7 @@
 <body>
 
   <section class="demo-band">
-    <p>Scroll this frame &mdash; the panel on the right holds while the form column runs past it.</p>
+    <p>Scroll this frame, the panel on the right holds while the form column runs past it.</p>
   </section>
 
   <section class="enquiry">

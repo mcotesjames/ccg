@@ -20,10 +20,10 @@
 
   <style>
     /* =============================================
-       DEMO SUPPORT — ACTIONS
+       DEMO SUPPORT - ACTIONS
        Shared gallery chrome lives in styles/guide.css.
        This block holds only the styles that support
-       this page's demos — production values quoted
+       this page's demos - production values quoted
        from the pages named on each chunk.
     ============================================= */
 
@@ -185,7 +185,7 @@
         <ul class="cmp-notes">
         <li><span class="cmp-event">Hover / focus (primary):</span> the lime fill sweeps into the arrow chamber from the left over 0.4s on the house easing curve; the arrow flips to deep green.</li>
         <li><span class="cmp-event">Hover / focus (secondary link):</span> a green underline sweeps left to right over 0.45s, replacing the resting hairline.</li>
-        <li><span class="cmp-event">Hover / focus (link arrow):</span> the arrow nudges 5px right over 0.35s; no underline.</li>
+        <li><span class="cmp-event">Hover / focus (link arrow):</span> the arrow nudges right over 0.35s; no underline.</li>
       </ul>
       </details>
     </div>
@@ -247,7 +247,7 @@
     </div>
 
     <div class="cmp-stage">
-      <p class="cmp-sub">Scroll or drag the rows &mdash; switch viewport to see the overflow</p>
+      <p class="cmp-sub">Scroll or drag the rows, switch viewport to see the overflow</p>
       <div class="cmp-vp-controls" role="group" aria-label="Demo viewport width" data-vp-controls="#cmpFilterViewport">
         <button class="cmp-vp-btn is-active" type="button" data-vp="desktop" aria-pressed="true">Desktop viewport</button>
         <button class="cmp-vp-btn" type="button" data-vp="mobile" aria-pressed="false">Mobile viewport &middot; 414px</button>
@@ -257,13 +257,13 @@
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
         <li>The frame above is a real viewport running the production component inside the wrappers the news archive and portfolio browser put around it. The gold dashed rule marks the content edge, so the row's behaviour at that edge is visible rather than guessed at.</li>
-        <li><span class="cmp-event">Overflow:</span> a set that outgrows its column scrolls horizontally within the row &mdash; the same treatment the service tabs use. Switch to the mobile viewport and drag the six-option row sideways; the three-option row above it fits and stays put.</li>
+        <li><span class="cmp-event">Overflow:</span> a set that outgrows its column scrolls horizontally within the row, the same treatment the service tabs use. Switch to the mobile viewport and drag the six-option row sideways; the three-option row above it fits and stays put.</li>
         <li><span class="cmp-event">Drag:</span> a row that overflows can be dragged with the pointer, scrubbing 1:1. Touch and trackpads can already flick a scroll container; a mouse cannot, so this exists for mouse users and is skipped entirely on rows that fit.</li>
-        <li><span class="cmp-event">Drag versus click:</span> movement under 5px is still a click and selects the filter. Past that the gesture becomes a drag, the cursor turns to a closed hand, text selection is suppressed, and the click that follows the release is swallowed &mdash; so dragging a row never changes the filter by accident.</li>
+        <li><span class="cmp-event">Drag versus click:</span> a small movement still counts as a click and selects the filter. Past that the gesture becomes a drag, the cursor turns to a closed hand, text selection is suppressed, and the click that follows the release is swallowed, so dragging a row never changes the filter by accident.</li>
         <li><span class="cmp-event">No scrollbar:</span> the scrollbar is hidden on purpose, so the row reads as text rather than as a control. The options that run past the edge are the affordance: never let the last visible option end flush with the column, or the row looks complete when it is not.</li>
-        <li><span class="cmp-event">Never centre this row.</span> The row must stay left-aligned at every width. Centring an overflowing row overflows it at <em>both</em> ends, pushing the first options past the left edge where scrolling cannot reach them &mdash; and a scroll container cannot rescue what sits before its own origin.</li>
+        <li><span class="cmp-event">Never centre this row.</span> The row must stay left-aligned at every width. Centring an overflowing row overflows it at <em>both</em> ends, pushing the first options past the left edge where scrolling cannot reach them, and a scroll container cannot rescue what sits before its own origin.</li>
         <li><span class="cmp-event">Below tablet width:</span> the filter row and the year dropdown stop sitting side by side and stack, the row aligning left and the dropdown stretching to full width.</li>
-        <li><span class="cmp-event">Sizing:</span> at the 402 design width the content column is 354px, which shows roughly three to four short labels before the row starts scrolling. That is a display limit, not a content limit &mdash; the set can run as long as it needs to.</li>
+        <li><span class="cmp-event">Sizing:</span> at phone width the row shows roughly three to four short labels before it starts scrolling. That is a display limit, not a content limit, the set can run as long as it needs to.</li>
         <li><span class="cmp-event">Small variant:</span> narrow enough that the portfolio's three-option facet clears mobile without scrolling.</li>
       </ul>
       </details>

@@ -21,7 +21,7 @@
        HOME HERO + SCROLL-LINKED EXIT
        Source: index.html, verbatim. The lockup and
        video are replaced by placeholder copy and the
-       poster frame — the scroll behaviour is the
+       poster frame - the scroll behaviour is the
        component under demonstration.
     --------------------------------------------- */
 
@@ -50,14 +50,14 @@
       z-index: 1;
       pointer-events: none;
       background:
-        /* top scrim — keeps the nav + logo legible over the video */
+        /* top scrim - keeps the nav + logo legible over the video */
         linear-gradient(
           180deg,
           rgba(5, 25, 29, .76) 0%,
           rgba(5, 25, 29, .45) 120px,
           rgba(5, 25, 29, 0) 280px
         ),
-        /* foot scrim — anchors the lockup + CTA; the mid-frame
+        /* foot scrim - anchors the lockup + CTA; the mid-frame
            stays untouched */
         linear-gradient(
           0deg,
@@ -91,7 +91,7 @@
     }
 
     /* ---------------------------------------------
-       DEMO FURNITURE — this page's own. A simplified
+       DEMO FURNITURE - this page's own. A simplified
        hero-content stands in for the lockup, and two
        placeholder bands supply the scroll runway the
        effect needs.
@@ -157,12 +157,12 @@
 
   <section class="runway">
     <p class="eyebrow">Scroll runway</p>
-    <p>Keep scrolling and watch the seam above: this band slides up and <em>over</em> the hero, because the hero keeps half of each scrolled pixel and everything after it rides at a higher z-index. The scrim is already fading the photograph towards dark behind you.</p>
+    <p>Keep scrolling and watch the seam above: this band slides up and <em>over</em> the hero, because the hero keeps only half of each scrolled pixel while everything after it rides above. The scrim is already fading the photograph towards dark behind you.</p>
   </section>
 
   <section class="runway runway--cream">
     <p class="eyebrow">Scroll runway</p>
-    <p>By the time this band reaches the top of the viewport the hero's foot has cleared it, and the scrim has landed at its 0.8 ceiling &mdash; scroll back up slowly to watch the photograph re-emerge.</p>
+    <p>By the time this band reaches the top of the viewport the hero's foot has cleared it and the scrim has settled at full strength. Scroll back up slowly to watch the photograph re-emerge.</p>
   </section>
 
   <script>

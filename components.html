@@ -19,41 +19,12 @@
 
   <style>
     /* =============================================
-       GUIDE HOME — DIRECTORY
-       The hub carries no demos: every band routes to
-       a category page (library) or a page-module
-       page. Shared chrome lives in styles/guide.css.
+       GUIDE HOME - DIRECTORY
+       The hub carries no demos: the directory below
+       is rendered by scripts/guide.js from GUIDE_NAV,
+       the same single source as every aside. Styles
+       live in styles/guide.css (.dir-*).
     ============================================= */
-
-    .cmp-category + .cmp-category {
-      border-top: 1px solid var(--line-dark);
-    }
-
-    .cmp-category h2 a {
-      color: inherit;
-    }
-
-    .cmp-category h2 a:hover,
-    .cmp-category h2 a:focus-visible {
-      color: var(--lime);
-    }
-
-    .cmp-dir {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-2xs) var(--space-md);
-      margin-top: var(--space-sm);
-    }
-
-    .cmp-dir a {
-      font-size: var(--text-small);
-      line-height: var(--leading-small);
-    }
-
-    .cmp-dir a:hover,
-    .cmp-dir a:focus-visible {
-      color: var(--ink-inverse);
-    }
   </style>
 </head>
 
@@ -92,104 +63,7 @@
     </div>
   </header>
 
-  <!-- ═══ CATEGORY · ACTIONS ═══ -->
-  <section class="cmp-category" aria-label="Category: Actions">
-    <p class="eyebrow">Category</p>
-    <h2><a href="actions.html">Actions</a></h2>
-    <p>Buttons, links and filter controls. Everything the user presses.</p>
-    <nav class="cmp-dir" aria-label="Actions components">
-      <a href="actions.html#cmp-ctas">CTAs &amp; links</a>
-      <a href="actions.html#cmp-status-tabs">Status tabs</a>
-      <a href="actions.html#cmp-text-filter">Text filter</a>
-      <a href="actions.html#cmp-category-pills">Category pills</a>
-      <a href="actions.html#cmp-dropdown">Dropdown select</a>
-    </nav>
-  </section>
-  <!-- ═══ CATEGORY · CHROME ═══ -->
-  <section class="cmp-category" aria-label="Category: Chrome">
-    <p class="eyebrow">Category</p>
-    <h2><a href="chrome.html">Chrome</a></h2>
-    <p>The shared page shell. One source, identical on every page.</p>
-    <nav class="cmp-dir" aria-label="Chrome components">
-      <a href="chrome.html#cmp-nav">Site navigation</a>
-      <a href="chrome.html#cmp-footer">Footer</a>
-    </nav>
-  </section>
-  <!-- ═══ CATEGORY · CAROUSELS ═══ -->
-  <section class="cmp-category" aria-label="Category: Carousels">
-    <p class="eyebrow">Category</p>
-    <h2><a href="carousels.html">Carousels</a></h2>
-    <p>Three track behaviours: free-running showcase, stepped auto-advance, and the paged card carousel.</p>
-    <nav class="cmp-dir" aria-label="Carousels components">
-      <a href="carousels.html#cmp-showcase-carousel">Showcase carousel</a>
-      <a href="carousels.html#cmp-stats-carousel">Stats carousel</a>
-      <a href="carousels.html#cmp-card-carousel">Manual carousel</a>
-    </nav>
-  </section>
-  <!-- ═══ CATEGORY · SPOTLIGHTS ═══ -->
-  <section class="cmp-category" aria-label="Category: Spotlights">
-    <p class="eyebrow">Category</p>
-    <h2><a href="spotlights.html">Spotlights</a></h2>
-    <p>Full-band rotating story modules: photography behind, copy and a numbered index in front. Stories cross-fade in place rather than tracking sideways.</p>
-    <nav class="cmp-dir" aria-label="Spotlights components">
-      <a href="spotlights.html#cmp-cover-story">Cover story</a>
-      <a href="spotlights.html#cmp-spotlight-split">Spotlight split</a>
-    </nav>
-  </section>
-
-  <!-- ═══ CATEGORY · CARDS ═══ -->
-  <section class="cmp-category" aria-label="Category: Cards">
-    <p class="eyebrow">Category</p>
-    <h2><a href="cards.html">Cards</a></h2>
-    <p>Two families and the rule that separates them: a plate means the card is a door to a place; a green title sweep means content to read. Almost every card in the design is one of these two with rows added or dropped &mdash; so each section below shows the family, then its settings.</p>
-    <nav class="cmp-dir" aria-label="Cards components">
-      <a href="cards.html#cmp-plate-card">Plate card</a>
-      <a href="cards.html#cmp-editorial-card">Editorial card</a>
-      <a href="cards.html#cmp-card-drawer">Card slide-out</a>
-    </nav>
-  </section>
-  <!-- ═══ CATEGORY · PAGE UTILITIES ═══ -->
-  <section class="cmp-category" aria-label="Category: Page utilities">
-    <p class="eyebrow">Category</p>
-    <h2><a href="page-utilities.html">Page utilities</a></h2>
-    <p>Small page-level furniture that supports orientation and flow.</p>
-    <nav class="cmp-dir" aria-label="Page utilities components">
-      <a href="page-utilities.html#cmp-breadcrumb">Breadcrumb</a>
-    </nav>
-  </section>
-  <!-- ═══ CATEGORY · CONTENT BLOCKS ═══ -->
-  <section class="cmp-category" aria-label="Category: Content blocks">
-    <p class="eyebrow">Category</p>
-    <h2><a href="content-blocks.html">Content blocks</a></h2>
-    <p>General page-building modules: figures, rows and editorial splits.</p>
-    <nav class="cmp-dir" aria-label="Content blocks components">
-      <a href="content-blocks.html#cmp-stat-cell">Stat cell</a>
-      <a href="content-blocks.html#cmp-accordion">Accordion</a>
-    </nav>
-  </section>
-  <!-- ═══ CATEGORY · FORMS ═══ -->
-  <section class="cmp-category" aria-label="Category: Forms">
-    <p class="eyebrow">Category</p>
-    <h2><a href="forms.html">Forms</a></h2>
-    <p>Every input style and behaviour on the site, all of it currently living on the contact page. The house treatment is the underline: no boxes, no fills, no rounded corners &mdash; a control is a caption label over a line, and the line darkens as you approach it.</p>
-    <nav class="cmp-dir" aria-label="Forms components">
-      <a href="forms.html#cmp-form-text">Text fields</a>
-      <a href="forms.html#cmp-form-select">Select field</a>
-      <a href="forms.html#cmp-form-choice">Choice controls</a>
-      <a href="forms.html#cmp-form-declarations">Declarations block</a>
-    </nav>
-  </section>
-  <!-- ═══ CATEGORY · PAGE MODULES ═══ -->
-  <section class="cmp-category" aria-label="Category: Page modules">
-    <p class="eyebrow">Category</p>
-    <h2>Page modules</h2>
-    <p>Assembled page modules rather than building blocks: each one is a fixed arrangement of parts with behaviour of its own, built for a single job on a single page. One guide page per site section.</p>
-    <nav class="cmp-dir" aria-label="Page module guide pages">
-      <a href="modules-our-work.html">Our work</a>
-      <a href="modules-our-impact.html">Our impact</a>
-      <a href="modules-contact-us.html">Contact us</a>
-    </nav>
-  </section>
+  <div id="dirRoot"></div>
 
   </main>
 

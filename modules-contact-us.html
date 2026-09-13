@@ -57,7 +57,7 @@
   <section class="cmp-category" aria-label="Category: Contact us modules">
     <p class="eyebrow">Category</p>
     <h2>Contact us</h2>
-    <p>Assembled page modules rather than building blocks: each one is a fixed arrangement of parts with behaviour of its own, built for a single job on a single page. Take a module whole &mdash; its layout, its timings and its keyboard handling are one piece. The reusable parts they are built from live in the <a href="components.html">component library</a>.</p>
+    <p>Assembled page modules rather than building blocks: each one is a fixed arrangement of parts with behaviour of its own, built for a single job on a single page. Take a module whole, its layout, its timings and its keyboard handling are one piece. The reusable parts they are built from live in the <a href="components.html">component library</a>.</p>
   </section>
 
   <!-- CONTACT US · STICKY ENQUIRY PANEL -->
@@ -77,14 +77,14 @@
       <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li>The frame above is a real viewport. The form column is a plain placeholder block &mdash; the panel beside it is the production component. Scroll inside the frame to watch it hold, then release.</li>
-        <li><span class="cmp-event">Sticking:</span> the panel scrolls with the page until it reaches 32px from the top of the viewport, then holds there while the form column keeps moving past it. There is no JavaScript and no scroll listener &mdash; it is <code>position: sticky</code> and nothing else.</li>
-        <li><span class="cmp-event">Releasing:</span> the panel is only ever sticky <em>within its own grid cell</em>. When the bottom of that cell reaches the panel, the panel is carried away with it &mdash; so it never escapes the enquiry section and never overlaps what follows.</li>
-        <li><span class="cmp-event">The rule that makes it work:</span> the layout grid sets <code>align-items: start</code>. Without it, grid items stretch to the full height of the row, the panel's cell becomes exactly as tall as the panel, and there is no travel for it to stick inside &mdash; the rule looks applied but nothing ever sticks. This is the single most common way a sticky sidebar silently fails, and it is why the property belongs to the layout as much as to the panel.</li>
-        <li><span class="cmp-event">Layout:</span> a fluid form column and a fixed 448px panel with a 64px gap &mdash; 872 + 64 + 448 = 1384 at the design width.</li>
+        <li>The frame above is a real viewport. The form column is a plain placeholder block, the panel beside it is the production component. Scroll inside the frame to watch it hold, then release.</li>
+        <li><span class="cmp-event">Sticking:</span> the panel scrolls with the page until it nears the top of the viewport, then holds there while the form column keeps moving past it. Nothing is scripted, the browser's native sticky positioning does all of it.</li>
+        <li><span class="cmp-event">Releasing:</span> the panel is only ever sticky <em>within its own grid cell</em>. When the bottom of that cell reaches the panel, the panel is carried away with it, so it never escapes the enquiry section and never overlaps what follows.</li>
+        <li><span class="cmp-event">The rule that makes it work:</span> the panel is only sticky <em>within its own layout cell</em>, so the layout must let that cell run taller than the panel. When the layout stretches the panel to fill its row instead, there is no travel left to stick inside, everything looks applied but nothing ever sticks. This is the single most common way a sticky sidebar silently fails, and it is why the behaviour belongs to the layout as much as to the panel.</li>
+        <li><span class="cmp-event">Layout:</span> a fluid form column beside a fixed-width panel, roughly a two-to-one split with a generous gutter between them.</li>
         <li><span class="cmp-event">Anatomy:</span> a solid green plate in inverse ink: title, a short blurb, caption-size labels over lime contact links that turn white on hover, and a quieter closing note above a hairline.</li>
-        <li><span class="cmp-event">Live content:</span> the panel carries <code>aria-live="polite"</code>, because the form's enquiry-type select rewrites its title, blurb and contacts. A screen-reader user hears the routing change without leaving the field they are in.</li>
-        <li><span class="cmp-event">Responsive, in three steps:</span> below 1000 the layout collapses to one column and the panel takes <code>order: -1</code>, moving <em>above</em> the form as an introduction &mdash; still sticky, but with a single-row cell it no longer has anywhere to travel. Below 680 it drops to <code>position: static</code> and <code>order: 0</code>, returning below the form as a closing footnote. The mobile button shows that last state; the middle one appears between the two widths.</li>
+        <li><span class="cmp-event">Live content:</span> the panel is a polite live region, because the form's enquiry-type select rewrites its title, blurb and contacts. A screen-reader user hears the routing change without leaving the field they are in.</li>
+        <li><span class="cmp-event">Responsive, in three steps:</span> at tablet width the layout collapses to one column and the panel moves <em>above</em> the form as an introduction, still technically sticky, but with nowhere left to travel. At phone width it stops sticking altogether and returns below the form as a closing footnote. The mobile button shows that last state; the middle one appears between the two widths.</li>
         <li>The reordering is deliberate: on a tablet the panel tells you where your enquiry will go before you start writing; on a phone, where it would eat the first screen, it waits until you have finished.</li>
         </ul>
       </details>
