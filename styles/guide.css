@@ -149,8 +149,11 @@
 
 /* category band: announces the group; sections beneath
    belong to it until the next band */
+/* category bands bleed to the viewport edge like the cover;
+   content stays on the container's own gutters */
 .cmp-category {
-  padding: var(--space-lg) var(--page-pad);
+  margin-inline: calc(50% - 50vw);
+  padding: var(--space-lg) calc(50vw - 50% + var(--page-pad));
   background: var(--green-dark);
   color: var(--ink-inverse);
 }

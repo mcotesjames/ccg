@@ -517,7 +517,7 @@
     <div class="cmp-head">
       <span class="cmp-head-number">02</span>
       <h2>Stats carousel</h2>
-      <p class="cmp-head-note">Clone loop · 3s autoplay · stepped slide</p>
+      <p class="cmp-head-note">Clone loop · arrow-stepped slide</p>
     </div>
 
     <div class="cmp-stage cmp-impact-stage" style="border: 0;">
@@ -569,11 +569,11 @@
     <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
-        <li><span class="cmp-event">Autoplay:</span> steps one stat every 3 seconds; each step slides the track over 0.8s on the house easing curve. Pressing an arrow moves immediately and restarts the timer.</li>
+        <li><span class="cmp-event">Resting track:</span> no autoplay; the track holds until an arrow is pressed. Each step slides the track over 0.8s on the house easing curve.</li>
         <li><span class="cmp-event">Endless:</span> the loop continues in both directions with no visible rewind.</li>
         <li><span class="cmp-event">UI:</span> the count shows the current position, zero-padded, and its total is driver-owned like the manual carousel's, positions the track can rest at. Because the seamless loop makes every card a resting position, that total equals the slide count at every width. The thumb spans exactly one slide of the track and advances by its own width per step.</li>
         <li><span class="cmp-event">Responsive:</span> four stats visible on desktop, two on tablet, one on mobile; numbers sit in warm beige at a display scale, bottom-right of each cell, with hairline dividers between cells.</li>
-        <li>With reduced motion enabled the autoplay never starts; the arrows still work.</li>
+        <li>With reduced motion enabled the arrows still work; only the sliding transition carries motion.</li>
       </ul>
       </details>
   </section>
@@ -896,7 +896,6 @@
 
     let cmpStatsIndex = 0;
     let cmpStatsCloneCount = 0;
-    let cmpStatsTimer;
     let cmpStatsAnimating = false;
 
     function cmpVisibleStats() {
@@ -953,12 +952,6 @@
       cmpPositionStats(true);
     }
 
-    function cmpStartStatsAutoplay() {
-      window.clearInterval(cmpStatsTimer);
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      cmpStatsTimer = window.setInterval(() => cmpMoveStats(1), 3000);
-    }
-
     cmpStatsTrack.addEventListener("transitionend", event => {
       if (event.propertyName !== "transform") return;
       cmpStatsAnimating = false;
@@ -971,17 +964,16 @@
       }
     });
 
-    cmpStatsPrev.addEventListener("click", () => { cmpMoveStats(-1); cmpStartStatsAutoplay(); });
-    cmpStatsNext.addEventListener("click", () => { cmpMoveStats(1); cmpStartStatsAutoplay(); });
+    cmpStatsPrev.addEventListener("click", () => cmpMoveStats(-1));
+    cmpStatsNext.addEventListener("click", () => cmpMoveStats(1));
 
     let cmpStatsResizeTimer;
     window.addEventListener("resize", () => {
       window.clearTimeout(cmpStatsResizeTimer);
-      cmpStatsResizeTimer = window.setTimeout(() => { cmpBuildStatsLoop(); cmpStartStatsAutoplay(); }, 150);
+      cmpStatsResizeTimer = window.setTimeout(cmpBuildStatsLoop, 150);
     });
 
     cmpBuildStatsLoop();
-    cmpStartStatsAutoplay();
 
     /* Stories carousel: the shared engine, production init from index.html */
     window.ccgCarousel({
