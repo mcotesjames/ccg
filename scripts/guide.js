@@ -23,10 +23,15 @@ const GUIDE_NAV = [
       ["cmp-footer", "Footer"],
       ["cmp-hero-parallax", "Hero parallax"]
     ]},
-    { file: "carousels.html", desc: "Three track behaviours: free-running, stepped auto-advance, and paged.", name: "Carousels", components: [
+    { file: "carousels.html", desc: "Four behaviours: free-running, stepped auto-advance, paged, and the swiping article gallery.", name: "Carousels", components: [
       ["cmp-showcase-carousel", "Showcase carousel"],
       ["cmp-stats-carousel", "Stats carousel"],
-      ["cmp-card-carousel", "Manual carousel"]
+      ["cmp-card-carousel", "Manual carousel"],
+      ["cmp-article-gallery", "Article gallery"]
+    ]},
+    { file: "timelines.html", desc: "Sequences read in order: a stepped process and a history of milestones, each on a track that fills as the reader arrives.", name: "Timelines", components: [
+      ["cmp-step-timeline", "Step timeline"],
+      ["cmp-milestone-timeline", "Milestone timeline"]
     ]},
     { file: "spotlights.html", desc: "Full-band story rotators. Stories cross-fade in place, never tracking sideways.", name: "Spotlights", components: [
       ["cmp-cover-story", "Cover story"],
@@ -42,13 +47,15 @@ const GUIDE_NAV = [
     ]},
     { file: "content-blocks.html", desc: "General page-building modules: figures, rows and editorial splits.", name: "Content blocks", components: [
       ["cmp-stat-cell", "Stat cell"],
-      ["cmp-accordion", "Accordion"]
+      ["cmp-accordion", "Accordion"],
+      ["cmp-document-row", "Document row"]
     ]},
     { file: "forms.html", desc: "The house treatment is the underline: a caption label over a line, no boxes.", name: "Forms", components: [
       ["cmp-form-text", "Text fields"],
       ["cmp-form-select", "Select field"],
       ["cmp-form-choice", "Choice controls"],
-      ["cmp-form-declarations", "Declarations block"]
+      ["cmp-form-declarations", "Declarations block"],
+      ["cmp-form-search", "Search field"]
     ]}
   ]},
   { label: "Page modules", intro: "Fixed page-specific assemblies with behaviour of their own, one page per site section. Take a module whole: layout, timings and keyboard handling are one piece.", pages: [

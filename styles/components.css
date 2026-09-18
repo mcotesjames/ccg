@@ -17,6 +17,8 @@
      COVER STORY
      SPOTLIGHT SPLIT
      CARD CAROUSEL
+     ARTICLE GALLERY
+     STEP TIMELINE
      SERVICE TABS
      LOGO CAROUSEL
      FLAGSHIP
@@ -416,7 +418,8 @@
   align-items: center;
   justify-content: space-evenly;
   min-width: 0;
-  font-size: 14px;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   text-transform: none;
 }
 
@@ -667,26 +670,37 @@ body.menu-open {
   pointer-events: auto;
 }
 
-/* stage holds the two panes; the sub pane sweeps in from the
-   right while the section list steps back and fades */
+/* stage holds the two panes side by side on one track: drilling
+   in swipes both a full pane width left together, like a page
+   turn; no fades. The off-stage pane goes hidden once it has
+   travelled, so it drops out of the tab order.
+   The stage bleeds into the page gutters (padding restores the
+   content edge), so its clip sits at the screen edge: arrows can
+   nudge without being cut, and the swipe runs edge to edge. */
 .mobile-menu-stage {
+  --menu-swipe: .5s cubic-bezier(.32,.72,0,1);
   position: relative;
   flex: 1;
+  margin-inline: calc(var(--page-pad) * -1);
+  padding-inline: var(--page-pad);
   overflow: hidden;
 }
 
 .mobile-menu-list {
   border-top: 1px solid var(--line);
-  transition: transform .45s cubic-bezier(.22,.61,.36,1), opacity .3s ease;
+  transition: transform var(--menu-swipe), visibility 0s;
 }
 
-.mobile-menu.is-sub .mobile-menu-list {
-  transform: translateX(-48px);
-  opacity: 0;
+.mobile-menu.is-sub .mobile-menu-list,
+.mobile-menu.is-search .mobile-menu-list {
+  transform: translateX(calc(-100% - var(--page-pad) * 2));
+  visibility: hidden;
   pointer-events: none;
+  transition: transform var(--menu-swipe), visibility 0s .5s;
 }
 
-.mobile-menu-head {
+.mobile-menu-head,
+.mobile-menu-search {
   appearance: none;
   width: 100%;
   display: flex;
@@ -695,9 +709,8 @@ body.menu-open {
   gap: var(--space-md);
   padding: var(--space-md) 0;
   border: 0;
-  border-bottom: 1px solid var(--line);
   background: transparent;
-  color: var(--ccg-green-dark);
+  color: var(--grey);
   font-family: inherit;
   font-size: var(--text-h6);
   line-height: var(--leading-h6);
@@ -714,62 +727,93 @@ body.menu-open {
 .mobile-menu.is-open .mobile-menu-head {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity .3s ease, transform .4s cubic-bezier(.22,.61,.36,1);
+  transition: opacity .3s ease, transform .4s cubic-bezier(.22,.61,.36,1), background-size .45s cubic-bezier(.22,.61,.36,1), color .25s ease;
 }
 
-.mobile-menu.is-open .mobile-menu-head:nth-child(1) { transition-delay: .16s; }
-.mobile-menu.is-open .mobile-menu-head:nth-child(2) { transition-delay: .19s; }
-.mobile-menu.is-open .mobile-menu-head:nth-child(3) { transition-delay: .22s; }
-.mobile-menu.is-open .mobile-menu-head:nth-child(4) { transition-delay: .25s; }
-.mobile-menu.is-open .mobile-menu-head:nth-child(5) { transition-delay: .28s; }
-
-/* drill-in sub-links cascade the same way */
-.mobile-menu .mobile-menu-sub-links a {
-  opacity: 0;
-  transform: translateX(16px);
-}
-
-.mobile-menu.is-sub .mobile-menu-sub-links a {
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity .3s ease, transform .4s cubic-bezier(.22,.61,.36,1);
-}
-
-.mobile-menu.is-sub .mobile-menu-sub-links a:nth-child(1) { transition-delay: .12s; }
-.mobile-menu.is-sub .mobile-menu-sub-links a:nth-child(2) { transition-delay: .15s; }
-.mobile-menu.is-sub .mobile-menu-sub-links a:nth-child(3) { transition-delay: .18s; }
-.mobile-menu.is-sub .mobile-menu-sub-links a:nth-child(4) { transition-delay: .21s; }
-.mobile-menu.is-sub .mobile-menu-sub-links a:nth-child(5) { transition-delay: .24s; }
-.mobile-menu.is-sub .mobile-menu-sub-links a:nth-child(6) { transition-delay: .27s; }
+.mobile-menu.is-open .mobile-menu-head:nth-child(1) { transition-delay: .16s, .16s, 0s, 0s; }
+.mobile-menu.is-open .mobile-menu-head:nth-child(2) { transition-delay: .19s, .19s, 0s, 0s; }
+.mobile-menu.is-open .mobile-menu-head:nth-child(3) { transition-delay: .22s, .22s, 0s, 0s; }
+.mobile-menu.is-open .mobile-menu-head:nth-child(4) { transition-delay: .25s, .25s, 0s, 0s; }
+.mobile-menu.is-open .mobile-menu-head:nth-child(5) { transition-delay: .28s, .28s, 0s, 0s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .mobile-menu .mobile-menu-head,
-  .mobile-menu .mobile-menu-sub-links a {
+  .mobile-menu .mobile-menu-head {
     opacity: 1;
     transform: none;
     transition: none;
   }
+
+  .mobile-menu-list,
+  .mobile-menu-sub,
+  .mobile-menu-search-pane {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* row underline: the secondary CTA's sweep. A green line fills
+   the resting hairline left to right on hover / focus. The
+   transparent border keeps the row height; the line paints over it. */
+.mobile-menu-head,
+.mobile-menu-search,
+.mobile-menu-sub-links a {
+  border-bottom: 1px solid transparent;
+  background-origin: border-box;
+  background-image:
+    linear-gradient(var(--green), var(--green)),
+    linear-gradient(var(--line), var(--line));
+  background-position: left bottom, left bottom;
+  background-repeat: no-repeat;
+  background-size: 0 1px, 100% 1px;
+  transition: background-size .45s cubic-bezier(.22,.61,.36,1), color .25s ease;
+}
+
+.mobile-menu-head:hover,
+.mobile-menu-head:focus-visible,
+.mobile-menu-search:hover,
+.mobile-menu-search:focus-visible,
+.mobile-menu-sub-links a:hover,
+.mobile-menu-sub-links a:focus-visible {
+  background-size: 100% 1px, 100% 1px;
+  color: var(--ink);
 }
 
 /* points into the section — a size up from the ui default */
-.mobile-menu-head .ui-arrow {
+.mobile-menu-head .ui-arrow,
+.mobile-menu-search .ui-arrow {
   width: 16px;
   height: 20px;
   transform: rotate(90deg);
+  transition: transform .35s cubic-bezier(.22,.61,.36,1);
 }
 
-.mobile-menu-sub {
+/* the arrow nudges forward as the underline sweeps */
+.mobile-menu-head:hover .ui-arrow,
+.mobile-menu-head:focus-visible .ui-arrow,
+.mobile-menu-search:hover .ui-arrow,
+.mobile-menu-search:focus-visible .ui-arrow {
+  transform: translateX(4px) rotate(90deg);
+}
+
+.mobile-menu-sub,
+.mobile-menu-search-pane {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
+  padding-inline: var(--page-pad);
+  overflow-x: hidden;
   overflow-y: auto;
-  transform: translateX(calc(100% + var(--page-pad)));
-  transition: transform .45s cubic-bezier(.22,.61,.36,1);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform var(--menu-swipe), visibility 0s .5s;
 }
 
-.mobile-menu.is-sub .mobile-menu-sub {
+.mobile-menu.is-sub .mobile-menu-sub,
+.mobile-menu.is-search .mobile-menu-search-pane {
   transform: translateX(0);
+  visibility: visible;
+  transition: transform var(--menu-swipe), visibility 0s;
 }
 
 .mobile-menu-back {
@@ -790,7 +834,7 @@ body.menu-open {
 
 .mobile-menu-back:hover,
 .mobile-menu-back:focus-visible {
-  color: var(--green-dark);
+  color: var(--ink);
 }
 
 .mobile-menu-back .ui-arrow {
@@ -806,64 +850,140 @@ body.menu-open {
 .mobile-menu-sub-head {
   margin: 0;
   padding: var(--space-md) 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--ccg-ground-yellow);
   font-size: var(--text-h6);
   line-height: var(--leading-h6);
 }
 
 .mobile-menu-sub-links a {
   display: block;
-  padding: var(--space-md) 0;
-  border-bottom: 1px solid var(--line);
+  padding: var(--space-sm) 0;
   color: var(--grey);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+/* the section's sample story under its links: caption label,
+   image, title and the standard link-arrow */
+.mobile-menu-story {
+  display: block;
+  margin-top: var(--space-lg);
+  padding-bottom: var(--space-md);
+  color: var(--ccg-green-dark);
+}
+
+.mobile-menu-story-label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  color: var(--grey);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+.mobile-menu-story-image {
+  display: block;
+  aspect-ratio: 16 / 9;
+  margin-bottom: var(--space-sm);
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.mobile-menu-story-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .7s cubic-bezier(.22,.61,.36,1);
+}
+
+.mobile-menu-story:hover .mobile-menu-story-image img,
+.mobile-menu-story:focus-visible .mobile-menu-story-image img {
+  transform: scale(1.035);
+}
+
+.mobile-menu-story-title {
+  display: block;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
   font-size: var(--text-lead);
   line-height: var(--leading-lead);
 }
 
-.mobile-menu-sub-links a:hover,
-.mobile-menu-sub-links a:focus-visible {
-  color: var(--green);
+/* the whole story is the link, so its arrow nudges on story hover */
+.mobile-menu-story:hover .link-arrow::after,
+.mobile-menu-story:focus-visible .link-arrow::after {
+  transform: translateX(5px) rotate(90deg);
+}
+
+/* Contact Us in the menu foot follows the same grey / black */
+.mobile-menu .mega-contact {
+  color: var(--grey);
+  transition: color .25s ease;
+}
+
+.mobile-menu .mega-contact:hover,
+.mobile-menu .mega-contact:focus-visible {
+  color: var(--ink);
+}
+
+/* menu search pane: the menu's own field and live results, in
+   place of the desktop search panel. The field takes the section
+   title's scale and the rows' underline sweep on focus. */
+.mobile-search-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 0 0 var(--space-md);
+  padding: var(--space-md) 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background-color: transparent;
+  background-origin: border-box;
+  background-image:
+    linear-gradient(var(--green), var(--green)),
+    linear-gradient(var(--line), var(--line));
+  background-position: left bottom, left bottom;
+  background-repeat: no-repeat;
+  background-size: 0 1px, 100% 1px;
+  color: var(--ccg-green-dark);
+  font: inherit;
+  font-size: var(--text-h6);
+  line-height: var(--leading-h6);
+  transition: background-size .45s cubic-bezier(.22,.61,.36,1);
+}
+
+.mobile-search-input::placeholder {
+  color: var(--ccg-sage);
+}
+
+.mobile-search-input::-webkit-search-decoration,
+.mobile-search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.mobile-search-input:focus {
+  outline: none;
+  background-size: 100% 1px, 100% 1px;
 }
 
 /* utility foot: full-width search row over contact + language */
 .mobile-menu-utility {
   margin-top: auto;
-  padding-top: var(--space-lg);
+  padding-top: var(--space-md);
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   font-size: var(--text-small);
 }
 
+/* Search sits in the foot but is a nav row like the sections
+   above (shared rules on .mobile-menu-head). It opens the menu's
+   search pane. */
 .mobile-menu-search {
-  appearance: none;
-  width: 100%;
-  padding: 0 0 var(--space-sm);
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  cursor: pointer;
-}
-
-.mobile-menu-search:hover,
-.mobile-menu-search:focus-visible {
-  border-bottom-color: var(--green-dark);
-}
-
-.mobile-menu-search .search-icon {
-  width: 12px;
-  height: 12px;
-}
-
-.mobile-menu-search .search-icon::after {
-  width: 6px;
-  right: -5px;
+  transition: background-size .45s cubic-bezier(.22,.61,.36,1), color .25s ease;
 }
 
 .mobile-menu-utility-row {
@@ -874,10 +994,16 @@ body.menu-open {
 }
 
 /* the bar fuses with the open panel: green-dark ink on the white
-   ground, whatever state the header was in */
-.site-header.menu-open {
+   ground, whatever state the header was in. It is always on screen
+   while the panel is open: pinned to the viewport and clear of the
+   parked (is-preload) and scrolled-away (is-hidden) states. */
+.site-header.menu-open,
+.site-header.menu-open.is-preload,
+.site-header.menu-open.is-hidden {
+  position: fixed;
   color: var(--green-dark);
   background: transparent;
+  transform: translateY(0);
 }
 
 .site-header.menu-open .nav-brand img {
@@ -892,7 +1018,8 @@ body.menu-open {
   color: white;
 }
 
-.mega-menu {
+.mega-menu,
+.search-panel {
   position: absolute;
   top: var(--nav-height);
   left: 0;
@@ -906,7 +1033,8 @@ body.menu-open {
   transition: opacity .28s ease, transform .35s cubic-bezier(.22,.61,.36,1), visibility .28s;
 }
 
-.mega-menu.is-open {
+.mega-menu.is-open,
+.search-panel.is-open {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -920,24 +1048,18 @@ body.menu-open {
 .mega-grid {
   display: grid;
   grid-template-columns: minmax(0, 480fr) minmax(0, 424fr) minmax(0, 480fr);
+  column-gap: var(--space-layout);
   padding: 48px var(--page-pad);
 }
 
+/* columns carry no side padding: the grid's column gap alone
+   spaces them, so all three sit an equal distance apart */
 .mega-column {
   min-width: 0;
-  padding: 0 36px;
-}
-
-.mega-column:first-child {
-  padding-left: 0;
-}
-
-.mega-column:last-child {
-  padding-right: 0;
 }
 
 .mega-overview .mega-kicker {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-sm);
 }
 
 .mega-overview h2 {
@@ -950,14 +1072,13 @@ body.menu-open {
 .mega-overview p {
   max-width: 330px;
   margin: 0;
-  color: var(--grey);
+  color: var(--ink);
   font-size: var(--text-small);
   line-height: var(--leading-small);
 }
 
-/* the link list is the panel's content, so it takes the house
-   numbered-index treatment (services index, spotlight split
-   rail): serif numerals, content-scale labels, hairline rows */
+/* the link list is the panel's content: content-scale black
+   labels on hairline rows, no numerals */
 .mega-link-list {
   margin: 0;
   padding: 0;
@@ -970,43 +1091,73 @@ body.menu-open {
 
 .mega-link-list a {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: baseline;
-  padding: 12px 0;
+  padding: var(--space-md) 0;
   font-size: var(--text-body);
   line-height: var(--leading-body);
-  color: var(--green);
-  transition: color .2s ease, padding-left .28s ease;
+  color: var(--ink);
 }
 
-.mega-link-num {
-  font-family: "EB Garamond", serif;
-  font-style: italic;
-  font-size: 15px;
-  color: var(--ccg-ground-yellow);
-  font-variant-numeric: tabular-nums;
+/* menu rows: the row stays put; a green line grows along the
+   row's hairline left to right on hover / focus (the secondary
+   CTA sweep, as in the mobile menu). The hairline between rows
+   is the link's own bottom line, so the list keeps its dividers. */
+.mega-menu .mega-link-list li + li {
+  border-top: 0;
 }
 
-/* hover keeps to the ink change and the slight shift — no arrow */
-.mega-link-list a:hover,
-.mega-link-list a:focus-visible {
-  color: var(--green-dark);
-  padding-left: 6px;
+.mega-menu .mega-link-list a {
+  border-bottom: 1px solid transparent;
+  background-origin: border-box;
+  background-image:
+    linear-gradient(var(--green), var(--green)),
+    linear-gradient(var(--line), var(--line));
+  background-position: left bottom, left bottom;
+  background-repeat: no-repeat;
+  background-size: 0 1px, 100% 1px;
+  transition: background-size .45s cubic-bezier(.22,.61,.36,1);
+}
+
+/* the last row closes without a resting hairline, as before */
+.mega-menu .mega-link-list li:last-child a {
+  background-size: 0 1px, 0 1px;
+}
+
+.mega-menu .mega-link-list a:hover,
+.mega-menu .mega-link-list a:focus-visible {
+  background-size: 100% 1px, 100% 1px;
+}
+
+.mega-menu .mega-link-list li:last-child a:hover,
+.mega-menu .mega-link-list li:last-child a:focus-visible {
+  background-size: 100% 1px, 0 1px;
 }
 
 .mega-feature-image {
-  height: 180px;
+  aspect-ratio: 16 / 9;
   margin-bottom: 18px;
   overflow: hidden;
   background: var(--cream);
 }
 
 .mega-feature-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transition: transform .7s cubic-bezier(.22,.61,.36,1);
 }
 
 .mega-feature:hover .mega-feature-image img {
   transform: scale(1.035);
+}
+
+/* the whole feature is the link, so its link-arrow nudges on
+   feature hover */
+.mega-feature a:hover .link-arrow::after,
+.mega-feature a:focus-visible .link-arrow::after {
+  transform: translateX(5px) rotate(90deg);
 }
 
 /* Mega-menu feature link + kicker meta (canonical; was drifted
@@ -1035,9 +1186,11 @@ body.menu-open {
 }
 
 .mega-feature h3 {
-  margin: 0 0 20px;
-  font-size: 22px;
-  line-height: 26px;
+  margin: 0 0 var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
+  font-size: 24px;
+  line-height: 32px;
   font-weight: 400;
 }
 
@@ -1094,6 +1247,106 @@ body.menu-open {
 .language-toggle span:first-child {
   color: var(--green);
   font-weight: 600;
+}
+
+/* Search panel — sibling of the mega menu, summoned by the
+   search button (and the phone menu's Search row). Same white
+   sheet under the bar; just the field, full content width, at
+   h3 scale over a hairline. */
+.search-grid {
+  padding: 48px var(--page-pad) var(--space-layout);
+}
+
+.search-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 0 0 var(--space-sm);
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  color: var(--green-dark);
+  transition: border-color .25s ease;
+}
+
+.search-input::placeholder {
+  color: var(--ccg-sage);
+}
+
+.search-input::-webkit-search-decoration,
+.search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-input:hover,
+.search-input:focus-visible {
+  outline: none;
+  border-bottom-color: var(--green-dark);
+}
+
+/* live results take the house hairline-row list (mega-link-list)
+   minus its numerals; only the meta line and the foot link are new */
+.search-results-list {
+  margin-bottom: var(--space-lg);
+}
+
+/* no numerals here: text | arrow, and the list closes with a
+   hairline under the last row */
+.search-results-list a {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-md);
+  color: var(--ink);
+}
+
+/* the row itself stays put on hover; only the arrow responds */
+.search-results-list a:hover,
+.search-results-list a:focus-visible {
+  color: var(--ink);
+  padding-left: 0;
+}
+
+.search-results-list .inline-arrow {
+  transition: transform .28s ease;
+}
+
+.search-results-list a:hover .inline-arrow,
+.search-results-list a:focus-visible .inline-arrow {
+  transform: translateX(4px) rotate(90deg);
+}
+
+.search-results-list li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.search-result-title {
+  display: block;
+}
+
+.search-result-meta {
+  display: block;
+  color: var(--grey);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+
+.search-results-empty {
+  margin: 0 0 var(--space-lg);
+  color: var(--grey);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+
+/* explicit displays would otherwise beat the hidden attribute */
+.search-results[hidden],
+.search-results-empty[hidden],
+.search-results-all[hidden] {
+  display: none;
 }
 
 /* =============================================================
@@ -1445,9 +1698,11 @@ body.menu-open {
      <p class="business-card-desc">Optional description</p>
      <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>   (optional)
    </a>
-   Gold underline sweeps in on hover; image zooms. The link row
-   anchors to the card bottom, so grids of uneven titles keep
-   their Read more rows aligned. */
+   Green underline sweeps in on hover; image zooms. Every row
+   sits the same step (--space-ms) below the one before; all text
+   is ink except the grey meta row. The link row follows the
+   standard link and anchors to the card bottom, so grids of
+   uneven titles keep their link rows aligned. */
 
 .business-card {
   display: flex;
@@ -1456,16 +1711,16 @@ body.menu-open {
 
 /* Meta row — category · date (shared with featured leads) */
 .news-meta {
-  margin: 16px 0 0;
+  margin: var(--space-ms) 0 0;
   display: flex;
   align-items: baseline;
   gap: 16px;
-  font-size: var(--text-caption);
-  line-height: var(--leading-caption);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
 }
 
 .news-meta-category {
-  color: var(--green);
+  color: var(--grey);
 }
 
 .news-meta-date {
@@ -1488,14 +1743,14 @@ body.menu-open {
 }
 
 .business-card-title {
-  margin-top: 16px;
+  margin-top: var(--space-ms);
   padding-bottom: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
   font-size: 24px;
-  color: var(--green-dark);
+  color: var(--ink);
   border-bottom: 1px solid transparent;
   background-image:
     linear-gradient(var(--ccg-green), var(--ccg-green)),
@@ -1523,34 +1778,35 @@ body.menu-open {
 }
 
 .business-card-desc {
-  margin: 12px 0 0;
+  margin: var(--space-ms) 0 0;
   max-width: 480px;
-  font-size: var(--text-small);
-  line-height: var(--leading-small);
-  color: var(--grey);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--ink);
 }
 
-/* Read-more row — anchors to the card bottom in equal-height grids */
+/* Link row — the standard link (label, wide gap, full-size arrow
+   nudging 5px); anchors to the card bottom in equal-height grids */
 .business-card-link {
   margin-top: auto;
-  padding-top: 20px;
+  padding-top: var(--space-ms);
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  font-size: var(--text-small);
-  line-height: var(--text-small);
-  color: var(--green-dark);
+  gap: 28px;
+  font-size: var(--text-link);
+  line-height: var(--leading-lead);
+  color: var(--ink);
 }
 
 .business-card-link .inline-arrow {
-  width: 12px;
-  height: 16px;
+  width: 16px;
+  height: 20px;
   transition: transform .35s cubic-bezier(.22,.61,.36,1);
 }
 
 .business-card:hover .business-card-link .inline-arrow,
 .business-card:focus-visible .business-card-link .inline-arrow {
-  transform: translateX(4px) rotate(90deg);
+  transform: translateX(5px) rotate(90deg);
 }
 
 /* Variant — static: the card presents, it doesn't navigate
@@ -2073,6 +2329,366 @@ body.menu-open {
       grid-template-columns: auto 1fr auto;
       gap: var(--space-md);
     }
+}
+
+/* =============================================================
+   ARTICLE GALLERY — in-place photo carousel with caption
+   =============================================================
+   <section class="article-gallery" aria-label="…">
+     <div class="article-gallery-media">
+       <div class="article-gallery-image"></div>      (filled by JS)
+       <div class="article-gallery-controls">
+         <span class="article-gallery-count">01 / NN</span>
+         <button class="gallery-btn gallery-btn--prev" type="button" aria-label="Previous photo"><span class="ui-arrow" aria-hidden="true"></span></button>
+         <button class="gallery-btn gallery-btn--next" type="button" aria-label="Next photo"><span class="ui-arrow" aria-hidden="true"></span></button>
+       </div>
+     </div>
+     <div class="article-gallery-foot">
+       <p class="article-gallery-caption"></p>
+     </div>
+   </section>
+   Initialise with ccgArticleGallery(section, [{ image, caption,
+   alt }]) from scripts/components.js. Photos sit side by side
+   off-frame and swipe across: the incoming photo pushes the
+   current one out; the arrows (and a touch swipe) loop. Width is set by the
+   host layout (news-article.html runs it at its 1040px breakout). */
+
+.article-gallery {
+  padding: 0 0 var(--space-xl);
+}
+
+.article-gallery-media {
+  position: relative;
+}
+
+.article-gallery-image {
+  position: relative;
+  height: 584px;
+  overflow: hidden;
+  background: var(--sand);
+  touch-action: pan-y;
+}
+
+/* every photo waits off-frame to the right; the script swipes the
+   incoming one to centre while the outgoing one leaves the other
+   way, so both travel together in the direction of travel */
+.article-gallery-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateX(100%);
+  transition: transform .5s cubic-bezier(.32,.72,0,1);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.article-gallery-image img.is-active {
+  transform: translateX(0);
+}
+
+/* count + arrows cluster bottom-right over the image, lifted off
+   the photo by a dark scrim that fades up from the bottom edge */
+.article-gallery-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+  padding: var(--space-xl) var(--space-md) var(--space-md);
+  background: linear-gradient(to top, rgba(0, 27, 22, .85) 0%, rgba(0, 27, 22, .5) 45%, rgba(0, 27, 22, 0) 100%);
+}
+
+/* count tag pins to the image's left; the arrows stay right */
+.article-gallery-count {
+  margin-right: auto;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  background: #fff;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.gallery-btn {
+  appearance: none;
+  background: #fff;
+  border: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--ink);
+  transition: background-color .25s ease, color .25s ease;
+}
+
+.gallery-btn:hover,
+.gallery-btn:focus-visible {
+  background: var(--cream);
+}
+
+.gallery-btn .ui-arrow {
+  width: 14px;
+  height: 18px;
+}
+
+.gallery-btn--prev .ui-arrow {
+  transform: rotate(-90deg);
+}
+
+.gallery-btn--next .ui-arrow {
+  transform: rotate(90deg);
+}
+
+/* caption sits below the image */
+.article-gallery-foot {
+  margin-top: var(--space-sm);
+}
+
+.article-gallery-caption {
+  margin: 0;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--grey);
+}
+
+@media (max-width: 1000px) {
+  .article-gallery-image {
+    height: 516px;
+  }
+}
+
+@media (max-width: 680px) {
+  .article-gallery-image {
+    height: 200px;
+  }
+
+  /* controls scale down + the scrim tightens so they don't
+     dominate the short mobile image */
+  .article-gallery-controls {
+    padding: var(--space-lg) var(--space-sm) var(--space-sm);
+    gap: var(--space-2xs);
+  }
+
+  .gallery-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .gallery-btn .ui-arrow {
+    width: 12px;
+    height: 15px;
+  }
+
+  .article-gallery-count {
+    padding: var(--space-2xs) var(--space-xs);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-gallery-image img {
+    transition: none;
+  }
+}
+
+/* =============================================================
+   STEP TIMELINE — numbered steps on a dotted track that fills
+   =============================================================
+   <div class="step-timeline">
+     <div class="step">
+       <div class="step-track" aria-hidden="true"></div>
+       <p class="step-num">01</p>
+       <h3>Title</h3>
+       <p>Description</p>
+     </div>
+     … one .step per stage (any count) …
+     (last step also carries: <span class="step-end" aria-hidden="true"></span>)
+   </div>
+   Initialise with ccgStepTimeline(el) from scripts/components.js:
+   plays once as it enters the screen. Each line fills left to
+   right in ground yellow, the next dot lights as the fill
+   arrives, then a short pause before the next line sets off;
+   the last line runs on to the end dot. At ≤1000 the steps
+   stack into a vertical timeline and the run goes down it. */
+
+.step-timeline {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  padding: 0 var(--page-pad);
+}
+
+.step-timeline .step {
+  position: relative;
+  padding-right: var(--space-lg);
+}
+
+/* dot + line make a continuous track across the row */
+.step-timeline .step-track {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.step-timeline .step-track::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  transition: background-color .25s ease;
+}
+
+/* the first dot marks the start: larger, and already lit */
+.step-timeline .step:first-child .step-track::before {
+  width: 12px;
+  height: 12px;
+  background: var(--ccg-ground-yellow);
+}
+
+/* each line runs on under the column gap to the next dot and
+   carries a ground-yellow fill layer that grows left to right */
+.step-timeline .step-track::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  margin-right: calc(-1 * var(--space-lg));
+  background: var(--line) linear-gradient(var(--ccg-ground-yellow), var(--ccg-ground-yellow)) left center / 0 100% no-repeat;
+  transition: background-size var(--step-fill, .7s) linear;
+}
+
+.step-timeline .step:last-child .step-track::after {
+  margin-right: 0;
+}
+
+.step-timeline .step.is-filled .step-track::after {
+  background-size: 100% 100%;
+}
+
+.step-timeline .step.is-lit .step-track::before {
+  background-color: var(--ccg-ground-yellow);
+}
+
+/* end marker: a dot where the last line finishes */
+.step-timeline .step-end {
+  position: absolute;
+  top: 0;
+  right: var(--space-lg);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  transition: background-color .25s ease;
+}
+
+.step-timeline .step-end.is-lit {
+  background-color: var(--ccg-ground-yellow);
+}
+
+.step-timeline .step-num {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+
+.step-timeline .step h3 {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--text-h5);
+  line-height: var(--leading-h5);
+  font-weight: 400;
+  color: var(--green-dark);
+}
+
+.step-timeline .step p {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--grey);
+}
+
+/* stacked steps become a vertical timeline: dots ride a
+   continuous line, content indented beside it */
+@media (max-width: 1000px) {
+  .step-timeline {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .step-timeline .step {
+    padding: 0 0 var(--space-md) var(--space-xl);
+  }
+
+  .step-timeline .step:last-child {
+    padding-bottom: var(--space-lg);
+  }
+
+  /* on the vertical timeline the line and its fill run down */
+  .step-timeline .step::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--line) linear-gradient(var(--ccg-ground-yellow), var(--ccg-ground-yellow)) center top / 100% 0 no-repeat;
+    transition: background-size var(--step-fill, .7s) linear;
+  }
+
+  .step-timeline .step.is-filled::before {
+    background-size: 100% 100%;
+  }
+
+  .step-timeline .step:last-child::before {
+    bottom: 4px;
+  }
+
+  /* end dot sits under the last step, centred on the line */
+  .step-timeline .step-end {
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: 3px;
+  }
+
+  /* the track collapses to just its dot, pinned to the line */
+  .step-timeline .step-track {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    margin: 0;
+  }
+
+  .step-timeline .step-track::before {
+    margin-left: 2px;
+  }
+
+  .step-timeline .step:first-child .step-track::before {
+    margin-left: 0;
+  }
+
+  .step-timeline .step-track::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-timeline .step-track::before,
+  .step-timeline .step-track::after,
+  .step-timeline .step::before,
+  .step-timeline .step-end {
+    transition: none;
+  }
 }
 
 /* =============================================================
@@ -2880,8 +3496,9 @@ body.menu-open {
        <span class="doc-row-view">View <span class="inline-arrow" aria-hidden="true"></span></span>
      </a> × N
    </div>
-   Title sweeps a gold underline on hover; the arrow nudges.
-   --media adds a 96px 3:4 cover thumbnail at the row start. */
+   All text is black. The view link follows the standard link
+   (link-arrow): 20px label, arrow nudges on row hover.
+   --media adds a leading cover thumbnail at the row start. */
 
 .doc-list {
   border-top: 1px solid var(--line);
@@ -2925,9 +3542,9 @@ body.menu-open {
 
 /* year sits above the title as an eyebrow inside the body */
 .doc-row-year {
-  font-size: var(--text-caption);
-  line-height: var(--leading-caption);
-  color: var(--green);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 
@@ -2942,34 +3559,36 @@ body.menu-open {
   align-self: flex-start;
   font-size: var(--text-h6);
   line-height: var(--leading-h6);
-  color: var(--green-dark);
+  color: var(--ink);
 }
 
 .doc-row-desc {
-  font-size: var(--text-small);
-  line-height: var(--leading-small);
-  color: var(--grey);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--ink);
 }
 
+/* the view link matches the standard link (link-arrow): label,
+   wide gap, full-size arrow that nudges 5px on row hover */
 .doc-row-view {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-sm);
-  font-size: var(--text-small);
-  line-height: var(--text-small);
-  color: var(--green-dark);
+  gap: 28px;
+  font-size: var(--text-link);
+  line-height: var(--leading-lead);
+  color: var(--ink);
   white-space: nowrap;
 }
 
 .doc-row-view .inline-arrow {
-  width: 12px;
-  height: 16px;
+  width: 16px;
+  height: 20px;
   transition: transform .35s cubic-bezier(.22,.61,.36,1);
 }
 
 .doc-row:hover .doc-row-view .inline-arrow,
 .doc-row:focus-visible .doc-row-view .inline-arrow {
-  transform: translateX(4px) rotate(90deg);
+  transform: translateX(5px) rotate(90deg);
 }
 
 @media (max-width: 680px) {
@@ -4998,10 +5617,10 @@ body.menu-open {
 }
 
 .leader-card-role {
-  margin: 0 0 var(--space-sm);
-  font-size: var(--text-small);
-  line-height: var(--leading-small);
-  color: var(--green);
+  margin: var(--space-ms) 0 0;
+  font-size: var(--text-h6);
+  line-height: 32px;
+  color: var(--ink);
 }
 
 /* Variant — feature: portrait left, detail packed to the bottom
@@ -5550,6 +6169,7 @@ footer {
   margin: 0 0 var(--space-sm);
   color: var(--ink-inverse-soft);
   font-size: 14px;
+  transition: color .25s ease;
 }
 
 .footer-address {
@@ -5602,6 +6222,15 @@ footer {
 
 .footer-legal a {
   color: inherit;
+  transition: color .25s ease;
+}
+
+/* nav and legal links rest softened and brighten to full white */
+.footer-column a:hover,
+.footer-column a:focus-visible,
+.footer-legal a:hover,
+.footer-legal a:focus-visible {
+  color: white;
 }
 
 .footer-social {
@@ -5617,16 +6246,19 @@ footer {
   place-items: center;
   width: 32px;
   height: 32px;
-  transition: transform .25s ease;
+  color: white;
+  transition: color .25s ease;
 }
 
 .footer-social a:hover,
 .footer-social a:focus-visible {
-  opacity: .7;
-  transform: translateY(-2px);
+  color: var(--lime);
 }
 
-.footer-social img {
+/* icons are inline SVGs filled with currentColor, so they follow
+   the link colour on hover */
+.footer-social-icon {
+  display: block;
   width: 16px;
   height: 16px;
 }
@@ -5673,6 +6305,10 @@ footer {
 
   .mega-menu {
       display: none;
+    }
+
+  .search-grid {
+      padding: var(--space-lg) var(--page-pad) var(--space-xl);
     }
 
   .footer-nav-grid {

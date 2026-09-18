@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Timelines</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+
+  <style>
+    /* =============================================
+       DEMO SUPPORT - TIMELINES
+       Shared gallery chrome lives in styles/guide.css.
+       This block holds only the styles that support
+       this page's demos.
+    ============================================= */
+
+    /* replay sits above the stage, clear of the component */
+    .cmp-replay {
+      margin-bottom: var(--space-md);
+    }
+
+    /* the stage supplies the white ground the host section gives
+       it on internship-programme.html */
+    .cmp-timeline-stage {
+      padding: var(--space-xl) 0;
+      background: #fff;
+    }
+
+    /* =============================================
+       MILESTONE TIMELINE. Source: the Our Story page
+       Production values copied from that page (the
+       component is page-local there); only the host
+       section's padding and ground are left to the stage.
+    ============================================= */
+
+    .cmp-milestone-stage {
+      padding: var(--space-xl) 0;
+      background: #fff;
+    }
+
+    /* ---------------------------------------------
+       BRANCH TIMELINES — shared milestone anatomy:
+       a scroll-drawn spine with branching milestones
+       (image · year · title · line)
+    --------------------------------------------- */
+
+    .tl-media {
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background: var(--sand);
+      margin-bottom: var(--space-md);
+    }
+
+    .tl-title {
+      margin: 0 0 var(--space-xs);
+      font-size: var(--text-h6);
+      line-height: var(--leading-h6);
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .tl-desc {
+      margin: 0;
+      max-width: 480px;
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: var(--grey);
+    }
+
+    /* spine track + scroll-drawn fill (JS sets the height) */
+    .tl-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--line);
+    }
+
+    .tl-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 0%;
+      background: var(--green);
+    }
+
+    /* =============================================
+       A — centre spine, alternating branches
+    ============================================= */
+
+
+    .tla-track {
+      position: relative;
+      margin: 0 var(--page-pad);
+      padding: var(--space-md) 0 120px;
+    }
+
+    .tla-track .tl-line {
+      left: 50%;
+    }
+
+    /* the line trails off into the hearts mark at the foot */
+    .tla-track::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 36px;
+      height: 28px;
+      transform: translateX(-50%);
+      background: var(--green);
+      -webkit-mask: var(--hearts-mask) center / contain no-repeat;
+      mask: var(--hearts-mask) center / contain no-repeat;
+    }
+
+    .tla-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* stagger: alternate cards pull up to interleave the two
+       columns, roughly halving the timeline's height */
+    .tla-item + .tla-item {
+      margin-top: -140px;
+    }
+
+    /* node on the spine */
+    .tla-item::before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--ccg-ground-yellow);
+      transform: translateX(-50%) scale(0);
+      transition: transform .4s cubic-bezier(.22,.61,.36,1) .2s;
+    }
+
+    .tla-item.is-in::before {
+      transform: translateX(-50%) scale(1);
+    }
+
+    .tla-card {
+      position: relative;
+      grid-column: 2;
+      padding-left: 80px;
+    }
+
+    .tla-item--flip .tla-card {
+      grid-column: 1;
+      grid-row: 1;
+      padding-left: 0;
+      padding-right: 80px;
+    }
+
+    /* milestone content rides a card: flush image, padded body */
+    .tla-card-inner {
+      max-width: 480px;
+      background: var(--cream);
+      padding-bottom: var(--space-lg);
+    }
+
+    .tla-card-inner .tl-title,
+    .tla-card-inner .tl-desc {
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
+
+    .tla-item--flip .tla-card-inner {
+      margin-left: auto;
+    }
+
+    /* the branch points at the year; the plate hangs below it */
+    .tla-node-year {
+      position: absolute;
+      top: -10px;
+      left: calc(50% + 80px);
+      margin: 0;
+      font-size: var(--text-h2);
+      line-height: var(--leading-h2);
+      color: var(--green-dark);
+      font-variant-numeric: tabular-nums;
+      opacity: .4;
+      transition: opacity .6s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .tla-item.is-in .tla-node-year {
+      opacity: 1;
+    }
+
+    .tla-item--flip .tla-node-year {
+      left: auto;
+      right: calc(50% + 80px);
+      text-align: right;
+    }
+
+    .tla-card {
+      padding-top: 64px;
+    }
+
+    /* cards sit in place, dimmed and desaturated, until the drawn
+       line reaches their node — then they wake to full strength */
+    .tla-card-inner {
+      opacity: .4;
+      transition: opacity .6s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .tla-card-inner .tl-media img {
+      filter: grayscale(1);
+      transition: filter .6s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .tla-item.is-in .tla-card-inner {
+      opacity: 1;
+    }
+
+    .tla-item.is-in .tl-media img {
+      filter: none;
+    }
+
+    /* branch draws out from the spine */
+    .tla-card::before {
+      content: "";
+      position: absolute;
+      top: 13px;
+      left: 0;
+      width: 56px;
+      height: 1px;
+      background: var(--line);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .5s cubic-bezier(.22,.61,.36,1) .1s;
+    }
+
+    .tla-item--flip .tla-card::before {
+      left: auto;
+      right: 0;
+      transform-origin: right;
+    }
+
+    .tla-item.is-in .tla-card::before {
+      transform: scaleX(1);
+    }
+
+    /* ---------------------------------------------
+       RESPONSIVE
+    --------------------------------------------- */
+
+    @media (max-width: 1000px) {
+      /* A folds onto a left spine, all branches right */
+      .tla-track .tl-line {
+        left: 6px;
+      }
+
+      .tla-item {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .tla-item + .tla-item {
+        margin-top: var(--space-xl);
+      }
+
+      .tla-node-year,
+      .tla-item--flip .tla-node-year {
+        left: 64px;
+        right: auto;
+        text-align: left;
+      }
+
+      .tla-item::before {
+        left: 6px;
+        transform: translateX(-50%) scale(0);
+      }
+
+      .tla-card,
+      .tla-item--flip .tla-card {
+        grid-column: 1;
+        grid-row: auto;
+        padding-left: 64px;
+        padding-right: 0;
+      }
+
+      .tla-item--flip .tla-card::before {
+        left: 0;
+        right: auto;
+        transform-origin: left;
+      }
+
+      .tla-item--flip .tla-card-inner {
+        margin-left: 0;
+      }
+
+    }
+
+    @media (max-width: 680px) {
+      .tla-item + .tla-item {
+        margin-top: var(--space-xl);
+      }
+
+      .tla-card,
+      .tla-item--flip .tla-card {
+        padding-top: var(--space-xl);
+        padding-left: var(--space-lg);
+      }
+
+      /* no branch lines on the stacked spine */
+      .tla-card::before {
+        display: none;
+      }
+
+      .tla-node-year,
+      .tla-item--flip .tla-node-year {
+        left: var(--space-lg);
+      }
+
+      .tla-card-inner .tl-title,
+      .tla-card-inner .tl-desc {
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tla-card::before,
+      .tla-item::before,
+      .tla-node-year,
+      .tla-card-inner {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .tla-card-inner .tl-media img {
+        filter: none;
+        transition: none;
+      }
+
+      .tl-fill {
+        height: 100% !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Library components: timelines. Each stage is the production component.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Timelines</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Component library</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · TIMELINES ═══ -->
+  <section class="cmp-category" aria-label="Category: Timelines">
+    <p class="eyebrow">Category</p>
+    <h2>Timelines</h2>
+    <p>Sequences read in order: a stepped process and a history of milestones, each on a track that fills as the reader arrives.</p>
+  </section>
+
+  <!-- TIMELINES · STEP TIMELINE -->
+  <section class="cmp-section" id="cmp-step-timeline" aria-label="Step timeline">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Step timeline</h2>
+      <p class="cmp-head-note">Numbered steps · track fills once on scroll-in</p>
+    </div>
+
+    <button class="cmp-vp-btn cmp-replay" type="button" id="cmpTimelineReplay">Replay</button>
+
+    <div class="cmp-stage cmp-timeline-stage" style="border: 0;">
+      <div class="step-timeline" id="cmpStepTimeline">
+        <div class="step">
+          <div class="step-track" aria-hidden="true"></div>
+          <p class="step-num">01</p>
+          <h3>Apply</h3>
+          <p>Submit your CV and transcript online</p>
+        </div>
+
+        <div class="step">
+          <div class="step-track" aria-hidden="true"></div>
+          <p class="step-num">02</p>
+          <h3>Screening</h3>
+          <p>Applications reviewed by the hiring functions</p>
+        </div>
+
+        <div class="step">
+          <div class="step-track" aria-hidden="true"></div>
+          <p class="step-num">03</p>
+          <h3>Interview</h3>
+          <p>Meet the team you'd be joining</p>
+        </div>
+
+        <div class="step">
+          <div class="step-track" aria-hidden="true"></div>
+          <p class="step-num">04</p>
+          <h3>Offer</h3>
+          <p>Successful candidates confirmed</p>
+        </div>
+
+        <div class="step">
+          <div class="step-track" aria-hidden="true"></div>
+          <p class="step-num">05</p>
+          <h3>Onboarding</h3>
+          <p>Orientation and your eight weeks begin</p>
+          <span class="step-end" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>From the How to apply section of the Internship Programme page. The copy is that page's; the behaviour is the component. Use Replay to run it again.</li>
+        <li><span class="cmp-event">Layout:</span> one equal column per step on desktop (any number of steps). A dot and a hairline form a continuous track across the row; beneath each dot sit the step number, an h5 title and a small grey description. The first dot is larger and starts lit in ground yellow; the last line ends in a small end dot.</li>
+        <li><span class="cmp-event">Scroll-in:</span> plays once, when 40% of the timeline is on screen. The first dot lights, then each line fills left to right in ground yellow over 0.7s at a constant speed; the next dot lights as the fill arrives, and there's a 0.45s pause before the next line sets off. The last line runs on to the end dot. The finished track stays lit and does not replay on scroll.</li>
+        <li><span class="cmp-event">Responsive:</span> at 1000px and below the steps stack into a vertical timeline: the dots ride a continuous line down the left edge, content indented beside them, and the same run goes down the line to an end dot beneath the last step.</li>
+        <li><span class="cmp-event">Reduced motion:</span> the finished, fully lit track shows straight away.</li>
+      </ul>
+      </details>
+  </section>
+
+  <!-- TIMELINES · MILESTONE TIMELINE -->
+  <section class="cmp-section" id="cmp-milestone-timeline" aria-label="Milestone timeline">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Milestone timeline</h2>
+      <p class="cmp-head-note">Scroll-drawn spine · alternating branches · milestones wake in turn</p>
+    </div>
+
+    <div class="cmp-stage cmp-milestone-stage" style="border: 0;">
+      <div class="tla-track" data-tl-track>
+        <div class="tl-line" aria-hidden="true"><div class="tl-fill" data-tl-fill></div></div>
+
+        <div class="tla-item" data-tl-item>
+          <p class="tla-node-year">2024</p>
+          <div class="tla-card">
+            <div class="tla-card-inner">
+              <div class="tl-media">
+                <img src="images/timeline/2024.jpg" alt="" loading="lazy">
+              </div>
+              <h3 class="tl-title">Building for a low-carbon century</h3>
+              <p class="tl-desc">Sustainability pledges reach across the whole portfolio, pairing green construction with programmes that bring generations together.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tla-item tla-item--flip" data-tl-item>
+          <p class="tla-node-year">2015</p>
+          <div class="tla-card">
+            <div class="tla-card-inner">
+              <div class="tl-media">
+                <img src="images/timeline/2015.jpg" alt="" loading="lazy">
+              </div>
+              <h3 class="tl-title">Held in trust, for good</h3>
+              <p class="tl-desc">Chinachem Group is committed to charitable purposes — the value its places create now flows back to the community.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tla-item" data-tl-item>
+          <p class="tla-node-year">2007</p>
+          <div class="tla-card">
+            <div class="tla-card-inner">
+              <div class="tl-media">
+                <img src="images/timeline/2007.jpg" alt="" loading="lazy">
+              </div>
+              <h3 class="tl-title">Nina Tower rises in Tsuen Wan</h3>
+              <p class="tl-desc">The Group's flagship twin towers open — a workplace, a hotel and a new heart for the district, and home to our head office today.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tla-item tla-item--flip" data-tl-item>
+          <p class="tla-node-year">1978</p>
+          <div class="tla-card">
+            <div class="tla-card-inner">
+              <div class="tl-media">
+                <img src="images/timeline/1978.jpg" alt="" loading="lazy">
+              </div>
+              <h3 class="tl-title">Into hospitality</h3>
+              <p class="tl-desc">The first hotel venture begins a decades-long presence in Hong Kong's visitor economy.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tla-item" data-tl-item>
+          <p class="tla-node-year">1960</p>
+          <div class="tla-card">
+            <div class="tla-card-inner">
+              <div class="tl-media">
+                <img src="images/timeline/1960.jpg" alt="" loading="lazy">
+              </div>
+              <h3 class="tl-title">The first foundations</h3>
+              <p class="tl-desc">Chinachem is founded as a family property business in Hong Kong — building homes, and holding on to what it builds.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>A shortened version of the Milestones timeline on the Our Story page: five of its eighteen milestones, from the most recent back to the founding. Scroll through the stage to see it draw.</li>
+        <li><span class="cmp-event">Layout:</span> a central spine with milestones branching off it, alternating right and left. Each milestone pairs a large year beside the spine with a cream card below it: a 3:2 photograph, a title and a short grey description. Alternate cards pull up to interleave the two columns, roughly halving the height. The spine trails off into the hearts mark at its foot.</li>
+        <li><span class="cmp-event">Scroll:</span> the spine draws down in green as the page scrolls, its leading edge tracking a point 70% of the way down the screen. Scrolling back up retracts it.</li>
+        <li><span class="cmp-event">Milestones waking:</span> until the line reaches them, milestones sit dimmed to 40% with black-and-white photographs. As the line passes a milestone's node, a ground-yellow dot grows on the spine, a hairline branch draws out towards the card, the year brightens, and the card and its photograph return to full strength and colour over 0.6s. They dim again if the reader scrolls back above them.</li>
+        <li><span class="cmp-event">Responsive:</span> at 1000px and below the spine moves to the left edge and every milestone branches to the right. On mobile the branch lines drop away and the year and card tighten in beside the spine.</li>
+        <li><span class="cmp-event">Reduced motion:</span> the spine shows fully drawn and every milestone shows at full strength and colour.</li>
+      </ul>
+      </details>
+  </section>
+
+
+  </main>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+  <script>
+    /* Step timeline: the shared initialiser, plus a replay for the guide */
+    const cmpTimeline = ccgStepTimeline(document.querySelector("#cmpStepTimeline"));
+
+    document.querySelector("#cmpTimelineReplay").addEventListener("click", () => cmpTimeline.replay());
+
+    /* =============================================
+       MILESTONE TIMELINE — production behaviour from the
+       Our Story page: the spine draws with scroll;
+       milestones branch in as they enter the viewport
+    ============================================= */
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    document.querySelectorAll("[data-tl-track]").forEach(track => {
+      const fill = track.querySelector("[data-tl-fill]");
+      const line = fill.parentElement;
+      const items = [...track.querySelectorAll("[data-tl-item]")];
+
+      /* clamp the line to run exactly from the first node's centre
+         to the last node's centre */
+      function layoutLine() {
+        const first = items[0];
+        line.style.top = (first.offsetTop + 14) + "px";
+        line.style.bottom = "40px";
+      }
+
+      layoutLine();
+      window.addEventListener("resize", layoutLine);
+
+      if (reduceMotion) {
+        items.forEach(item => item.classList.add("is-in"));
+        return;
+      }
+
+      /* the fill line chases a point 70% down the viewport, and
+         milestones wake as its front passes their node */
+      let ticking = false;
+
+      function drawSpine() {
+        ticking = false;
+        const rect = track.getBoundingClientRect();
+        const anchor = window.innerHeight * 0.7;
+        const progress = Math.min(Math.max((anchor - rect.top) / rect.height, 0), 1);
+        fill.style.height = Math.round(progress * 100) + "%";
+
+        const lineRect = line.getBoundingClientRect();
+        const front = lineRect.top + lineRect.height * progress;
+        items.forEach(item => {
+          const nodeY = item.getBoundingClientRect().top + 14;
+          item.classList.toggle("is-in", nodeY <= front);
+        });
+      }
+
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(drawSpine);
+        }
+      }, { passive: true });
+
+      drawSpine();
+    });
+
+  </script>
+
+</body>
+</html>

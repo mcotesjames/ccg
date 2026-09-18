@@ -17,6 +17,66 @@
   <link rel="stylesheet" href="styles/components.css">
   <link rel="stylesheet" href="styles/guide.css">
 
+  <style>
+    /* =============================================
+       DEMO SUPPORT - FORMS
+       Shared gallery chrome lives in styles/guide.css.
+    ============================================= */
+
+    /* ---------------------------------------------
+       SEARCH FIELD. Source: core-pages/search/
+       search.html (.search-form), verbatim. Built on
+       the shared search-input and field-label; these
+       page rules size it up and seat the submit.
+    --------------------------------------------- */
+
+    .search-form .field-label {
+      margin-bottom: var(--space-ms);
+    }
+
+    .search-field {
+      position: relative;
+      padding-top: var(--space-xs);
+    }
+
+    .search-form .search-input {
+      padding-right: 48px;
+      font-size: var(--text-h4);
+      line-height: var(--leading-h4);
+    }
+
+    .search-form .search-button {
+      display: grid;
+      position: absolute;
+      top: var(--space-xs);
+      right: 0;
+      bottom: var(--space-sm);
+      width: 40px;
+      height: auto;
+      color: var(--ink);
+    }
+
+    .search-form .search-button:hover,
+    .search-form .search-button:focus-visible {
+      color: var(--green);
+    }
+
+    @media (max-width: 680px) {
+      .search-form .search-input {
+        font-size: var(--text-h6);
+        line-height: var(--leading-h6);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .search-form .search-input::placeholder {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -58,7 +118,7 @@
   <section class="cmp-category" aria-label="Category: Forms">
     <p class="eyebrow">Category</p>
     <h2>Forms</h2>
-    <p>Every input style and behaviour on the site, all of it currently living on the contact page. The house treatment is the underline: no boxes, no fills, no rounded corners, a control is a caption label over a line, and the line darkens as you approach it.</p>
+    <p>Every input style and behaviour on the site, from the contact form to the site search. The house treatment is the underline: no boxes, no fills, no rounded corners, a control is a caption label over a line, and the line darkens as you approach it.</p>
   </section>
 
   <!-- FORMS · TEXT FIELDS -->
@@ -288,6 +348,38 @@
       </details>
     </div>
   </section>
+  <!-- FORMS · SEARCH FIELD -->
+  <section class="cmp-section" id="cmp-form-search" aria-label="Search field">
+    <div class="cmp-head">
+      <span class="cmp-head-number">05</span>
+      <h2>Search field</h2>
+      <p class="cmp-head-note">Large underlined query field &middot; submit glyph inside the line</p>
+    </div>
+
+    <div class="cmp-stage">
+      <form class="search-form" role="search" style="max-width: 1100px;" onsubmit="return false;">
+        <label class="field-label" for="cmpPageSearch">Search results for</label>
+        <div class="search-field">
+          <input class="search-input" id="cmpPageSearch" type="search" name="q" placeholder="Search properties, stories, reports…" autocomplete="off">
+          <button class="search-button" type="submit" aria-label="Search">
+            <span class="search-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The query field at the top of the search results page, where it arrives pre-filled with whatever the reader searched for in the header.</li>
+        <li><span class="cmp-event">Anatomy:</span> the house form treatment at a much larger scale: a grey caption label above, then the query set large in deep green on a single hairline, with a magnifier glyph sitting inside the line at its right end. No box, no fill.</li>
+        <li><span class="cmp-event">Hover and focus:</span> the hairline darkens to deep green over 0.25s, as on every other field; the browser's focus ring is replaced by the line. The magnifier turns from ink to green on hover or focus.</li>
+        <li><span class="cmp-event">Placeholder:</span> set in sage, a step lighter than entered text.</li>
+        <li><span class="cmp-event">Submit:</span> pressing enter or the magnifier runs the search and refreshes the results beneath without leaving the page. The text never runs under the magnifier.</li>
+        <li><span class="cmp-event">Responsive:</span> on mobile the query steps down in size, and a long placeholder trails off with an ellipsis rather than breaking mid-word.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
 
   </main>
 

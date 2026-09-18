@@ -93,8 +93,11 @@
         <li><span class="cmp-event">The bar (mobile):</span> drops to a slimmer bar keeping three elements: logo, a slimmed Sales &amp; Leasing plate, and the burger. Search moves into the menu panel.</li>
         <li><span class="cmp-event">Burger:</span> three hairlines with the middle one shorter; hover extends it to full width. Open crosses the outer pair and retires the middle line.</li>
         <li><span class="cmp-event">Tap burger:</span> a full-screen white panel slides down from the top over 0.55s; the section rows cascade in as the sheet lands, the bar fuses with it and page scrolling locks.</li>
-        <li><span class="cmp-event">Tap a section:</span> the five-row list sweeps left and fades as the child links cascade in from the right with a Back row and the section title. Back reverses; closing the panel resets to the top level.</li>
-        <li><span class="cmp-event">Utility foot:</span> a full-width Search row above Contact Us and the language toggle. The active language reads by weight, not underline.</li>
+        <li><span class="cmp-event">While open:</span> the bar is always on screen, pinned to the top of the viewport, whatever state it was in (parked off-canvas or scrolled away). It returns to that state when the panel closes.</li>
+        <li><span class="cmp-event">Tap a section:</span> a natural swipe, no fades: the five-row list and the section pane (Back row, section title, child links) sit side by side and travel a full pane width left together over 0.5s. The section title is ruled off in ground yellow. Below the child links sits the section's sample story, the same one its mega menu features: caption label, 16:9 image, title ruled off by a hairline, and a plain Read the story link, whose arrow nudges when the story is hovered; the pane scrolls when the story runs past the foot. Back swipes them right again; closing the panel resets to the top level.</li>
+        <li><span class="cmp-event">Hover (rows and links):</span> the secondary CTA's underline sweep: a green line fills each row's hairline left to right over 0.45s, and the row's arrow nudges 4px forward. Section rows answer hover straight away; their opening cascade delay only applies to the entrance. Every link in the menu (section rows, child links, Search, Back, Contact Us) rests grey and turns black on hover. The panes' stage runs to the screen edges, so nudged arrows are never clipped and the swipe travels edge to edge.</li>
+        <li><span class="cmp-event">Utility foot:</span> a Search row, styled exactly like the section rows above (same scale, arrow and underline sweep) but held at the foot, above Contact Us and the language toggle. The active language reads by weight, not underline.</li>
+        <li><span class="cmp-event">Tap Search:</span> the menu's own search, not the desktop panel. A search pane swipes in like a section (same 0.5s swipe, Back row) with the field focused so the keyboard rises. Typing two or more characters lists the top three matches and a "See all" link to the results page; enter goes to the results page too. The field takes the section-title scale and the rows' underline sweep on focus. Back or closing the menu clears it.</li>
         <li><span class="cmp-event">Escape:</span> closes the panel and returns focus to the burger.</li>
       </ul>
       </details>
@@ -105,8 +108,8 @@
         <ul class="cmp-notes">
         <li><span class="cmp-event">Open (hover / focus / click a nav item):</span> the panel fades in and drops slightly into place over roughly a third of a second. The header turns solid while open, and the open item keeps its underline.</li>
         <li><span class="cmp-event">Moving between items:</span> repopulates the panel in place, with no close-and-reopen flicker.</li>
-        <li><span class="cmp-event">Layout:</span> three columns: overview (kicker, title, description), a single link list, and a feature card with image, title and a read-the-story link. A utility row beneath carries Contact Us and the language toggle.</li>
-        <li><span class="cmp-event">Link rows:</span> the house numbered-index treatment at a quiet scale, a gold serif-italic numeral in its own fixed column beside the label at body size, rows divided by hairlines. Resting rows sit green; hover or focus inks them deep green and shifts the row slightly right, no arrow; the colour change and the shift are the whole affordance.</li>
+        <li><span class="cmp-event">Layout:</span> three columns: overview (kicker, title, description, all in black), a single link list, and a feature card with a 16:9 image, a title ruled off by a hairline, and a plain Read the story link whose arrow nudges when the card is hovered. The three columns sit an equal distance apart, with nothing but the gap between them. The kicker sits a small step above the title. A utility row beneath carries Contact Us and the language toggle.</li>
+        <li><span class="cmp-event">Link rows:</span> plain black labels at body size, no numerals, rows divided by hairlines. The row never moves: on hover or focus a green line grows along its hairline left to right over 0.45s (the secondary CTA sweep, as in the mobile menu); no arrow.</li>
         <li><span class="cmp-event">Feature card:</span> the image zooms gently over 0.7s; the link underline darkens to green.</li>
         <li><span class="cmp-event">Close:</span> a moment after the pointer leaves the header (brushing past never flickers it); immediately on an outside click; Escape closes and returns focus to the triggering item.</li>
         <li>Below desktop width the mega menu does not exist; navigation moves to the mobile panel above.</li>
@@ -131,7 +134,8 @@
         <ul class="cmp-notes">
         <li>One shared footer, identical on every page; the sitemap is maintained in a single place.</li>
         <li><span class="cmp-event">Layout:</span> six equal columns on the deep green ground: five navigation groups mirroring the main menu, plus a contact column with address, phone and email. The bottom row holds the inverted wordmark, centred legal links and the social icons.</li>
-        <li><span class="cmp-event">Hover (social):</span> icons lift slightly over 0.25s. Navigation links rest at a softened white.</li>
+        <li><span class="cmp-event">Hover (links):</span> navigation and legal links rest at a softened white and brighten to full white over 0.25s.</li>
+        <li><span class="cmp-event">Hover (social):</span> icons turn from white to lime over 0.25s, without moving.</li>
         <li><span class="cmp-event">Responsive:</span> the navigation grid steps from six columns to three, then two on mobile; the bottom row stacks and centres: the wordmark grows to three-quarters of the column, the legal row tightens, and the footer gains extra bottom padding.</li>
       </ul>
       </details>

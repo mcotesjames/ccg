@@ -427,6 +427,18 @@
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
+
+    /* ---------------------------------------------
+       ARTICLE GALLERY. Source: core-pages/news/news-article.html
+       The component is shared (ARTICLE GALLERY in
+       components.css); the stage only sets the host width
+       the article gives it (its 1040px breakout).
+    --------------------------------------------- */
+
+    .cmp-gallery-frame {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
   </style>
 </head>
 
@@ -469,7 +481,7 @@
   <section class="cmp-category" aria-label="Category: Carousels">
     <p class="eyebrow">Category</p>
     <h2>Carousels</h2>
-    <p>Three track behaviours: free-running showcase, stepped auto-advance, and the paged card carousel.</p>
+    <p>Four behaviours: free-running showcase, stepped auto-advance, the paged card carousel, and the swiping article gallery.</p>
   </section>
 
   <!-- CAROUSELS · SHOWCASE CAROUSEL -->
@@ -674,6 +686,51 @@
       </details>
   </section>
 
+  <!-- CAROUSELS · ARTICLE GALLERY -->
+  <section class="cmp-section" id="cmp-article-gallery" aria-label="Article gallery">
+    <div class="cmp-head">
+      <span class="cmp-head-number">04</span>
+      <h2>Article gallery</h2>
+      <p class="cmp-head-note">Side swipe · looping arrows · touch swipe · count + caption</p>
+    </div>
+
+    <div class="cmp-stage">
+      <div class="cmp-gallery-frame">
+        <section class="article-gallery" id="cmpArticleGallery" aria-label="Photos from the summit">
+          <div class="article-gallery-media">
+            <div class="article-gallery-image"></div>
+
+            <div class="article-gallery-controls">
+              <span class="article-gallery-count">01 / 04</span>
+              <button class="gallery-btn gallery-btn--prev" type="button" aria-label="Previous photo">
+                <span class="ui-arrow" aria-hidden="true"></span>
+              </button>
+              <button class="gallery-btn gallery-btn--next" type="button" aria-label="Next photo">
+                <span class="ui-arrow" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="article-gallery-foot">
+            <p class="article-gallery-caption"></p>
+          </div>
+        </section>
+      </div>
+    </div>
+    <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The lead image of a news article is always this gallery, running at the article's wide 1040px breakout. Photos and captions here are placeholders; the behaviour is the component.</li>
+        <li><span class="cmp-event">Arrows:</span> a side swipe, no fade: the incoming photo slides in from the side of travel and pushes the current one out the other side, both moving together over 0.5s on the swipe curve (the mobile menu's). Next enters from the right, previous from the left. The arrows loop, and the wrap is a single one-step swipe (last to first slides in from the right like any other next), never a rewind across the set.</li>
+        <li><span class="cmp-event">Touch:</span> on touch screens a mostly horizontal flick of 40px or more steps one photo in that direction; vertical scrolling over the image still scrolls the page.</li>
+        <li><span class="cmp-event">Count + caption:</span> a white tag at the frame's bottom-left reads the zero-padded position (01 / 04), and the caption below the image follows the active photo.</li>
+        <li><span class="cmp-event">Controls:</span> the count and two square white arrow buttons sit over the photo's foot, lifted off it by a dark scrim that fades up from the bottom edge. Buttons turn cream on hover or focus.</li>
+        <li><span class="cmp-event">Responsive:</span> the frame is 584px tall on desktop, 516px on tablet and 200px on mobile, where the buttons shrink to 32px and the scrim, padding and count tag tighten so the controls don't dominate the short image.</li>
+        <li><span class="cmp-event">Reduced motion:</span> photos switch instantly, with no slide.</li>
+      </ul>
+      </details>
+  </section>
+
 
   </main>
 
@@ -712,6 +769,14 @@
   <script src="scripts/guide.js"></script>
 
   <script>
+    /* Article gallery: the shared initialiser, placeholder photos */
+    ccgArticleGallery(document.querySelector("#cmpArticleGallery"), [
+      { image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2000&q=85", caption: "Above: guests take their seats as the summit opens with the launch of the joint white paper." },
+      { image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=2000&q=85", caption: "The white paper's lead author presents its key findings to delegates." },
+      { image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=2000&q=85", caption: "Panellists from finance, healthcare and the built environment discuss practical pathways forward." },
+      { image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=2000&q=85", caption: "Interactive booths in the foyer showcase start-ups working across ageing and sustainability." }
+    ]);
+
     /* Portfolio showcase: production behaviour from index.html */
     const cmpProperties = [
       { name: "One Hennessy", location: "Wan Chai", type: "Commercial", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=90", detailImage: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2200&q=92", description: "A landmark commercial address where considered architecture meets everyday convenience in the heart of Wan Chai." },
