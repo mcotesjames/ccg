@@ -81,7 +81,7 @@
     <div class="cmp-head">
       <span class="cmp-head-number">01</span>
       <h2>Cover story</h2>
-      <p class="cmp-head-note">Full-bleed photography &middot; 6s rotation &middot; gold progress underline</p>
+      <p class="cmp-head-note">Full-bleed photography &middot; 6s rotation, 10s once chosen &middot; gold progress underline</p>
     </div>
 
     <div class="cmp-stage cmp-stage--bleed">
@@ -100,18 +100,18 @@
         <summary>Interaction notes</summary>
         <ul class="cmp-notes">
         <li><span class="cmp-event">Instances:</span> the home page's community spotlights and the social page's people spotlight are both this component, a change here reaches every one of them. The people spotlight's page-specific framing and compression are documented on <a href="modules-our-impact.html#cmp-people-spotlight">its module entry</a>.</li>
-        <li><span class="cmp-event">Rotation:</span> the module advances every 6 seconds and wraps. A gold hairline fills each index row over exactly that interval, running right to left, so the reader can see how long the current story has left.</li>
+        <li><span class="cmp-event">Rotation:</span> the module advances every 6 seconds, or every 10 once the reader has picked a story, and wraps. A gold hairline fills each index row over exactly that interval, running right to left, so the reader can see how long the current story has left.</li>
         <li><span class="cmp-event">Media change:</span> the photographs are stacked and cross-faded, the outgoing one dissolving into the incoming over 0.9s. Each photograph also drifts from a 5&percnt; zoom back to rest over 6.5s, so the image is never quite still while its story is showing.</li>
         <li><span class="cmp-event">Detail change:</span> the copy block is replaced, fading in and rising slightly over 0.7s. It is a live region, so a screen reader announces each new story as it arrives.</li>
-        <li><span class="cmp-event">Click an index row:</span> jumps to that story and restarts the timer.</li>
-        <li><span class="cmp-event">Pause:</span> the whole band pauses on hover and the gold line freezes where it is; leaving resumes and restarts the line. <strong>Hover only</strong>; see the keyboard note below.</li>
+        <li><span class="cmp-event">Click an index row:</span> jumps to that story and restarts the timer. From then on the band keeps rotating, but at a slower ten seconds a story, so a reader who has started choosing has longer to read before it moves on. The gold line always runs the length of whichever interval is in play.</li>
+        <li><span class="cmp-event">No pause:</span> nothing stops the rotation. Hovering the band has no effect at all; it neither pauses nor slows.</li>
         <li><span class="cmp-event">Index anatomy:</span> a right-aligned column at the foot of the stage. Each row pairs a zero-padded numeral with its label; resting rows sit at 48&percnt; white, hover lifts them to 85&percnt;, and the active row is solid white with a gold numeral and a full-width hairline beneath.</li>
         <li><span class="cmp-event">Stage anatomy:</span> detail left, index right, both pinned to the bottom of the band. Two crossed gradients sit over the photograph, one vertical, one horizontal, so type stays readable wherever the image is light.</li>
         <li><span class="cmp-event">Defaults:</span> a tall band floor on the deep green ground, with the component's own gradient. Pages may compress the floor or retune the gradient, those are page decisions, quoted on the instance's own entry, not variants of the component.</li>
         <li><span class="cmp-event">Responsive:</span> at tablet width the stage flips to a single column with the index <em>above</em> the detail and both aligned left. On mobile the title and index rows each step down a size.</li>
         <li><span class="cmp-event">Reduced motion:</span> the rotation never starts and the module rests on its first story. Clicking the index still works.</li>
         <li><span class="cmp-event">Two gotchas for the build:</span> the component ships hidden and does nothing until a page switches it on, and it ships <em>empty</em>, media, index and detail are all written by the page from a story list. There is no markup contract for a story, so the list is the contract.</li>
-        <li><span class="cmp-event">Keyboard gap:</span> index rows are buttons, so they focus and activate, but there are no arrow keys and the band does not pause on focus, only on hover. A keyboard user tabbing the index has stories changing under them. The service tabs handle this correctly and are the pattern to copy.</li>
+        <li><span class="cmp-event">Keyboard gap:</span> index rows are buttons, so they focus and activate, but there are no arrow keys and nothing stops the rotation, so a keyboard user tabbing the index has stories changing under them. The service tabs handle this correctly and are the pattern to copy.</li>
         </ul>
       </details>
     </div>
@@ -230,15 +230,23 @@
       `;
     }
 
+    /* the band rotates on its own; once the reader picks a story
+       it keeps rotating, just at the slower pace. The progress
+       underline reads the same interval, so the two stay in step. */
+    const SPOT_PACE = 6000;
+    const SPOT_PACE_SLOW = 10000;
+    let cmpCoverTimerPace = SPOT_PACE;
+
     function cmpStartCoverAutoplay() {
       window.clearInterval(cmpCoverTimer);
+      cmpCoverSpot.style.setProperty("--spot-interval", cmpCoverTimerPace + "ms");
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       cmpCoverTimer = window.setInterval(() => {
         cmpCoverActive = (cmpCoverActive + 1) % cmpCoverStories.length;
         cmpRenderCover();
-      }, 6000);
+      }, cmpCoverTimerPace);
     }
 
     cmpCoverIndex.addEventListener("click", event => {
@@ -246,17 +254,9 @@
       if (!item) return;
 
       cmpCoverActive = Number(item.dataset.index);
+      cmpCoverTimerPace = SPOT_PACE_SLOW;
+      cmpCoverSpot.style.setProperty("--spot-interval", cmpCoverTimerPace + "ms");
       cmpRenderCover();
-      cmpStartCoverAutoplay();
-    });
-
-    cmpCoverSpot.addEventListener("pointerenter", () => {
-      cmpCoverSpot.classList.add("is-paused");
-      window.clearInterval(cmpCoverTimer);
-    });
-
-    cmpCoverSpot.addEventListener("pointerleave", () => {
-      cmpCoverSpot.classList.remove("is-paused");
       cmpStartCoverAutoplay();
     });
 

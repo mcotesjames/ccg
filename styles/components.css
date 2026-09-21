@@ -1837,9 +1837,12 @@ body.menu-open {
    </section>
    Media, detail and index are populated by page JS from a story
    array (see index.html / our-approach.html). Autoplays every 6s
-   with a gold progress underline; pauses on hover. */
+   with a gold progress underline that runs the length of the
+   interval; the page's driver sets --spot-interval, and slows it
+   once the reader picks a story. No hover pause. */
 
 .spot-b {
+  --spot-interval: 6s;
   display: none;
   position: relative;
   min-height: 800px;
@@ -1986,11 +1989,7 @@ body.menu-open {
   background: var(--ccg-gold);
   transform: scaleX(0);
   transform-origin: right;
-  animation: spotProgress 6s linear forwards;
-}
-
-.spot-b.is-paused .spot-b-progress {
-  animation-play-state: paused;
+  animation: spotProgress var(--spot-interval) linear forwards;
 }
 
 @keyframes spotProgress {
