@@ -17,6 +17,63 @@
   <link rel="stylesheet" href="styles/components.css">
   <link rel="stylesheet" href="styles/guide.css">
 
+  <style>
+    /* =============================================
+       DEMO SUPPORT - CONTENT BLOCKS
+       Shared gallery chrome lives in styles/guide.css.
+    ============================================= */
+
+    /* ---------------------------------------------
+       CATEGORISED ACCORDION. Source: the contact
+       page's categorised FAQ, verbatim. The rows
+       themselves are the shared accordion; these
+       rules only add the category column.
+    --------------------------------------------- */
+
+    .faq-group {
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: var(--space-grid);
+    }
+
+    /* the next category's rule closes the list */
+    .faq-group-items .faq-item:last-of-type {
+      border-bottom: 0;
+    }
+
+    .faq-group-header {
+      align-self: start;
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--green-dark);
+    }
+
+    .faq-group-title {
+      margin: 0;
+      font-size: var(--text-h6);
+      line-height: var(--leading-h6);
+      color: var(--green-dark);
+    }
+
+    .faq-group-count {
+      margin: var(--space-xs) 0 0;
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: var(--grey);
+    }
+
+    @media (max-width: 1000px) {
+      /* category stacks above its questions */
+      .faq-group {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+      }
+
+      .faq-group-header {
+        padding-bottom: var(--space-xs);
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -200,10 +257,89 @@
     </div>
   </section>
 
+
+  <!-- CONTENT BLOCKS · CATEGORISED ACCORDION -->
+  <section class="cmp-section" id="cmp-categorised-accordion" aria-label="Categorised accordion">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Categorised accordion</h2>
+      <p class="cmp-head-note">The accordion split into categories &middot; category beside its questions</p>
+    </div>
+
+    <div class="cmp-stage">
+      <div class="faq-group" role="group" aria-labelledby="cmp-faq-cat-a">
+        <div class="faq-group-header">
+          <h3 class="faq-group-title" id="cmp-faq-cat-a">Property sales &amp; leasing</h3>
+          <p class="faq-group-count">3 questions</p>
+        </div>
+        <div class="faq-group-items">
+          <details class="faq-item" open>
+            <summary class="faq-question">
+              How do I enquire about a specific property for sale or lease?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </summary>
+            <p class="faq-answer">Every property listing carries its own enquiry line and contact button — the fastest route is directly from the listing page. For general sales or leasing questions, use the enquiry form above.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              Can I arrange a viewing?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </summary>
+            <p class="faq-answer">Viewings are arranged by the agent named on the listing.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              Who do I contact about an existing tenancy?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </summary>
+            <p class="faq-answer">Existing tenants are looked after by the property management team for their building.</p>
+          </details>
+        </div>
+      </div>
+
+      <div class="faq-group" role="group" aria-labelledby="cmp-faq-cat-b">
+        <div class="faq-group-header">
+          <h3 class="faq-group-title" id="cmp-faq-cat-b">Suppliers &amp; procurement</h3>
+          <p class="faq-group-count">2 questions</p>
+        </div>
+        <div class="faq-group-items">
+          <details class="faq-item">
+            <summary class="faq-question">
+              How do I register as an approved contractor or supplier?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </summary>
+            <p class="faq-answer">Supplier and contractor registration is handled through the ASL portal.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              How long does supplier approval take?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </summary>
+            <p class="faq-answer">Most registrations are reviewed within ten working days.</p>
+          </details>
+        </div>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The contact page's categorised questions: the same accordion rows as above, sorted under headings, for a list long enough that one flat run would be hard to scan.</li>
+        <li><span class="cmp-event">Layout:</span> each category takes a third of the width and its questions the remaining two thirds. The category sits at the top of its column, ruled off above in deep green, with the question count beneath the name in small grey text. The rule over each category lines up with the first question's rule beside it.</li>
+        <li><span class="cmp-event">The rows:</span> unchanged from the accordion above — same question size, same toggle, same opening behaviour, and any number can be open at once. The last question in a category drops its closing rule, because the next category's rule closes the run.</li>
+        <li><span class="cmp-event">Opening state:</span> the first question of the first category ships open, so the block never presents as a wall of closed rows.</li>
+        <li><span class="cmp-event">Responsive:</span> below tablet width each category moves above its own questions and the two columns become one.</li>
+        <li><span class="cmp-event">Closing row:</span> the optional note and link that close the plain accordion work here too, sitting beneath the last category.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
   <!-- CONTENT BLOCKS · DOCUMENT ROW -->
   <section class="cmp-section" id="cmp-document-row" aria-label="Document row">
     <div class="cmp-head">
-      <span class="cmp-head-number">03</span>
+      <span class="cmp-head-number">04</span>
       <h2>Document row</h2>
       <p class="cmp-head-note">Ruled row of a dated publication &middot; cover, year, title, description, view</p>
     </div>
@@ -236,7 +372,7 @@
   <!-- CONTENT BLOCKS · FILM PLATE -->
   <section class="cmp-section" id="cmp-film-plate" aria-label="Film plate">
     <div class="cmp-head">
-      <span class="cmp-head-number">04</span>
+      <span class="cmp-head-number">05</span>
       <h2>Film plate</h2>
       <p class="cmp-head-note">16:9 poster frame &middot; gold play control</p>
     </div>

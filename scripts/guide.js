@@ -50,6 +50,7 @@ const GUIDE_NAV = [
     { file: "content-blocks.html", desc: "General page-building modules: figures, rows and editorial splits.", name: "Content blocks", components: [
       ["cmp-stat-cell", "Stat cell"],
       ["cmp-accordion", "Accordion"],
+      ["cmp-categorised-accordion", "Categorised accordion"],
       ["cmp-document-row", "Document row"],
       ["cmp-film-plate", "Film plate"]
     ]},
