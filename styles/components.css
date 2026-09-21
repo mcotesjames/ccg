@@ -20,6 +20,7 @@
      ARTICLE GALLERY
      STEP TIMELINE
      SERVICE TABS
+     LOGO BAND
      LOGO CAROUSEL
      FLAGSHIP
      DOCUMENT LIST
@@ -3112,6 +3113,119 @@ body.menu-open {
 @media (prefers-reduced-motion: reduce) {
   .service-panel.is-active {
     animation: none;
+  }
+}
+
+/* =============================================================
+   LOGO BAND — subsidiary marks across a green band
+   =============================================================
+   Six marks evenly spaced on the green band at desktop. At
+   mobile the row becomes a continuous marquee that never stops,
+   which is why the set is written twice: the second is a copy
+   for the loop, hidden from assistive tech and from desktop.
+
+   <section class="logo-band" aria-label="…">
+     <div class="logo-band-track">
+       <div class="logo-band-set">
+         <div class="logo-band-mark"><img …></div>   × N
+       </div>
+       <div class="logo-band-set" aria-hidden="true">   (copy for the loop)
+         <div class="logo-band-mark"><img …></div>   × N
+       </div>
+     </div>
+   </section> */
+
+.logo-band {
+  padding: 40px var(--page-pad);
+  background: var(--ccg-green);
+  overflow: hidden;
+}
+
+.logo-band-set {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: center;
+}
+
+/* the loop copy only exists for the mobile marquee */
+.logo-band-set + .logo-band-set {
+  display: none;
+}
+
+.logo-band-mark {
+  min-width: 0;
+  display: grid;
+  place-items: center;
+}
+
+.logo-band-mark img {
+  width: 76px;
+  height: auto;
+  /* marks ship dark; this lifts them to the band's warm cream */
+  filter: brightness(0) saturate(100%) invert(91%) sepia(21%) saturate(456%) hue-rotate(357deg) brightness(101%) contrast(94%);
+}
+
+@media (max-width: 680px) {
+  .logo-band {
+    padding: 24px 0;
+  }
+
+  /* marquee: two identical sets ride one track, and the track
+     travels exactly one set's width before repeating, so the
+     seam never shows */
+  .logo-band-track {
+    display: flex;
+    width: max-content;
+    animation: logo-band-marquee 24s linear infinite;
+  }
+
+  .logo-band-set,
+  .logo-band-set + .logo-band-set {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+  }
+
+  .logo-band-mark {
+    flex: 0 0 auto;
+    padding: 0 var(--space-xl);
+  }
+
+  .logo-band-mark img {
+    width: 48px;
+  }
+}
+
+@keyframes logo-band-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* stopped marquee would cut the set off mid-track, so the band
+   falls back to the static rows it used before */
+@media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+  .logo-band {
+    padding: 24px var(--page-pad);
+  }
+
+  .logo-band-track {
+    display: block;
+    width: auto;
+    animation: none;
+  }
+
+  .logo-band-set {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: var(--space-md);
+  }
+
+  .logo-band-set + .logo-band-set {
+    display: none;
+  }
+
+  .logo-band-mark {
+    padding: 0;
   }
 }
 

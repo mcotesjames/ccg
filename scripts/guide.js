@@ -23,11 +23,12 @@ const GUIDE_NAV = [
       ["cmp-footer", "Footer"],
       ["cmp-hero-parallax", "Hero parallax"]
     ]},
-    { file: "carousels.html", desc: "Four behaviours: free-running, stepped auto-advance, paged, and the swiping article gallery.", name: "Carousels", components: [
+    { file: "carousels.html", desc: "Five behaviours: free-running, stepped auto-advance, paged, the swiping article gallery, and the endless logo band.", name: "Carousels", components: [
       ["cmp-showcase-carousel", "Showcase carousel"],
       ["cmp-stats-carousel", "Stats carousel"],
       ["cmp-card-carousel", "Manual carousel"],
-      ["cmp-article-gallery", "Article gallery"]
+      ["cmp-article-gallery", "Article gallery"],
+      ["cmp-logo-band", "Logo band"]
     ]},
     { file: "timelines.html", desc: "Sequences read in order: a stepped process and a history of milestones, each on a track that fills as the reader arrives.", name: "Timelines", components: [
       ["cmp-step-timeline", "Step timeline"],
@@ -61,9 +62,7 @@ const GUIDE_NAV = [
     ]}
   ]},
   { label: "Page modules", intro: "Fixed page-specific assemblies with behaviour of their own, one page per site section. Take a module whole: layout, timings and keyboard handling are one piece.", pages: [
-    { file: "modules-our-work.html", desc: "Services index and the assemblies to come from the Our Work pages.", name: "Our work", components: [
-      ["cmp-services-index", "Services index"]
-    ]},
+    { file: "modules-our-work.html", desc: "Assemblies to come from the Our Work pages.", name: "Our work" },
     { file: "modules-our-impact.html", desc: "The people spotlight framing, and future Our Impact assemblies.", name: "Our impact", components: [
       ["cmp-people-spotlight", "People spotlight"]
     ]},
