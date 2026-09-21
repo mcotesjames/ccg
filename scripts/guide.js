@@ -52,7 +52,8 @@ const GUIDE_NAV = [
       ["cmp-accordion", "Accordion"],
       ["cmp-categorised-accordion", "Categorised accordion"],
       ["cmp-document-row", "Document row"],
-      ["cmp-film-plate", "Film plate"]
+      ["cmp-film-plate", "Film plate"],
+      ["cmp-nearby-map", "Nearby map"]
     ]},
     { file: "forms.html", desc: "The house treatment is the underline: a caption label over a line, no boxes. Plus the panel that routes an enquiry.", name: "Forms", components: [
       ["cmp-form-text", "Text fields"],

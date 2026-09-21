@@ -61,6 +61,15 @@
       color: var(--grey);
     }
 
+    /* the map demo is a tall module; give its frame the room */
+    .cmp-viewport--map {
+      height: 700px;
+    }
+
+    .cmp-viewport--map.cmp-viewport--mobile {
+      height: 900px;
+    }
+
     @media (max-width: 1000px) {
       /* category stacks above its questions */
       .faq-group {
@@ -394,6 +403,35 @@
         <li><span class="cmp-event">Width:</span> the page decides. The careers page frames it within the page gutters on a cream band; the membership page runs it wider.</li>
         <li><span class="cmp-event">Responsive:</span> the frame keeps its 16:9 at every width and the disc steps down on mobile, where a page may also run the frame edge to edge.</li>
       </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- CONTENT BLOCKS · NEARBY MAP -->
+  <section class="cmp-section" id="cmp-nearby-map" aria-label="Nearby map">
+    <div class="cmp-head">
+      <span class="cmp-head-number">06</span>
+      <h2>Nearby map</h2>
+      <p class="cmp-head-note">Points of interest beside a map &middot; filter by category</p>
+    </div>
+
+    <div class="cmp-stage" style="padding: 0; border: 0;">
+      <div class="cmp-vp-controls" role="group" aria-label="Demo viewport width" data-vp-controls="#cmpMapViewport">
+        <button class="cmp-vp-btn is-active" type="button" data-vp="desktop" aria-pressed="true">Desktop viewport</button>
+        <button class="cmp-vp-btn" type="button" data-vp="mobile" aria-pressed="false">Mobile viewport &middot; 414px</button>
+      </div>
+      <iframe class="cmp-viewport cmp-viewport--map" id="cmpMapViewport" src="components-map-demo.html" title="Nearby map demo: switchable viewport"></iframe>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The neighbourhood module from a property listing, shown without the section heading that page puts above it. The frame above is a real viewport: switch it to mobile to see the map lead and the places become a card strip. The map itself is a placeholder until the mapping service is wired in.</li>
+        <li><span class="cmp-event">Layout:</span> a green list of nearby places, 360px wide, beside the map, both the same height. Each place is a row with its name, its address or line, and a small Get directions link, divided by hairlines; the first sits straight under the dropdown with no rule between them.</li>
+        <li><span class="cmp-event">Get directions:</span> the standard link at the row's small scale, in white on the green. It opens Google Maps in a new tab with that place set as the destination, ready to route from wherever the reader is. Pressing it does not change which place is chosen.</li>
+        <li><span class="cmp-event">Filter:</span> the list is headed by a dropdown reading "Location categories", which is also the option that shows everything. Choosing a category (transport, shopping, education, landmarks, leisure) leaves only the places of that kind in the list; the rest drop out at once, with no animation. A category with nothing nearby shows a short note in place of the list instead of an empty column.</li>
+        <li><span class="cmp-event">The dropdown:</span> the house dropdown select in its light colouring for the dark ground; open, choose and close behave exactly as on the Actions page, with the options panel always white.</li>
+        <li><span class="cmp-event">Choosing a place:</span> the chosen row darkens to deep green with a gold bar down its left edge and its address line turns lime, over about 0.2s, and it holds that state until another place is chosen. With a mouse the same look previews on hover. On the mobile strip the chosen place and the place in view are one thing: whichever card the strip has paged to is the chosen one, and tapping a card that is peeking in brings it into view and chooses it.</li>
+        <li><span class="cmp-event">Responsive:</span> at tablet width the map loses its fixed height. On mobile the order flips and the list changes shape: the map comes first, full width and 320px tall; the dropdown sits beneath it on the white ground in its standard colouring; and the places become a strip of green cards, 280px wide, that pages sideways one place at a time with the house carousel controls beneath: count, progress line and arrows. The strip can also be dragged. Filtering restarts the strip from its first place. A category with nothing nearby shows the note in place of the strip, and the count and arrows go with it.</li>
+        </ul>
       </details>
     </div>
   </section>

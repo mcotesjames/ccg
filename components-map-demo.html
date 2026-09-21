@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nearby map demo: CCG components</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+
+  <style>
+    /* ---------------------------------------------
+       NEARBY MAP. Source: core-pages/sales/
+       property-listing.html (.neighbourhood), verbatim.
+       The dropdown is the shared dropdown select in its
+       light variant; the list and map frame are that
+       page's own.
+    --------------------------------------------- */
+
+    body {
+      margin: 0;
+      background: #fff;
+    }
+
+    /* ---------------------------------------------
+       NEIGHBOURHOOD
+    --------------------------------------------- */
+
+    .neighbourhood {
+      padding: var(--page-pad) var(--space-section-compact);
+      background: #fff;
+    }
+
+    .map-container {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .map-canvas {
+      position: relative;
+      height: 560px;
+      background: var(--ccg-heritage-teal-light);
+      overflow: hidden;
+    }
+
+    .map-placeholder {
+      position: relative;
+      display: grid;
+      place-items: center;
+      color: var(--green-dark);
+      font-size: 14px;
+      height: 100%;
+    }
+
+    .map-results {
+      position: relative;
+      background: var(--green);
+      color: #fff;
+      overflow: auto;
+      height: 560px;
+    }
+
+    /* filter row heads the list: label over the house dropdown,
+       on the same insets and hairline as the results */
+    .map-filter {
+      padding: 32px 28px 12px;
+    }
+
+    .map-filter .year-select-trigger {
+      width: 100%;
+    }
+
+    /* results outside the chosen category drop out of the list */
+    .map-result[hidden] {
+      display: none;
+    }
+
+    .map-empty {
+      margin: 0;
+      padding: 20px 28px;
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: var(--ink-inverse-muted);
+    }
+
+    .map-empty[hidden] {
+      display: none;
+    }
+
+    /* the carousel controls belong to the mobile strip only */
+    .map-carousel-ui {
+      display: none;
+    }
+
+    .map-result {
+      display: block;
+      padding: 16px 28px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--line-dark);
+      transition: background-color .22s ease, box-shadow .22s ease;
+    }
+
+    /* the chosen place holds the deep-green state; pointers get it
+       on hover too, touch gets it on tap */
+    .map-result.is-active,
+    .map-result:focus-visible {
+      background: var(--green-dark);
+      box-shadow: inset 4px 0 0 var(--ccg-gold);
+    }
+
+    @media (hover: hover) {
+      .map-result:hover {
+        background: var(--green-dark);
+        box-shadow: inset 4px 0 0 var(--ccg-gold);
+      }
+    }
+
+    .map-result h3 {
+      margin: 0 0 4px;
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+      font-weight: 400;
+      color: #fff;
+    }
+
+    .map-result p {
+      margin: 0;
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      color: rgba(255, 255, 255, .65);
+      transition: color .22s ease;
+    }
+
+    /* directions open Google Maps in a new tab: the standard link
+       at the row's small scale, white on the green */
+    .map-result-directions {
+      margin-top: 16px;
+      gap: 12px;
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+      color: #fff;
+    }
+
+    .map-result-directions::after {
+      width: 12px;
+      height: 16px;
+    }
+
+    .map-result.is-active p,
+    .map-result:focus-visible p {
+      color: var(--lime);
+    }
+
+    @media (hover: hover) {
+      .map-result:hover p {
+        color: var(--lime);
+      }
+    }
+
+    @media (max-width: 1000px) {
+      .map-results {
+        position: static;
+        width: auto;
+        margin-top: 16px;
+      }
+
+      .map-canvas {
+        height: auto;
+      }
+
+      .map-placeholder {
+        position: static;
+        height: 320px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      /* map first, full bleed; then the filter on the white ground;
+         then the places as a horizontal card strip with the house
+         carousel controls, so the list no longer eats the screen */
+      .neighbourhood {
+        padding: var(--page-pad) 0;
+      }
+
+      /* minmax(0) stops the max-content strip widening the column
+         past the screen; the wrapper does the clipping */
+      .map-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+      }
+
+      .map-canvas {
+        order: -1;
+        height: 320px;
+      }
+
+      .map-results {
+        min-width: 0;
+        height: auto;
+        margin-top: 0;
+        overflow: visible;
+        background: transparent;
+        color: var(--ink);
+      }
+
+      .map-filter {
+        padding: 0 var(--page-pad) 20px;
+      }
+
+      /* the dropdown reverts to its standard colouring off the green */
+      .map-filter .year-select-trigger {
+        color: var(--green-dark);
+        border-bottom-color: var(--line);
+      }
+
+      .map-filter .year-select-trigger:hover,
+      .map-filter .year-select-trigger:focus-visible {
+        border-bottom-color: var(--green-dark);
+      }
+
+      .map-carousel-viewport {
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .map-result-list {
+        display: flex;
+        gap: var(--space-grid);
+        width: max-content;
+        padding: 0 var(--page-pad);
+        transition: transform .7s cubic-bezier(.22,.61,.36,1);
+        will-change: transform;
+        touch-action: pan-y;
+        cursor: grab;
+        user-select: none;
+      }
+
+      .map-result {
+        flex: 0 0 280px;
+        padding: 16px 28px;
+        background: var(--green);
+        color: #fff;
+      }
+
+      .map-empty {
+        padding: 0 var(--page-pad);
+        color: var(--grey);
+      }
+
+      .map-carousel-ui {
+        display: grid;
+        padding: 20px var(--page-pad) 0;
+      }
+
+      /* no places, nothing to page: the controls go with the strip */
+      .map-results.is-empty .map-carousel-ui {
+        display: none;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NEIGHBOURHOOD -->
+  <section class="neighbourhood">
+    <div class="map-container">
+      <aside class="map-results" aria-label="Nearby locations">
+        <div class="map-filter">
+          <div class="year-select year-select--light" data-open="false" id="mapFilter">
+            <button class="year-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter nearby locations" aria-labelledby="mapFilterValue">
+              <span id="mapFilterValue">Location categories</span>
+              <span class="year-select-chevron" aria-hidden="true"></span>
+            </button>
+            <ul class="year-select-panel" role="listbox" aria-label="Filter nearby locations" id="mapFilterPanel">
+              <li class="year-option" role="option" tabindex="-1" data-value="all" aria-selected="true">Location categories</li>
+              <li class="year-option" role="option" tabindex="-1" data-value="transport" aria-selected="false">Transport</li>
+              <li class="year-option" role="option" tabindex="-1" data-value="shopping" aria-selected="false">Shopping</li>
+              <li class="year-option" role="option" tabindex="-1" data-value="education" aria-selected="false">Education</li>
+              <li class="year-option" role="option" tabindex="-1" data-value="landmarks" aria-selected="false">Landmarks</li>
+              <li class="year-option" role="option" tabindex="-1" data-value="leisure" aria-selected="false">Leisure</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="map-carousel-viewport">
+        <div class="map-result-list" id="mapResults">
+          <article class="map-result" data-category="transport" tabindex="0">
+            <h3>Sha Tin Station</h3>
+            <p>MTR East Rail Line</p>
+            <a class="map-result-directions link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=Sha%20Tin%20Station%2C%20Sha%20Tin%2C%20Hong%20Kong" target="_blank" rel="noopener">Get directions</a>
+          </article>
+          <article class="map-result" data-category="shopping" tabindex="0">
+            <h3>New Town Plaza</h3>
+            <p>Sha Tin Centre Street</p>
+            <a class="map-result-directions link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=New%20Town%20Plaza%2C%20Sha%20Tin%2C%20Hong%20Kong" target="_blank" rel="noopener">Get directions</a>
+          </article>
+          <article class="map-result" data-category="landmarks" tabindex="0">
+            <h3>Royal Park Hotel</h3>
+            <p>8 Pak Hok Ting Street</p>
+            <a class="map-result-directions link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=Royal%20Park%20Hotel%2C%208%20Pak%20Hok%20Ting%20Street%2C%20Sha%20Tin%2C%20Hong%20Kong" target="_blank" rel="noopener">Get directions</a>
+          </article>
+          <article class="map-result" data-category="landmarks" tabindex="0">
+            <h3>Sha Tin Town Hall</h3>
+            <p>1 Yuen Wo Road</p>
+            <a class="map-result-directions link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=Sha%20Tin%20Town%20Hall%2C%201%20Yuen%20Wo%20Road%2C%20Sha%20Tin%2C%20Hong%20Kong" target="_blank" rel="noopener">Get directions</a>
+          </article>
+          <article class="map-result" data-category="leisure" tabindex="0">
+            <h3>Shing Mun River Promenade</h3>
+            <p>Sha Tin waterfront</p>
+            <a class="map-result-directions link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=Shing%20Mun%20River%20Promenade%2C%20Sha%20Tin%2C%20Hong%20Kong" target="_blank" rel="noopener">Get directions</a>
+          </article>
+        </div>
+        </div>
+        <p class="map-empty" id="mapEmpty" hidden>Nothing of this kind nearby. Try another category.</p>
+
+        <div class="carousel-ui map-carousel-ui" id="mapCarouselUi">
+          <div class="carousel-count"><span id="mapCurrent">01</span> / <span id="mapTotal">05</span></div>
+          <div class="progress-track"><div class="progress-thumb" id="mapProgress"></div></div>
+          <div class="carousel-arrows">
+            <button class="arrow arrow-prev" type="button" id="mapPrev" aria-label="Previous place"><span class="ui-arrow" aria-hidden="true"></span></button>
+            <button class="arrow arrow-next" type="button" id="mapNext" aria-label="Next place"><span class="ui-arrow" aria-hidden="true"></span></button>
+          </div>
+        </div>
+      </aside>
+
+      <div class="map-canvas">
+        <div class="map-placeholder">Interactive map</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    /* =============================================
+       NEIGHBOURHOOD — filter the nearby list by category
+    ============================================= */
+
+    (function mapFilter() {
+      const root = document.querySelector("#mapFilter");
+      const trigger = root.querySelector(".year-select-trigger");
+      const value = document.querySelector("#mapFilterValue");
+      const options = [...root.querySelectorAll(".year-option")];
+      const results = [...document.querySelectorAll("#mapResults .map-result")];
+      const empty = document.querySelector("#mapEmpty");
+
+      const close = () => { root.dataset.open = "false"; trigger.setAttribute("aria-expanded", "false"); };
+
+      function apply(category) {
+        let shown = 0;
+        results.forEach(item => {
+          const on = category === "all" || item.dataset.category === category;
+          item.hidden = !on;
+          if (on) shown++;
+        });
+        empty.hidden = shown > 0;
+        results[0].closest(".map-results").classList.toggle("is-empty", shown === 0);
+      }
+
+      trigger.addEventListener("click", () => {
+        const open = root.dataset.open === "true";
+        root.dataset.open = String(!open);
+        trigger.setAttribute("aria-expanded", String(!open));
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener("click", () => {
+          value.textContent = opt.textContent.trim();
+          options.forEach(o => o.setAttribute("aria-selected", String(o === opt)));
+          apply(opt.dataset.value);
+          close();
+          trigger.focus();
+        });
+      });
+
+      document.addEventListener("pointerdown", e => { if (!root.contains(e.target)) close(); });
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape" && root.dataset.open === "true") { close(); trigger.focus(); }
+      });
+
+      /* ---- mobile strip: the places page sideways, one per step.
+         Mirrors the shared card carousel, but re-reads which cards
+         the filter has left showing on every move. ---- */
+      const mobile = window.matchMedia("(max-width: 680px)");
+      const track = document.querySelector("#mapResults");
+      const current = document.querySelector("#mapCurrent");
+      const total = document.querySelector("#mapTotal");
+      const progress = document.querySelector("#mapProgress");
+      let index = 0, dragStart = 0, dragDelta = 0, dragging = false;
+
+      const cards = () => results.filter(item => !item.hidden);
+      const step = () => { const c = cards(); return c.length > 1 ? c[1].offsetLeft - c[0].offsetLeft : (c[0] ? c[0].offsetWidth : 0); };
+      const maxIndex = () => Math.max(0, cards().length - 1);
+
+      function update(animate = true) {
+        if (!mobile.matches) { track.style.transform = ""; return; }
+        index = Math.max(0, Math.min(index, maxIndex()));
+        track.style.transition = animate ? "" : "none";
+        track.style.transform = `translate3d(${-index * step()}px,0,0)`;
+        /* on the strip, the place in view is the chosen place;
+           anything the filter has hidden gives its selection up */
+        const shown = cards();
+        results.forEach(card => card.classList.toggle("is-active", shown.indexOf(card) === index));
+        const steps = maxIndex() + 1;
+        current.textContent = String(index + 1).padStart(2, "0");
+        total.textContent = String(steps).padStart(2, "0");
+        progress.style.width = (100 / steps) + "%";
+        progress.style.transform = `translateX(${index * 100}%)`;
+      }
+
+      function moveBy(direction) {
+        index += direction;
+        if (index > maxIndex()) index = 0;
+        if (index < 0) index = maxIndex();
+        update();
+      }
+
+      document.querySelector("#mapPrev").addEventListener("click", () => moveBy(-1));
+      document.querySelector("#mapNext").addEventListener("click", () => moveBy(1));
+
+      track.addEventListener("pointerdown", event => {
+        if (!mobile.matches || (event.pointerType === "mouse" && event.button !== 0)) return;
+        dragging = true; dragStart = event.clientX; dragDelta = 0;
+        track.setPointerCapture(event.pointerId);
+        track.style.transition = "none";
+      });
+      track.addEventListener("pointermove", event => {
+        if (!dragging) return;
+        dragDelta = event.clientX - dragStart;
+        track.style.transform = `translate3d(${(-index * step()) + dragDelta}px,0,0)`;
+      });
+      const finishDrag = event => {
+        if (!dragging) return;
+        dragging = false;
+        if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+        if (Math.abs(dragDelta) > 55) moveBy(dragDelta < 0 ? 1 : -1); else update();
+      };
+      track.addEventListener("pointerup", finishDrag);
+      track.addEventListener("pointercancel", finishDrag);
+
+      /* tapping a place selects it: it holds the deep-green state
+         until another is chosen (the map will follow this later).
+         On the strip the selection and the position are one thing,
+         so a tap also brings that place into view. */
+      const choose = item => {
+        if (mobile.matches) {
+          index = cards().indexOf(item);
+          update();
+        } else {
+          results.forEach(other => other.classList.toggle("is-active", other === item));
+        }
+      };
+
+      results.forEach(item => item.addEventListener("keydown", event => {
+        if (event.target !== item || (event.key !== "Enter" && event.key !== " ")) return;
+        event.preventDefault();
+        choose(item);
+      }));
+
+      results.forEach(item => item.addEventListener("click", event => {
+        /* the directions link is its own destination */
+        if (event.target.closest(".map-result-directions")) return;
+        if (mobile.matches) {
+          index = cards().indexOf(item);
+          update();
+        } else {
+          results.forEach(other => other.classList.toggle("is-active", other === item));
+        }
+      }));
+
+      /* a new category starts the strip from its first place */
+      options.forEach(opt => opt.addEventListener("click", () => { index = 0; update(false); }));
+      window.addEventListener("resize", () => update(false));
+      mobile.addEventListener("change", () => update(false));
+      update(false);
+    })();
+  </script>
+
+</body>
+</html>

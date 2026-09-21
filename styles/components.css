@@ -2324,11 +2324,37 @@ body.menu-open {
   transform: rotate(90deg);
 }
 
+/* mobile: the progress line takes the full width on its own row;
+   the count and the arrows share the row beneath it */
 @media (max-width: 680px) {
   .carousel-ui {
-      grid-template-columns: auto 1fr auto;
-      gap: var(--space-md);
-    }
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "track track"
+      "count arrows";
+    gap: 12px var(--space-md);
+    padding-top: 20px;
+  }
+
+  .carousel-ui .progress-track {
+    grid-area: track;
+  }
+
+  .carousel-ui .carousel-count {
+    grid-area: count;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--ink);
+  }
+
+  .carousel-ui .carousel-arrows {
+    grid-area: arrows;
+    justify-self: end;
+  }
+
+  .carousel-ui .arrow {
+    color: var(--ink);
+  }
 }
 
 /* =============================================================
