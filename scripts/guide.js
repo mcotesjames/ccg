@@ -33,9 +33,10 @@ const GUIDE_NAV = [
       ["cmp-step-timeline", "Step timeline"],
       ["cmp-milestone-timeline", "Milestone timeline"]
     ]},
-    { file: "spotlights.html", desc: "Full-band story rotators. Stories cross-fade in place, never tracking sideways.", name: "Spotlights", components: [
+    { file: "spotlights.html", desc: "Story modules with a numbered index: the cover story rotates on its own, the split and plate spotlights wait to be clicked.", name: "Spotlights", components: [
       ["cmp-cover-story", "Cover story"],
-      ["cmp-spotlight-split", "Spotlight split"]
+      ["cmp-spotlight-split", "Spotlight split"],
+      ["cmp-plate-spotlight", "Plate spotlight"]
     ]},
     { file: "cards.html", desc: "Two families, one rule: the plate is a door to a place; the title sweep is content to read.", name: "Cards", components: [
       ["cmp-plate-card", "Plate card"],

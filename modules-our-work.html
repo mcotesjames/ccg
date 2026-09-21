@@ -65,7 +65,7 @@
     <div class="cmp-head">
       <span class="cmp-head-number">01</span>
       <h2>Services index</h2>
-      <p class="cmp-head-note">Numbered vertical index &middot; 7s auto-advance &middot; paired panel</p>
+      <p class="cmp-head-note">Numbered vertical index &middot; reader-driven &middot; paired panel</p>
     </div>
 
     <div class="cmp-stage cmp-stage--dark">
@@ -82,7 +82,7 @@
       </div>
 
       <div class="service-stage">
-        <div class="service-tabs service-tabs--index" role="tablist" aria-label="Demo services index" data-autoplay="7000">
+        <div class="service-tabs service-tabs--index" role="tablist" aria-label="Demo services index">
           <button class="service-tab is-active" type="button" role="tab" id="svc-tab-1" aria-controls="svc-panel-1" aria-selected="true">
             <span class="service-tab-num">01</span>
             <span class="service-tab-label">First service</span>
@@ -153,17 +153,9 @@
       <details class="cmp-notes-wrap">
         <summary>Interaction notes</summary>
         <ul class="cmp-notes" style="border-left-color: var(--lime)">
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Auto-advance:</span> the index steps to the next service every 7 seconds and wraps at the end. A gold hairline fills left to right under the active row over exactly that interval, so the reader can see how long is left.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Pause:</span> the whole stage pauses on hover and on keyboard focus, and while the browser tab is in the background. The gold line freezes where it is. On leaving, the line restarts from zero and the timer resets, a reader is never rushed off a panel they just arrived at.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Click a row:</span> switches immediately and restarts the timer.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Keyboard:</span> the index is a real tablist, one tab stop reaches it, then the arrow keys move between services. Up and left go back, down and right go forward, both wrapping at the ends; focus follows the selection.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Panel change:</span> the outgoing panel is replaced by the incoming one, which fades and rises into place over 0.5s on the house easing curve.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Index anatomy:</span> hairline-ruled rows in a fixed-width column. Each row pairs a gold serif-italic numeral in its own narrow column with the label; resting labels are muted white, hover lifts them to full white, and the active row is lime.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Panel anatomy:</span> a 16:9 card split in half, image left, green copy plate right, so image and plate read as one card. The fixed ratio is what stops the stage jumping as services change. The plate holds a title, body copy and an optional aside: an inclusions list with lime dot markers, and a light secondary CTA.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Responsive:</span> below 1000 the stage stacks, the panel drops its fixed ratio and the media becomes 2:1; at mobile the media is 3:2, the plate insets tighten and the index steps down one size. The numbered index stays a vertical list at every width, it never becomes a horizontal tab row.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Reduced motion:</span> the auto-advance never starts, the gold line sits full rather than animating, and panels change without the fade. Clicks and arrow keys still work.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Wiring:</span> nothing page-specific, the shared script binds every services index on load, matching panels to rows through the markup, with the opening pair marked active and the auto-advance interval declared on the module. Leaving the interval off gives a manual tablist with no timer and no gold line.</li>
-        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Ground:</span> the module sets its own colours but not its background, the wrapping section supplies the deep green.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Module:</span> this is the shared <a href="spotlights.html#cmp-plate-spotlight" style="color: var(--lime)">plate spotlight</a>; its index, plate, keyboard handling, responsive behaviour and optional timer are documented there. The notes below cover only what the services pages add.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Settings on these pages:</span> Property Services runs panels of title and body copy only; Membership Rewards adds the inclusions list and a light CTA to its venue categories. A module may mix panels that carry the aside with panels that do not.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Section around it:</span> the pages supply the deep green band, the section header above it, and the foot room beneath.</li>
         </ul>
       </details>
     </div>

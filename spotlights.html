@@ -73,7 +73,7 @@
   <section class="cmp-category" aria-label="Category: Spotlights">
     <p class="eyebrow">Category</p>
     <h2>Spotlights</h2>
-    <p>Full-band rotating story modules: photography behind, copy and a numbered index in front. Not carousels, nothing tracks sideways; stories cross-fade in place. Two members: the cover story rotates on its own; the spotlight split waits to be clicked.</p>
+    <p>Story modules with a numbered index: photography behind or beside the copy, never tracking sideways. Three members: the cover story rotates on its own; the spotlight split and the plate spotlight wait to be clicked.</p>
   </section>
 
   <!-- SPOTLIGHTS · COVER STORY -->
@@ -167,6 +167,104 @@
       </details>
     </div>
   </section>
+  <!-- SPOTLIGHTS · PLATE SPOTLIGHT -->
+  <section class="cmp-section" id="cmp-plate-spotlight" aria-label="Plate spotlight">
+    <div class="cmp-head">
+      <span class="cmp-head-number">03</span>
+      <h2>Plate spotlight</h2>
+      <p class="cmp-head-note">Numbered index beside a media-and-copy plate &middot; reader-driven</p>
+    </div>
+
+    <div class="cmp-stage cmp-stage--dark">
+
+      <div class="service-stage">
+        <div class="service-tabs service-tabs--index" role="tablist" aria-label="Demo plate spotlight index">
+          <button class="service-tab is-active" type="button" role="tab" id="spt-tab-1" aria-controls="spt-panel-1" aria-selected="true">
+            <span class="service-tab-num">01</span>
+            <span class="service-tab-label">First service</span>
+            <span class="service-tab-progress" aria-hidden="true"></span>
+          </button>
+          <button class="service-tab" type="button" role="tab" id="spt-tab-2" aria-controls="spt-panel-2" aria-selected="false">
+            <span class="service-tab-num">02</span>
+            <span class="service-tab-label">Second service</span>
+            <span class="service-tab-progress" aria-hidden="true"></span>
+          </button>
+          <button class="service-tab" type="button" role="tab" id="spt-tab-3" aria-controls="spt-panel-3" aria-selected="false">
+            <span class="service-tab-num">03</span>
+            <span class="service-tab-label">Third service</span>
+            <span class="service-tab-progress" aria-hidden="true"></span>
+          </button>
+          <button class="service-tab" type="button" role="tab" id="spt-tab-4" aria-controls="spt-panel-4" aria-selected="false">
+            <span class="service-tab-num">04</span>
+            <span class="service-tab-label">A fourth service with a longer label</span>
+            <span class="service-tab-progress" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div class="service-panels">
+
+          <div class="service-panel is-active" role="tabpanel" id="spt-panel-1" aria-labelledby="spt-tab-1">
+            <div class="service-panel-media cmp-img"></div>
+            <div class="service-panel-copy">
+              <h3>First service</h3>
+              <p>A paragraph of body copy describing the service, sitting on the green plate beside its image. The panel runs 16:9 so the stage never changes height as the services advance.</p>
+              <div class="service-panel-aside">
+                <ul class="service-panel-list">
+                  <li>An optional inclusions list, marked with lime dots</li>
+                  <li>One line per inclusion</li>
+                  <li>Kept short enough to hold the panel ratio</li>
+                </ul>
+                <a class="secondary-link-cta secondary-link-cta--light link-arrow" href="#">Optional panel CTA</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="service-panel" role="tabpanel" id="spt-panel-2" aria-labelledby="spt-tab-2">
+            <div class="service-panel-media cmp-img"></div>
+            <div class="service-panel-copy">
+              <h3>Second service</h3>
+              <p>Panels without the aside carry a title and body copy only, the setting the property services page uses. The inclusions list and the CTA are both optional, and a module may mix panels that have them with panels that do not.</p>
+            </div>
+          </div>
+
+          <div class="service-panel" role="tabpanel" id="spt-panel-3" aria-labelledby="spt-tab-3">
+            <div class="service-panel-media cmp-img"></div>
+            <div class="service-panel-copy">
+              <h3>Third service</h3>
+              <p>A paragraph of body copy describing the service. Copy runs long enough to fill the plate but never long enough to break the 16:9 card, which is the constraint the writing has to work inside.</p>
+            </div>
+          </div>
+
+          <div class="service-panel" role="tabpanel" id="spt-panel-4" aria-labelledby="spt-tab-4">
+            <div class="service-panel-media cmp-img"></div>
+            <div class="service-panel-copy">
+              <h3>A fourth service with a longer label</h3>
+              <p>Index labels wrap onto a second line rather than truncating, and the numbered column holds its width, so a long service name never pushes the index out of alignment.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes" style="border-left-color: var(--lime)">
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Reader-driven:</span> nothing advances on its own. A story stays up until another is chosen, so the reader sets the pace.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Click a row:</span> switches to that story immediately. A full gold hairline sits under the active row, marking where the reader is in the list.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Keyboard:</span> one tab stop reaches the index, then the arrow keys move between stories. Up and left go back, down and right go forward, both wrapping at the ends; focus follows the selection.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Panel change:</span> the outgoing panel is replaced by the incoming one, which fades and rises into place over 0.5s on the house easing curve.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Index anatomy:</span> hairline-ruled rows in a column held to 350px, with the plate taking whatever width is left. Each row pairs a gold serif-italic numeral in its own narrow column with the label; resting labels are muted white, hover lifts them to full white, and the active row is lime. Long labels wrap onto a second line rather than truncating, and the numbered column holds its width.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Plate anatomy:</span> a 16:9 card split in half, image left, green copy plate right, so image and plate read as one card. The fixed ratio is what stops the stage jumping as stories change. The plate holds a title, body copy and an optional aside: an inclusions list with lime dot markers, and a light secondary CTA.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Responsive:</span> below 1000 the stage stacks, the plate drops its fixed ratio and the media becomes 2:1; at mobile the media is 3:2, the plate insets tighten and the index steps down one size. The numbered index stays a vertical list at every width, it never becomes a horizontal tab row.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Reduced motion:</span> panels change without the fade. Clicks and arrow keys still work.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Optional timer:</span> a module can ask to advance on its own at a set interval. The gold underline then fills left to right over that interval and freezes on hover, so the reader can see how long a story has left. No page uses it at present.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Instances:</span> the pillars on the Our Approach page, the services on Property Services, and the venue categories on Membership Rewards are all this module. Its <a href="modules-our-work.html#cmp-services-index" style="color: var(--lime)">Our Work entry</a> covers what that page adds.</li>
+        <li style="color: var(--ink-inverse)"><span class="cmp-event" style="color: var(--lime)">Ground:</span> the module sets its own colours but not its background; the section around it supplies the deep green. A light colourway swaps the deep green for white with a cream plate.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
 
   </main>
 
