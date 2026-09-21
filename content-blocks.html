@@ -233,6 +233,35 @@
     </div>
   </section>
 
+  <!-- CONTENT BLOCKS · FILM PLATE -->
+  <section class="cmp-section" id="cmp-film-plate" aria-label="Film plate">
+    <div class="cmp-head">
+      <span class="cmp-head-number">04</span>
+      <h2>Film plate</h2>
+      <p class="cmp-head-note">16:9 poster frame &middot; gold play control</p>
+    </div>
+
+    <div class="cmp-stage" style="border: 0; background: var(--cream);">
+      <div class="film-plate">
+        <img src="images/content-blocks/film-poster.jpg" alt="">
+        <div class="film-plate-overlay">
+          <button class="play-gold" type="button" aria-label="Play the demo film"></button>
+        </div>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>How film sits on the site: a poster frame carrying the play control, used for the culture film on the careers page and the Hearts film on the membership page.</li>
+        <li><span class="cmp-event">Anatomy:</span> a 16:9 frame with the poster filling it, cropped rather than letterboxed, on a deep green ground while the poster loads. The play control is a solid gold disc with a white triangle, centred on the frame.</li>
+        <li><span class="cmp-event">Hover / focus:</span> the poster zooms 2&percnt; over 0.8s and the gold disc grows 8&percnt; over 0.3s. Both respond wherever the reader is on the frame, and to keyboard focus on the control.</li>
+        <li><span class="cmp-event">Playback:</span> the control is not yet wired to a player; it waits for the film itself. Pressing it currently does nothing.</li>
+        <li><span class="cmp-event">Width:</span> the page decides. The careers page frames it within the page gutters on a cream band; the membership page runs it wider.</li>
+        <li><span class="cmp-event">Responsive:</span> the frame keeps its 16:9 at every width and the disc steps down on mobile, where a page may also run the frame edge to edge.</li>
+      </ul>
+      </details>
+    </div>
+  </section>
+
 
   </main>
 

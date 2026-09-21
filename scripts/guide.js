@@ -48,7 +48,8 @@ const GUIDE_NAV = [
     { file: "content-blocks.html", desc: "General page-building modules: figures, rows and editorial splits.", name: "Content blocks", components: [
       ["cmp-stat-cell", "Stat cell"],
       ["cmp-accordion", "Accordion"],
-      ["cmp-document-row", "Document row"]
+      ["cmp-document-row", "Document row"],
+      ["cmp-film-plate", "Film plate"]
     ]},
     { file: "forms.html", desc: "The house treatment is the underline: a caption label over a line, no boxes.", name: "Forms", components: [
       ["cmp-form-text", "Text fields"],
