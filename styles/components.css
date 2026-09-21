@@ -1744,8 +1744,11 @@ body.menu-open {
 }
 
 .business-card-title {
-  margin-top: var(--space-ms);
+  margin: var(--space-ms) 0 0;
   padding-bottom: 12px;
+  /* the title is an h3 on listing pages and a span in the archive;
+     both read at regular weight */
+  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -5765,10 +5768,16 @@ body.menu-open {
 }
 
 .leader-card-role {
+  /* the description sits tight under the role; the role itself keeps
+     the card's even step above it */
   margin: var(--space-ms) 0 0;
   font-size: var(--text-h6);
   line-height: 32px;
   color: var(--ink);
+}
+
+.leader-card-role + .business-card-desc {
+  margin-top: 0;
 }
 
 /* Variant — feature: portrait left, detail packed to the bottom
@@ -5878,11 +5887,14 @@ body.has-drawer-open {
   inset: 0;
   z-index: 60;
   visibility: hidden;
-  transition: visibility .5s;
+  /* stays visible for the panel's slide-out on close; on open it
+     shows at once, so focus can move into the panel immediately */
+  transition: visibility 0s .5s;
 }
 
 .profile-drawer[data-open="true"] {
   visibility: visible;
+  transition-delay: 0s;
 }
 
 .profile-drawer-scrim {

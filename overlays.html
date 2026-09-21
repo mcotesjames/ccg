@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CCG Design System: Overlays</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles/system.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/guide.css">
+
+  <style>
+    /* =============================================
+       DEMO SUPPORT - OVERLAYS
+       Shared gallery chrome lives in styles/guide.css.
+    ============================================= */
+
+    /* the trigger card sits at the board page's 3-up column width */
+    .cmp-drawer-trigger {
+      max-width: 448px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="cmp-menu-toggle" type="button" id="cmpMenuToggle" aria-expanded="false" aria-controls="cmpAside">Index</button>
+
+  <!-- ASIDE MENU -->
+  <aside class="cmp-aside" id="cmpAside">
+    <p class="cmp-aside-title">CCG components</p>
+    <p class="cmp-aside-meta">Library components: overlays. Each stage is the production component.</p>
+  </aside>
+
+  <main class="cmp-main">
+
+  <!-- COVER -->
+  <header class="cmp-cover">
+    <div class="cmp-cover-mark" aria-hidden="true"></div>
+
+    <p class="eyebrow">Chinachem Group Website Rebrand</p>
+    <h1>Overlays</h1>
+
+    <div class="cmp-cover-meta">
+      <div>
+        <p>Version</p>
+        <p>1.0 · Component library</p>
+      </div>
+      <div>
+        <p>Design widths</p>
+        <p>1512 desktop · 402 mobile</p>
+      </div>
+      <div>
+        <p>Scope</p>
+        <p>Live interactions. Every stage is the production component</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ CATEGORY · OVERLAYS ═══ -->
+  <section class="cmp-category" aria-label="Category: Overlays">
+    <p class="eyebrow">Category</p>
+    <h2>Overlays</h2>
+    <p>Panels that open over the page rather than leading away from it. The page waits behind a scrim, focus stays inside the panel, and closing returns the reader to exactly where they were.</p>
+  </section>
+
+  <!-- OVERLAYS · CARD SLIDE-OUT -->
+  <section class="cmp-section" id="cmp-card-drawer" aria-label="Card slide-out">
+    <div class="cmp-head">
+      <span class="cmp-head-number">01</span>
+      <h2>Card slide-out</h2>
+      <p class="cmp-head-note">A card opens a panel instead of navigating</p>
+    </div>
+
+    <div class="cmp-stage">
+      <div class="cmp-drawer-trigger">
+        <a class="business-card" href="#" data-cmp-drawer-open aria-haspopup="dialog">
+          <div class="business-card-image">
+            <img src="images/cards/portrait.jpg" alt="">
+          </div>
+          <h3 class="business-card-title">Andy Cheung</h3>
+          <p class="leader-card-role">Executive Director and Chief Executive Officer</p>
+          <p class="business-card-desc">Andy Cheung has been the Executive Director and Chief Executive Officer of Chinachem Group since 1 September 2024.</p>
+          <span class="business-card-link">Show bio <span class="inline-arrow" aria-hidden="true"></span></span>
+        </a>
+      </div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The card above is the trigger, exactly as the leader cards on the board page are. The whole card opens the panel, and it announces itself to assistive technology as opening a dialog rather than reading as a link to another page.</li>
+        <li><span class="cmp-event">The trigger:</span> the editorial card, unchanged: its image zooms, its title sweeps the green underline and the link row's arrow nudges on hover, so nothing tells the reader it will behave differently until the panel arrives. Only the destination changes: a panel over this page rather than a new one.</li>
+        <li><span class="cmp-event">Open:</span> the panel slides in from the right edge over 0.55s on the house easing curve while a deep green scrim fades up behind it over 0.45s. Page scrolling locks, the panel starts at its top, and focus moves to the back row.</li>
+        <li><span class="cmp-event">Layout:</span> a wide panel against the right edge, full height and scrollable on its own. The back row and the portrait share the top row so the image aligns with the top of the panel; the name and role sit in a narrow left column with the bio beside them.</li>
+        <li><span class="cmp-event">Back row:</span> a grey return link with a left-pointing arrow, standing in for a close button. Hover or focus inks it deep green and nudges the arrow left over 0.35s.</li>
+        <li><span class="cmp-event">Close:</span> the back row, a click on the scrim, or Escape. Focus returns to the card that opened it and page scrolling unlocks.</li>
+        <li><span class="cmp-event">While open:</span> Tab cycles inside the panel and never reaches the page behind it.</li>
+        <li><span class="cmp-event">Content:</span> the panel is a single instance per page; page JS fills the name, role, portrait and bio from the chosen card, so one panel serves the whole listing.</li>
+        <li><span class="cmp-event">Responsive:</span> the panel runs the full width below tablet. On mobile it becomes one column, portrait, name, role, bio, with a hairline under the name and a shorter portrait.</li>
+        <li>With reduced motion enabled the panel and scrim appear without the slide or the fade.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+
+
+
+  </main>
+
+  <!-- PROFILE DRAWER -->
+  <div class="profile-drawer" id="cmpProfileDrawer" data-open="false" aria-hidden="true">
+    <div class="profile-drawer-scrim" data-drawer-close></div>
+
+    <aside class="profile-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="cmpProfileName">
+      <div class="profile-drawer-layout">
+        <button class="profile-drawer-back" type="button" data-drawer-close>
+          <span class="ui-arrow" aria-hidden="true"></span> Back to team
+        </button>
+
+        <div class="profile-drawer-media"><img src="images/cards/portrait.jpg" alt=""></div>
+
+        <div class="profile-drawer-identity">
+          <h2 class="profile-drawer-name" id="cmpProfileName">Andy Cheung</h2>
+          <p class="profile-drawer-role">Executive Director and Chief Executive Officer</p>
+        </div>
+
+        <div class="profile-drawer-bio">
+          <p>The opening paragraph carries the appointment and the date it began, so the reader knows where this person sits before anything else.</p>
+          <p>Further paragraphs run at the relaxed reading line height across the wide column. The panel scrolls on its own, so a long biography never fights the page behind it.</p>
+          <p>One panel serves the whole listing: it fills with whichever person was chosen, so a board of eight directors needs only this one.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="../scripts/components.js"></script>
+  <script src="scripts/guide.js"></script>
+
+  <script>
+    /* Profile drawer: production behaviour from core-pages/about-us/leadership.html */
+    const cmpDrawer = document.querySelector("#cmpProfileDrawer");
+    const cmpDrawerPanel = cmpDrawer.querySelector(".profile-drawer-panel");
+    const cmpDrawerBack = cmpDrawer.querySelector(".profile-drawer-back");
+
+    let cmpDrawerTrigger = null;
+
+    function cmpOpenDrawer(trigger) {
+      cmpDrawerTrigger = trigger || null;
+      cmpDrawer.dataset.open = "true";
+      cmpDrawer.setAttribute("aria-hidden", "false");
+      document.body.classList.add("has-drawer-open");
+      cmpDrawerPanel.scrollTop = 0;
+      cmpDrawerBack.focus();
+    }
+
+    function cmpCloseDrawer() {
+      if (cmpDrawer.dataset.open !== "true") return;
+
+      cmpDrawer.dataset.open = "false";
+      cmpDrawer.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("has-drawer-open");
+
+      if (cmpDrawerTrigger) {
+        cmpDrawerTrigger.focus();
+        cmpDrawerTrigger = null;
+      }
+    }
+
+    document.querySelectorAll("[data-cmp-drawer-open]").forEach(trigger => {
+      trigger.addEventListener("click", event => {
+        event.preventDefault();
+        cmpOpenDrawer(trigger);
+      });
+    });
+
+    cmpDrawer.querySelectorAll("[data-drawer-close]").forEach(el => {
+      el.addEventListener("click", cmpCloseDrawer);
+    });
+
+    document.addEventListener("keydown", event => {
+      if (cmpDrawer.dataset.open !== "true") return;
+
+      if (event.key === "Escape") {
+        cmpCloseDrawer();
+        return;
+      }
+
+      /* keep focus inside the panel while it is open */
+      if (event.key === "Tab") {
+        const focusable = [...cmpDrawerPanel.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')];
+        if (!focusable.length) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

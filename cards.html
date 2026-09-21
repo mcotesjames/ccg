@@ -27,19 +27,6 @@
        from the pages named on each chunk.
     ============================================= */
 
-    /* ---------------------------------------------
-       STAY SPEC. Source: core-pages/our-work/
-       hospitality-entertainment.html, verbatim.
-       Lives in that page's own <style> block, not in
-       components.css - see the section's notes.
-    --------------------------------------------- */
-
-    .stay-spec {
-      margin: var(--space-ms) 0 0;
-      font-size: var(--text-small);
-      line-height: var(--leading-small);
-      color: var(--ink);
-    }
 
     /* ---------------------------------------------
        PROPERTY PLATE. Source: core-pages/our-work/
@@ -287,7 +274,7 @@
     <p class="cmp-sub">Rule of use</p>
     <ul class="cmp-notes">
       <li><span class="cmp-event">The green title sweep means editorial.</span> Use this family for content the reader scans and reads, news, awards, stories, businesses, and for cross-page routing at the end of a section. Doors to a property or a place use the plate card.</li>
-      <li><span class="cmp-event">One card, seven rows.</span> Every row beneath the image except the title is optional, so the same component runs from an image and title up to the fully loaded card below. Build it by dropping rows, never by restyling them or resetting their order.</li>
+      <li><span class="cmp-event">One card, several rows.</span> Every row beneath the image except the title is optional, so the same component runs from an image and title up to the card below. Build it by dropping rows, never by restyling them or resetting their order.</li>
       <li>Whatever the setting, the hover is identical: image zoom, green underline sweep, link arrow nudge. That consistency is the point of keeping them one family.</li>
     </ul>
 
@@ -296,18 +283,13 @@
       <div class="cmp-variants">
 
         <div class="cmp-variant">
-          <p class="cmp-variant-label">Full, every row the card can carry</p>
+          <p class="cmp-variant-label">Image, title, role, description and link</p>
           <a class="business-card" href="#">
             <div class="business-card-image cmp-img"></div>
-            <p class="news-meta">
-              <span class="news-meta-category">Category</span>
-              <span class="news-meta-date">12 Jul 2026</span>
-            </p>
             <span class="business-card-title">Card title with the green underline sweep</span>
             <p class="leader-card-role">Role or sub-title line</p>
             <p class="business-card-desc">A short excerpt held to a readable measure, sitting beneath the title.</p>
-            <p class="stay-spec"><span class="stay-spec-location">Location</span> &middot; Spec detail</p>
-            <span class="business-card-link">Read more <span class="inline-arrow" aria-hidden="true"></span></span>
+            <span class="business-card-link">Show bio <span class="inline-arrow" aria-hidden="true"></span></span>
           </a>
         </div>
 
@@ -317,14 +299,14 @@
         <ul class="cmp-notes">
         <li><span class="cmp-event">Hover / focus (all settings):</span> the image zooms gently over 0.8s, a green underline sweeps under the title over 0.45s, and the link row's arrow nudges right. The whole card is one link.</li>
         <li><span class="cmp-event">Spacing and colour:</span> every row sits the same step below the one before it. All text is ink apart from the meta row, which is grey.</li>
-        <li><span class="cmp-event">Full setting:</span> the card above carries <strong>every row it can</strong>, so nothing is hidden from the build. No real card uses all of them at once. Drop the rows you do not need and the rest close up on their own margins. The order below is fixed; do not reorder rows to suit a page.</li>
+        <li><span class="cmp-event">The card above:</span> image, title, role, description and link, the setting the board page uses for its directors. Two further optional rows exist and are not shown here: a meta row and a spec row, described below in their fixed positions. Drop the rows you do not need and the rest close up on their own margins; do not reorder rows to suit a page.</li>
         <li><span class="cmp-event">1 &middot; Image</span>, required. A tall-ish landscape crop by default; a page may re-crop it (the onward pair runs a much wider letterbox, the carousel runs 16:9).</li>
-        <li><span class="cmp-event">2 &middot; Meta row</span>, optional. Category beside the date, both grey, in small text. Used by the news archive and article listings.</li>
+        <li><span class="cmp-event">2 &middot; Meta row</span>, optional and not shown above. Category beside the date, both grey, in small text. Used by the news archive and article listings.</li>
         <li><span class="cmp-event">3 &middot; Title</span>, required. This is the row that sweeps: a hairline beneath it fills green from left to right on hover. The board page adds honours after a director's name in a softer tone.</li>
         <li><span class="cmp-event">4 &middot; Role</span>, optional. A sub-title under the name, set a size below the title at 24 on a 32 line; the board listings use it for a director&rsquo;s role.</li>
         <li><span class="cmp-event">5 &middot; Description</span>, optional. Body size, held to a readable measure regardless of how wide the column runs.</li>
-        <li><span class="cmp-event">6 &middot; Spec row</span>, optional. The location followed by an interpunct and a free-text detail, in small text. The hotel and residences register uses it for location and room count.</li>
-        <li><span class="cmp-event">7 &middot; Link row</span>, optional, and the label is free text: Read more, Visit, View profile. It is the standard link, a label with a full-size arrow, and it anchors to the card bottom, so a grid of uneven cards keeps its link rows on one line.</li>
+        <li><span class="cmp-event">6 &middot; Spec row</span>, optional and not shown above. The location followed by an interpunct and a free-text detail, in small text. The hotel and residences register uses it for location and room count.</li>
+        <li><span class="cmp-event">7 &middot; Link row</span>, optional, and the label is free text: Show bio, Read more, Visit. It is the standard link, a label with a full-size arrow, and it anchors to the card bottom, so a grid of uneven cards keeps its link rows on one line.</li>
         <li><span class="cmp-event">Source:</span> every row above is shared except the spec row, which is the hospitality page&rsquo;s own; the demo quotes that page, verbatim.</li>
         <li><span class="cmp-event">Static setting:</span> used for awards, where the card presents without navigating, no zoom, no sweep, default cursor. It is a div, not a link.</li>
         <li><span class="cmp-event">Grounds:</span> runs on white by default; a page may set its own ground.</li>
@@ -334,133 +316,11 @@
     </div>
   </section>
 
-  <!-- CARDS · CARD SLIDE-OUT -->
-  <section class="cmp-section" id="cmp-card-drawer" aria-label="Card slide-out">
-    <div class="cmp-head">
-      <span class="cmp-head-number">03</span>
-      <h2>Card slide-out</h2>
-      <p class="cmp-head-note">A card opens a panel instead of navigating</p>
-    </div>
-
-    <div class="cmp-stage">
-      <a class="link-arrow" href="#" data-cmp-drawer-open aria-haspopup="dialog">View profile</a>
-      <details class="cmp-notes-wrap">
-        <summary>Interaction notes</summary>
-        <ul class="cmp-notes">
-        <li>The link above stands in for the card. In production the whole card is the trigger, the leader cards on the board page, and it announces itself to assistive technology as opening a dialog rather than reading as a link to another page.</li>
-        <li><span class="cmp-event">Open:</span> the panel slides in from the right edge over 0.55s on the house easing curve while a deep green scrim fades up behind it over 0.45s. Page scrolling locks, the panel starts at its top, and focus moves to the back row.</li>
-        <li><span class="cmp-event">Layout:</span> a wide panel against the right edge, full height and scrollable on its own. The back row and the portrait share the top row so the image aligns with the top of the panel; the name and role sit in a narrow left column with the bio beside them.</li>
-        <li><span class="cmp-event">Back row:</span> a grey return link with a left-pointing arrow, standing in for a close button. Hover or focus inks it deep green and nudges the arrow left over 0.35s.</li>
-        <li><span class="cmp-event">Close:</span> the back row, a click on the scrim, or Escape. Focus returns to the card that opened it and page scrolling unlocks.</li>
-        <li><span class="cmp-event">While open:</span> Tab cycles inside the panel and never reaches the page behind it.</li>
-        <li><span class="cmp-event">Content:</span> the panel is a single instance per page; page JS fills the name, role, portrait and bio from the chosen card, so one panel serves the whole listing.</li>
-        <li><span class="cmp-event">Responsive:</span> the panel runs the full width below tablet. On mobile it becomes one column, portrait, name, role, bio, with a hairline under the name and a shorter portrait.</li>
-        <li>With reduced motion enabled the panel and scrim appear without the slide or the fade.</li>
-        </ul>
-      </details>
-    </div>
-  </section>
-
-
-
   </main>
-
-  <!-- PROFILE DRAWER -->
-  <div class="profile-drawer" id="cmpProfileDrawer" data-open="false" aria-hidden="true">
-    <div class="profile-drawer-scrim" data-drawer-close></div>
-
-    <aside class="profile-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="cmpProfileName">
-      <div class="profile-drawer-layout">
-        <button class="profile-drawer-back" type="button" data-drawer-close>
-          <span class="ui-arrow" aria-hidden="true"></span> Back to team
-        </button>
-
-        <div class="profile-drawer-media cmp-img"></div>
-
-        <div class="profile-drawer-identity">
-          <h2 class="profile-drawer-name" id="cmpProfileName">Full Name Here<span class="leader-honours">, GBS, JP</span></h2>
-          <p class="profile-drawer-role">Role and title</p>
-        </div>
-
-        <div class="profile-drawer-bio">
-          <p>The opening paragraph carries the appointment and the date it began, so the reader knows where this person sits before anything else.</p>
-          <p>Further paragraphs run at the relaxed reading line height across the wide column. The panel scrolls on its own, so a long biography never fights the page behind it.</p>
-          <p>Page JS writes this content from the card that was chosen, which is why one panel can serve an entire board listing.</p>
-        </div>
-      </div>
-    </aside>
-  </div>
 
   <script src="../scripts/components.js"></script>
   <script src="scripts/guide.js"></script>
 
-  <script>
-    /* Profile drawer: production behaviour from core-pages/about-us/leadership.html */
-    const cmpDrawer = document.querySelector("#cmpProfileDrawer");
-    const cmpDrawerPanel = cmpDrawer.querySelector(".profile-drawer-panel");
-    const cmpDrawerBack = cmpDrawer.querySelector(".profile-drawer-back");
-
-    let cmpDrawerTrigger = null;
-
-    function cmpOpenDrawer(trigger) {
-      cmpDrawerTrigger = trigger || null;
-      cmpDrawer.dataset.open = "true";
-      cmpDrawer.setAttribute("aria-hidden", "false");
-      document.body.classList.add("has-drawer-open");
-      cmpDrawerPanel.scrollTop = 0;
-      cmpDrawerBack.focus();
-    }
-
-    function cmpCloseDrawer() {
-      if (cmpDrawer.dataset.open !== "true") return;
-
-      cmpDrawer.dataset.open = "false";
-      cmpDrawer.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("has-drawer-open");
-
-      if (cmpDrawerTrigger) {
-        cmpDrawerTrigger.focus();
-        cmpDrawerTrigger = null;
-      }
-    }
-
-    document.querySelectorAll("[data-cmp-drawer-open]").forEach(trigger => {
-      trigger.addEventListener("click", event => {
-        event.preventDefault();
-        cmpOpenDrawer(trigger);
-      });
-    });
-
-    cmpDrawer.querySelectorAll("[data-drawer-close]").forEach(el => {
-      el.addEventListener("click", cmpCloseDrawer);
-    });
-
-    document.addEventListener("keydown", event => {
-      if (cmpDrawer.dataset.open !== "true") return;
-
-      if (event.key === "Escape") {
-        cmpCloseDrawer();
-        return;
-      }
-
-      /* keep focus inside the panel while it is open */
-      if (event.key === "Tab") {
-        const focusable = [...cmpDrawerPanel.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')];
-        if (!focusable.length) return;
-
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
-      }
-    });
-  </script>
 
 </body>
 </html>

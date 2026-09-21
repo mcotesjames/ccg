@@ -41,8 +41,7 @@ const GUIDE_NAV = [
     ]},
     { file: "cards.html", desc: "Two families, one rule: the plate is a door to a place; the title sweep is content to read.", name: "Cards", components: [
       ["cmp-plate-card", "Plate card"],
-      ["cmp-editorial-card", "Editorial card"],
-      ["cmp-card-drawer", "Card slide-out"]
+      ["cmp-editorial-card", "Editorial card"]
     ]},
     { file: "page-utilities.html", desc: "Small page-level furniture that supports orientation and flow.", name: "Page utilities", components: [
       ["cmp-breadcrumb", "Breadcrumb"]
@@ -62,6 +61,9 @@ const GUIDE_NAV = [
       ["cmp-form-declarations", "Declarations block"],
       ["cmp-form-search", "Search field"],
       ["cmp-sticky-panel", "Sticky enquiry panel"]
+    ]},
+    { file: "overlays.html", desc: "Panels that open over the page: the page waits behind a scrim and closing returns the reader where they were.", name: "Overlays", components: [
+      ["cmp-card-drawer", "Card slide-out"]
     ]}
   ]}
 ];
