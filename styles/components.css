@@ -3161,8 +3161,8 @@ body.menu-open {
 .logo-band-mark img {
   width: 76px;
   height: auto;
-  /* marks ship dark; this lifts them to the band's warm cream */
-  filter: brightness(0) saturate(100%) invert(91%) sepia(21%) saturate(456%) hue-rotate(357deg) brightness(101%) contrast(94%);
+  /* marks ship dark; this lifts them to white on the green band */
+  filter: brightness(0) invert(1);
 }
 
 @media (max-width: 680px) {

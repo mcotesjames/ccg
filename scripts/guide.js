@@ -53,20 +53,12 @@ const GUIDE_NAV = [
       ["cmp-document-row", "Document row"],
       ["cmp-film-plate", "Film plate"]
     ]},
-    { file: "forms.html", desc: "The house treatment is the underline: a caption label over a line, no boxes.", name: "Forms", components: [
+    { file: "forms.html", desc: "The house treatment is the underline: a caption label over a line, no boxes. Plus the panel that routes an enquiry.", name: "Forms", components: [
       ["cmp-form-text", "Text fields"],
       ["cmp-form-select", "Select field"],
       ["cmp-form-choice", "Choice controls"],
       ["cmp-form-declarations", "Declarations block"],
-      ["cmp-form-search", "Search field"]
-    ]}
-  ]},
-  { label: "Page modules", intro: "Fixed page-specific assemblies with behaviour of their own, one page per site section. Take a module whole: layout, timings and keyboard handling are one piece.", pages: [
-    { file: "modules-our-work.html", desc: "Assemblies to come from the Our Work pages.", name: "Our work" },
-    { file: "modules-our-impact.html", desc: "The people spotlight framing, and future Our Impact assemblies.", name: "Our impact", components: [
-      ["cmp-people-spotlight", "People spotlight"]
-    ]},
-    { file: "modules-contact-us.html", desc: "The sticky enquiry panel beside the contact form.", name: "Contact us", components: [
+      ["cmp-form-search", "Search field"],
       ["cmp-sticky-panel", "Sticky enquiry panel"]
     ]}
   ]}
