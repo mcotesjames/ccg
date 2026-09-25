@@ -27,6 +27,12 @@
     .cmp-drawer-trigger {
       max-width: 448px;
     }
+
+    /* confirm modal demo: a prefilled enquiry form at the contact
+       page's form-column width */
+    .cmp-confirm-form {
+      max-width: 640px;
+    }
   </style>
 </head>
 
@@ -110,8 +116,35 @@
     </div>
   </section>
 
+  <!-- OVERLAYS · CONFIRMATION MODAL -->
+  <section class="cmp-section" id="cmp-confirm-modal" aria-label="Confirmation modal">
+    <div class="cmp-head">
+      <span class="cmp-head-number">02</span>
+      <h2>Confirmation modal</h2>
+      <p class="cmp-head-note">A form reads its answers back before it sends</p>
+    </div>
 
-
+    <div class="cmp-stage">
+      <div class="cmp-confirm-form" data-cmp-confirm-form="ledger"></div>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>Fill in or change the enquiry above, then choose Send enquiry. Instead of sending straight away, the form opens a review of everything it is about to send.</li>
+        <li><span class="cmp-event">Open:</span> a deep green scrim fades up over 0.45s while the dialog rises 24px into place and fades in on the house easing curve. Page scrolling locks and focus lands on the send button, so a reader who is happy can confirm with a single key press.</li>
+        <li><span class="cmp-event">Layout:</span> a centred white dialog, 880 wide. A green step line, the heading and a short prompt sit over a hairline; the answers below read as a ruled ledger with the label in a narrow grey column and the answer in black beside it.</li>
+        <li><span class="cmp-event">Groups:</span> answers fall into three groups, the enquiry, the person and the declarations, each under a green title on a green rule. Each group has its own Edit route on the right.</li>
+        <li><span class="cmp-event">Edit:</span> closes the dialog and puts the cursor straight into the first field of that group, so a typo in an email address is one step from fixed.</li>
+        <li><span class="cmp-event">Long answers:</span> the message keeps its line breaks. When the ledger outgrows the screen it scrolls on its own; the heading and the send row stay fixed.</li>
+        <li><span class="cmp-event">Blank answers:</span> read as Not provided in pale sage, so a missed optional field is visible without looking like an error.</li>
+        <li><span class="cmp-event">Send:</span> the button reads Sending… and holds while the request is in flight, then the dialog becomes the thank-you: the gold hearts mark, a personal thank-you and where the reply will go, rising gently into place.</li>
+        <li><span class="cmp-event">Close:</span> the cross (which turns a quarter and inks green on hover), Back to form, a click on the scrim, or Escape. Focus returns to the button that opened it; nothing typed into the form is lost.</li>
+        <li><span class="cmp-event">While open:</span> Tab cycles inside the dialog and never reaches the page behind it.</li>
+        <li><span class="cmp-event">Responsive:</span> on mobile the dialog takes the whole screen, sliding up from the foot, with each label stacked over its answer. The heading stays at the top and the send row at the bottom while the answers scroll between them.</li>
+        <li>With reduced motion enabled the dialog, scrim and thank-you appear without movement.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
 
   </main>
 
@@ -141,9 +174,199 @@
     </aside>
   </div>
 
+
+  <!-- CONFIRM MODAL -->
+  <div class="confirm-modal" id="cmpConfirmLedger" data-open="false" data-state="review" aria-hidden="true">
+    <div class="confirm-modal-scrim" data-confirm-close></div>
+
+    <div class="confirm-modal-panel" role="dialog" aria-modal="true" aria-labelledby="cmpLedgerTitle">
+      <button class="confirm-modal-close" type="button" aria-label="Close" data-confirm-close></button>
+
+      <header class="confirm-modal-head">
+        <p class="confirm-modal-step">Step 2 of 2 · Review</p>
+        <h2 class="confirm-modal-title" id="cmpLedgerTitle">Confirm your details</h2>
+        <p class="confirm-modal-intro">Check everything reads correctly before we send it. You can go back and change anything.</p>
+      </header>
+
+      <div class="confirm-modal-body"></div>
+
+      <footer class="confirm-modal-foot">
+        <button class="profile-drawer-back" type="button" data-confirm-close>
+          <span class="ui-arrow" aria-hidden="true"></span> Back to form
+        </button>
+
+        <button class="primary-cta primary-cta--solid" type="button" data-confirm-send>
+          <span class="primary-cta-label">Send enquiry</span>
+          <span class="primary-cta-arrow" aria-hidden="true">
+            <span class="inline-arrow"></span>
+          </span>
+        </button>
+      </footer>
+
+      <div class="confirm-modal-done" tabindex="-1" role="status" aria-labelledby="cmpLedgerDone">
+        <span class="confirm-modal-mark" aria-hidden="true"></span>
+        <h2 class="confirm-modal-title" id="cmpLedgerDone">Thank you</h2>
+        <p class="confirm-modal-intro" data-confirm-done-copy></p>
+        <button class="link-arrow secondary-link-cta" type="button" data-confirm-close>Close</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../scripts/components.js"></script>
   <script src="scripts/guide.js"></script>
 
+
+  <script>
+    /* Confirmation modal demo: a prefilled enquiry form;
+       submitting fills the ledger and opens the modal */
+    const CMP_ENQUIRY = {
+      type: "Media & press",
+      firstName: "Michael",
+      lastName: "Cotes-James",
+      email: "michael@example.com",
+      phone: "+852 5123 4567",
+      message: "I'm writing a feature on Nina Park and would like to arrange an interview with the placemaking team.\nAny time in the next fortnight works."
+    };
+
+    const cmpEscape = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+    function cmpFormHTML(k) {
+      const v = CMP_ENQUIRY;
+      return `
+        <form class="enquiry-form" novalidate>
+          <div class="field">
+            <label class="field-label" for="type-${k}">Enquiry type</label>
+            <input class="field-input" id="type-${k}" name="type" type="text" value="${cmpEscape(v.type)}">
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label" for="firstName-${k}">First name</label>
+              <input class="field-input" id="firstName-${k}" name="firstName" type="text" value="${cmpEscape(v.firstName)}" autocomplete="given-name">
+            </div>
+            <div class="field">
+              <label class="field-label" for="lastName-${k}">Last name</label>
+              <input class="field-input" id="lastName-${k}" name="lastName" type="text" value="${cmpEscape(v.lastName)}" autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label" for="email-${k}">Email</label>
+              <input class="field-input" id="email-${k}" name="email" type="email" value="${cmpEscape(v.email)}" autocomplete="email">
+            </div>
+            <div class="field">
+              <label class="field-label" for="phone-${k}">Phone</label>
+              <input class="field-input" id="phone-${k}" name="phone" type="tel" value="${cmpEscape(v.phone)}" autocomplete="tel">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="message-${k}">Your message</label>
+            <textarea class="field-textarea" id="message-${k}" name="message">${cmpEscape(v.message)}</textarea>
+          </div>
+
+          <div class="form-declarations">
+            <div class="declaration-row">
+              <span id="residency-${k}-label">Are you residing in or located in Mainland China?</span>
+              <span class="declaration-options" role="radiogroup" aria-labelledby="residency-${k}-label">
+                <label class="check-option"><input type="radio" id="residency-${k}" name="residency" value="Yes"> Yes</label>
+                <label class="check-option"><input type="radio" name="residency" value="No" checked> No</label>
+              </span>
+            </div>
+
+            <label class="check-option">
+              <input type="checkbox" name="privacy" checked>
+              <span>I acknowledge and accept the <a href="#">Privacy Policy</a>.</span>
+            </label>
+
+            <label class="check-option">
+              <input type="checkbox" name="marketing">
+              <span>I wish to receive direct marketing materials from Chinachem Group in accordance with the <a href="#">Privacy Policy</a>.</span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-cta primary-cta--solid" type="submit" aria-haspopup="dialog">
+              <span class="primary-cta-label">Send enquiry</span>
+              <span class="primary-cta-arrow" aria-hidden="true">
+                <span class="inline-arrow"></span>
+              </span>
+            </button>
+          </div>
+        </form>`;
+    }
+
+    function cmpLedgerHTML(form) {
+      const val = name => (form.elements[name].value || "").trim();
+      const row = (label, value) => `
+        <div class="confirm-row">
+          <dt>${label}</dt>
+          <dd${value ? "" : ' class="is-empty"'}>${value ? cmpEscape(value) : "Not provided"}</dd>
+        </div>`;
+      const group = (title, edit, rows) => `
+        <section class="confirm-group">
+          <div class="confirm-group-head">
+            <h3 class="confirm-group-title">${title}</h3>
+            <button class="confirm-edit" type="button" data-confirm-edit="${edit}" aria-label="Edit ${title.toLowerCase()}">Edit</button>
+          </div>
+          <dl class="confirm-list">${rows.join("")}</dl>
+        </section>`;
+
+      return [
+        group("Your enquiry", "type", [
+          row("Enquiry type", val("type")),
+          row("Your message", val("message"))
+        ]),
+        group("About you", "firstName", [
+          row("First name", val("firstName")),
+          row("Last name", val("lastName")),
+          row("Email", val("email")),
+          row("Phone", val("phone"))
+        ]),
+        group("Declarations", "residency", [
+          row("Resident in Mainland China", form.elements.residency.value),
+          row("Privacy Policy", form.elements.privacy.checked ? "Accepted" : ""),
+          row("Marketing materials", form.elements.marketing.checked ? "Yes, please send" : "No, thank you")
+        ])
+      ].join("");
+    }
+
+    [["ledger", "#cmpConfirmLedger"]].forEach(([k, modalId]) => {
+      const mount = document.querySelector(`[data-cmp-confirm-form="${k}"]`);
+      mount.innerHTML = cmpFormHTML(k);
+
+      const form = mount.querySelector("form");
+      const root = document.querySelector(modalId);
+      const body = root.querySelector(".confirm-modal-body");
+      const doneCopy = root.querySelector("[data-confirm-done-copy]");
+      const doneTitle = root.querySelector(".confirm-modal-done .confirm-modal-title");
+
+      const modal = window.ccgConfirmModal(root, {
+        /* Edit: put the cursor in the first field of that group */
+        onEdit: key => {
+          const field = document.getElementById(`${key}-${k}`);
+          field.scrollIntoView({ block: "center" });
+          field.focus({ preventScroll: true });
+        },
+        /* stand-in for the request */
+        onSend: () => new Promise(resolve => setTimeout(resolve, 900))
+      });
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        body.innerHTML = cmpLedgerHTML(form);
+
+        const first = form.elements.firstName.value.trim();
+        const email = form.elements.email.value.trim();
+        const type = form.elements.type.value.trim();
+        doneTitle.textContent = first ? `Thank you, ${first}` : "Thank you";
+        doneCopy.textContent = `Your enquiry is on its way${type ? ` to our ${type} team` : ""}. We'll reply to ${email || "the email address you gave"}.`;
+
+        modal.open(event.submitter || form.querySelector("[type=submit]"));
+      });
+    });
+  </script>
   <script>
     /* Profile drawer: production behaviour from core-pages/about-us/leadership.html */
     const cmpDrawer = document.querySelector("#cmpProfileDrawer");

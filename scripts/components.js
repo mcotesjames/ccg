@@ -1404,6 +1404,327 @@
   };
 
   /* -----------------------------------------------------------
+     CONFIRM MODAL — review-before-send dialog
+     const modal = ccgConfirmModal(root, {
+       onEdit(key) {},            // an Edit route was chosen; the
+                                  // modal has closed, focus the field
+       onSend() { return promise } // resolves → thank-you state
+     });
+     modal.open(trigger)  modal.close()
+     Close routes: [data-confirm-close], scrim, Escape. Tab stays
+     inside the panel; focus returns to the trigger on close.
+     ----------------------------------------------------------- */
+
+  window.ccgConfirmModal = function (root, { onEdit, onSend } = {}) {
+    const panel = root.querySelector(".confirm-modal-panel");
+    const sendButton = root.querySelector("[data-confirm-send]");
+    const sendLabel = sendButton && sendButton.querySelector(".primary-cta-label");
+    const sendText = sendLabel ? sendLabel.textContent : "";
+    const done = root.querySelector(".confirm-modal-done");
+    let trigger = null;
+
+    const isOpen = () => root.dataset.open === "true";
+
+    function open(from) {
+      trigger = from || document.activeElement;
+      root.dataset.state = "review";
+      if (sendLabel) sendLabel.textContent = sendText;
+      root.dataset.open = "true";
+      root.setAttribute("aria-hidden", "false");
+      document.body.classList.add("has-modal-open");
+      const body = root.querySelector(".confirm-modal-body");
+      if (body) body.scrollTop = 0;
+      (sendButton || panel).focus();
+    }
+
+    function close({ restoreFocus = true } = {}) {
+      if (!isOpen()) return;
+      root.dataset.open = "false";
+      root.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("has-modal-open");
+      if (restoreFocus && trigger) trigger.focus();
+      trigger = null;
+    }
+
+    root.querySelectorAll("[data-confirm-close]").forEach(el => {
+      el.addEventListener("click", () => close());
+    });
+
+    /* delegated: the ledger is usually filled after init */
+    root.addEventListener("click", event => {
+      const edit = event.target.closest("[data-confirm-edit]");
+      if (!edit) return;
+      close({ restoreFocus: false });
+      if (onEdit) onEdit(edit.dataset.confirmEdit);
+    });
+
+    if (sendButton) {
+      sendButton.addEventListener("click", () => {
+        if (root.dataset.state !== "review") return;
+        root.dataset.state = "sending";
+        if (sendLabel) sendLabel.textContent = "Sending…";
+        Promise.resolve(onSend ? onSend() : null).then(() => {
+          root.dataset.state = "sent";
+          if (done) done.focus();
+        }, () => {
+          root.dataset.state = "review";
+          if (sendLabel) sendLabel.textContent = sendText;
+        });
+      });
+    }
+
+    document.addEventListener("keydown", event => {
+      if (!isOpen()) return;
+
+      if (event.key === "Escape") {
+        close();
+        return;
+      }
+
+      if (event.key === "Tab") {
+        const focusable = [...panel.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+          .filter(el => el.offsetParent !== null);
+        if (!focusable.length) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && (document.activeElement === last || !panel.contains(document.activeElement))) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    return { open, close, root };
+  };
+
+  /* -----------------------------------------------------------
+     FORM VALIDATION — red line, message in the hint slot
+     -----------------------------------------------------------
+     ccgFormValidation(form) → { validate, check, clear, reset }
+     Required controls: an input/textarea with required=, a
+     checkbox with data-required, a .type-select with data-required
+     (invalid while data-empty="true"), or a [data-required-group]
+     holding data-required checkboxes (invalid while any is
+     unticked). A failing control's .field gets is-invalid and a
+     .field-error (created if absent, filled from the control's
+     data-error-required / data-error-invalid, else derived from
+     its label). Nothing is checked until validate() runs, usually
+     from the page's submit handler; after that each field
+     re-checks on blur and change, and a field already in error
+     clears itself as soon as its value is fixed. Anything inside
+     a closed [data-open="false"] panel is skipped. validate()
+     focuses and centres the first failure and returns false.
+  */
+  window.ccgFormValidation = function (form) {
+    form.noValidate = true;
+    let attempted = false;
+    let counter = 0;
+
+    const emailOk = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    const isGroup = el => el.hasAttribute("data-required-group");
+    const isSelect = el => el.classList.contains("type-select");
+    const hidden = el => !!el.closest('[data-open="false"]');
+    const fieldOf = el => el.closest(".field") || el.parentElement;
+    const a11yTarget = el => isSelect(el) ? el.querySelector(".type-select-trigger") : el;
+
+    const controls = () => [...form.querySelectorAll(
+      ".field-input[required], .field-textarea[required], " +
+      'input[type="checkbox"][data-required]:not([data-required-group] input), ' +
+      ".type-select[data-required], [data-required-group]"
+    )];
+
+    function labelText(field, control) {
+      const label = (control.id && form.querySelector(`label[for="${control.id}"]`)) || field.querySelector(".field-label");
+      return label ? label.textContent.replace(/\(optional\)/i, "").trim() : "";
+    }
+
+    function message(field, control, reason) {
+      const custom = control.dataset[reason === "invalid" ? "errorInvalid" : "errorRequired"];
+      if (custom) return custom;
+      if (control.type === "checkbox") return "Tick this box to continue";
+      if (isSelect(control)) return "Choose an option";
+      if (reason === "invalid") {
+        if (control.type === "email") return "Enter an email address like name@example.com";
+        return "Check this entry";
+      }
+      if (control.type === "email") return "Enter your email address";
+      const label = labelText(field, control);
+      if (!label) return "This field is required";
+      const lower = label.charAt(0).toLowerCase() + label.slice(1);
+      return /^(your|the|a|an)\s/.test(lower) ? `Enter ${lower}` : `Enter your ${lower}`;
+    }
+
+    function messageEl(field) {
+      let el = field.querySelector(":scope > .field-error");
+      if (!el) {
+        el = document.createElement("p");
+        el.className = "field-error";
+        el.setAttribute("aria-live", "polite");
+        field.appendChild(el);
+      }
+      if (!el.id) el.id = `fieldError${++counter}`;
+      return el;
+    }
+
+    function mark(control, text) {
+      const field = fieldOf(control);
+      const el = messageEl(field);
+      el.textContent = text;
+      field.classList.add("is-invalid");
+      const target = a11yTarget(control);
+      if (target) {
+        target.setAttribute("aria-invalid", "true");
+        target.setAttribute("aria-describedby", el.id);
+      }
+    }
+
+    function clear(control) {
+      if (isGroup(control)) {
+        control.classList.remove("is-invalid");
+        control.querySelectorAll(".check-option.is-invalid").forEach(o => o.classList.remove("is-invalid"));
+        return;
+      }
+      fieldOf(control).classList.remove("is-invalid");
+      const target = a11yTarget(control);
+      if (target) {
+        target.removeAttribute("aria-invalid");
+        target.removeAttribute("aria-describedby");
+      }
+    }
+
+    /* returns the element to focus when the control fails, else null */
+    function check(control) {
+      if (hidden(control)) {
+        clear(control);
+        return null;
+      }
+      if (isGroup(control)) {
+        const missing = [...control.querySelectorAll('input[type="checkbox"][data-required]')].filter(box => !box.checked);
+        control.querySelectorAll(".check-option").forEach(option => {
+          option.classList.toggle("is-invalid", missing.some(box => option.contains(box)));
+        });
+        control.classList.toggle("is-invalid", missing.length > 0);
+        const el = control.querySelector(":scope > .field-error");
+        if (el && missing.length) el.textContent = control.dataset.errorRequired || "Tick every mandatory box";
+        return missing[0] || null;
+      }
+      const field = fieldOf(control);
+      if (isSelect(control)) {
+        if (control.dataset.empty === "true") {
+          mark(control, message(field, control, "required"));
+          return a11yTarget(control);
+        }
+        clear(control);
+        return null;
+      }
+      if (control.type === "checkbox") {
+        if (!control.checked) {
+          mark(control, message(field, control, "required"));
+          return control;
+        }
+        clear(control);
+        return null;
+      }
+      const value = control.value.trim();
+      if (!value) {
+        mark(control, message(field, control, "required"));
+        return control;
+      }
+      if (control.type === "email" && !emailOk(value)) {
+        mark(control, message(field, control, "invalid"));
+        return control;
+      }
+      clear(control);
+      return null;
+    }
+
+    function validate() {
+      attempted = true;
+      let first = null;
+      controls().forEach(control => {
+        const failed = check(control);
+        if (failed && !first) first = failed;
+      });
+      if (first) {
+        first.scrollIntoView({ block: "center", behavior: "smooth" });
+        first.focus({ preventScroll: true });
+      }
+      return !first;
+    }
+
+    function reset() {
+      attempted = false;
+      controls().forEach(clear);
+    }
+
+    controls().forEach(control => {
+      const recheck = () => { if (attempted) check(control); };
+      if (isGroup(control)) {
+        control.addEventListener("change", recheck);
+        return;
+      }
+      if (isSelect(control)) {
+        new MutationObserver(recheck).observe(control, { attributes: true, attributeFilter: ["data-empty"] });
+        return;
+      }
+      control.addEventListener("blur", recheck);
+      control.addEventListener("change", recheck);
+      control.addEventListener("input", () => {
+        if (fieldOf(control).classList.contains("is-invalid")) check(control);
+      });
+    });
+
+    return { validate, check, clear, reset };
+  };
+
+  /* -----------------------------------------------------------
+     LEGAL PROSE — classify CMS headings
+     -----------------------------------------------------------
+     Rich text from the CMS marks headings with <strong> inside a
+     <p>. CSS cannot tell "only a <strong>" from "2. <strong>",
+     so tag them here: .legal-doc-title / .legal-heading.
+  */
+  document.querySelectorAll(".legal-prose > p").forEach(p => {
+    const strong = p.querySelector(":scope > strong");
+    if (!strong || p.children.length !== 1) return;
+    const outside = p.textContent.replace(strong.textContent, "").replace(/\u00a0/g, " ").trim();
+    if (!outside) p.classList.add("legal-doc-title");
+    else if (/^\d+\.?$/.test(outside)) p.classList.add("legal-heading");
+  });
+
+  /* Hand-numbered paragraphs ("1.2.1   Text…"): lift the number
+     into a .legal-num span and grade the paragraph by depth, so
+     it takes the same ladder as a nested list. An unnumbered
+     paragraph keeps the depth of the numbered one before it;
+     a document title resets the depth. */
+  document.querySelectorAll(".legal-prose").forEach(prose => {
+    let depth = 0;
+    [...prose.children].forEach(node => {
+      if (node.classList.contains("legal-doc-title") || node.tagName === "OL") {
+        depth = 0;
+        return;
+      }
+      if (node.tagName !== "P") return;
+      const first = node.firstChild;
+      const match = first && first.nodeType === 3 && first.nodeValue.match(/^[\s\u00a0]*(\d+(?:\.\d+)*)\.?[\s\u00a0]+/);
+      if (match) {
+        depth = Math.min(4, match[1].split(".").length);
+        const num = document.createElement("span");
+        num.className = "legal-num";
+        num.textContent = match[1];
+        first.nodeValue = first.nodeValue.slice(match[0].length);
+        node.insertBefore(num, first);
+      }
+      if (depth) node.classList.add("legal-item", `legal-item--${depth}`);
+    });
+  });
+
+  /* -----------------------------------------------------------
      MOUNT
      ----------------------------------------------------------- */
 

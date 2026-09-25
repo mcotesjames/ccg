@@ -60,10 +60,12 @@ const GUIDE_NAV = [
       ["cmp-form-choice", "Choice controls"],
       ["cmp-form-declarations", "Declarations block"],
       ["cmp-form-search", "Search field"],
+      ["cmp-form-errors", "Error states"],
       ["cmp-sticky-panel", "Sticky enquiry panel"]
     ]},
     { file: "overlays.html", desc: "Panels that open over the page: the page waits behind a scrim and closing returns the reader where they were.", name: "Overlays", components: [
-      ["cmp-card-drawer", "Card slide-out"]
+      ["cmp-card-drawer", "Card slide-out"],
+      ["cmp-confirm-modal", "Confirmation modal"]
     ]}
   ]}
 ];

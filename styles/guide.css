@@ -56,6 +56,13 @@
   transition: background-color .25s ease;
 }
 
+/* overlay demos sit under the guide chrome; the toggle steps
+   aside while one is open */
+body.has-drawer-open .cmp-menu-toggle,
+body.has-modal-open .cmp-menu-toggle {
+  visibility: hidden;
+}
+
 .cmp-menu-toggle:hover {
   background: var(--green);
 }

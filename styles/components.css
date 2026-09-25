@@ -35,6 +35,7 @@
      BREADCRUMB
      PAGE INTRO
      KEY FIGURES / STATS
+     CONFIRM MODAL
      LOAD MORE
      ONWARD / QUICK LINKS
      SCROLL REVEAL
@@ -1529,6 +1530,259 @@ body.menu-open {
   .more-card-plate {
     padding: 20px 20px 24px;
   }
+
+}
+
+/* =============================================================
+   LEGAL PAGE — long-form rich text (policies, terms, notices)
+   =============================================================
+   A shell for text the CMS already holds. The rich-text field is
+   dropped into .legal-prose as it comes (p / strong / ol / li /
+   a / br / sup) and these rules dress it; nothing in the copy
+   needs re-marking. One centred reading column, text left-aligned.
+
+   <article class="legal-page">
+     <div class="legal-layout">
+       <div class="legal-prose">…CMS rich text…</div>
+     </div>
+   </article>
+
+   Reading the CMS markup (the shared script classifies the
+   paragraphs on load, since CSS cannot see text nodes):
+   · a paragraph that is only a <strong> becomes .legal-doc-title
+   · a paragraph carrying a <strong> plus text, "2. Title",
+     becomes .legal-heading
+   · a top-level list item that opens with a <strong> is a
+     numbered section; its numeral sits in ground yellow
+   · nested lists number themselves legal-style (1.1, 1.1.1) so
+     "see paragraph 3" references resolve
+   · the <br> a CMS leaves after a section title is swallowed */
+
+.legal-page {
+  padding: var(--space-section-standard) var(--page-pad);
+  background: #fff;
+}
+
+.legal-layout {
+  max-width: 872px;
+  margin: 0 auto;
+}
+
+/* ---- the prose ---- */
+.legal-prose {
+  /* gutter per nesting level: the width reserved for the section
+     numeral, then for 1.1, 1.1.1 and 1.1.1.1 numbers. Every
+     number sits at the start of its gutter and the text of that
+     level, and everything inside it, steps in past it. */
+  --lg1: 40px;
+  --lg2: 56px;
+  --lg3: 72px;
+  --lg4: 88px;
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--ink);
+}
+
+.legal-prose p {
+  margin: 0 0 var(--space-md);
+}
+
+.legal-prose a {
+  color: var(--green);
+  border-bottom: 1px solid rgba(7, 84, 69, .35);
+  transition: border-color .25s ease;
+}
+
+.legal-prose a:hover,
+.legal-prose a:focus-visible {
+  border-bottom-color: var(--green);
+}
+
+.legal-prose sup {
+  font-size: .7em;
+  line-height: 0;
+}
+
+/* document title: a paragraph that is nothing but a <strong> */
+.legal-prose .legal-doc-title {
+  margin: var(--space-section-compact) 0 var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  color: var(--green-dark);
+}
+
+.legal-prose > :first-child {
+  margin-top: 0;
+}
+
+/* section heading written inline, "2. Title" */
+.legal-prose .legal-heading {
+  margin: var(--space-xl) 0 var(--space-md);
+  font-size: var(--text-h5);
+  line-height: var(--leading-h5);
+  color: var(--ink);
+}
+
+.legal-prose p > strong {
+  font-weight: 400;
+}
+
+/* numbered sections: every list is an ordered, self-numbering list */
+.legal-prose ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: legal;
+}
+
+.legal-prose li {
+  position: relative;
+  counter-increment: legal;
+  margin: 0 0 var(--space-md);
+}
+
+/* each nested list steps its text edge in by a gutter sized for
+   its numbers; the number sits at the start of that gutter, level
+   with the parent's text, so wrapped lines never tuck under it */
+.legal-prose li::before {
+  content: counters(legal, ".");
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--legal-gutter, 0px));
+  white-space: nowrap;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.legal-prose > ol {
+  padding-left: var(--lg1);
+}
+
+.legal-prose ol ol {
+  --legal-gutter: var(--lg2);
+  margin-top: var(--space-md);
+  padding-left: var(--legal-gutter);
+}
+
+.legal-prose ol ol ol {
+  --legal-gutter: var(--lg3);
+}
+
+.legal-prose ol ol ol ol {
+  --legal-gutter: var(--lg4);
+}
+
+/* Paragraphs the CMS numbers by hand ("1.2.1   Text…") get the
+   same ladder: the shared script wraps the number in .legal-num
+   and grades the paragraph .legal-item--1 to --4 by its depth.
+   An unnumbered paragraph that follows keeps its neighbour's
+   depth, so a sub-heading's body sits under the sub-heading. */
+.legal-prose .legal-item {
+  position: relative;
+}
+
+.legal-prose .legal-item--1 {
+  padding-left: var(--lg1);
+}
+
+.legal-prose .legal-item--2 {
+  padding-left: calc(var(--lg1) + var(--lg2));
+}
+
+.legal-prose .legal-item--3 {
+  padding-left: calc(var(--lg1) + var(--lg2) + var(--lg3));
+}
+
+.legal-prose .legal-item--4 {
+  padding-left: calc(var(--lg1) + var(--lg2) + var(--lg3) + var(--lg4));
+}
+
+.legal-prose .legal-num {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.legal-prose .legal-item--1 > .legal-num {
+  left: 0;
+}
+
+.legal-prose .legal-item--2 > .legal-num {
+  left: var(--lg1);
+}
+
+.legal-prose .legal-item--3 > .legal-num {
+  left: calc(var(--lg1) + var(--lg2));
+}
+
+.legal-prose .legal-item--4 > .legal-num {
+  left: calc(var(--lg1) + var(--lg2) + var(--lg3));
+}
+
+.legal-prose .legal-heading > .legal-num {
+  color: var(--ccg-ground-yellow);
+}
+
+/* top level: the section, titled by its opening <strong> */
+.legal-prose > ol > li {
+  margin: 0 0 var(--space-xl);
+}
+
+/* the section numeral sits in the first gutter beside the title,
+   in ground yellow; the section's content steps in past it */
+.legal-prose > ol > li:has(> strong)::before {
+  content: none;
+}
+
+.legal-prose > ol > li > strong {
+  display: block;
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-h5);
+  line-height: var(--leading-h5);
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.legal-prose > ol > li > strong {
+  position: relative;
+}
+
+.legal-prose > ol > li > strong::before {
+  content: counter(legal);
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--lg1));
+  color: var(--ccg-ground-yellow);
+  font-variant-numeric: tabular-nums;
+}
+
+.legal-prose > ol > li > strong + br {
+  display: none;
+}
+
+.legal-prose li > p:last-child,
+.legal-prose li > ol:last-child > li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 680px) {
+  .legal-prose .legal-doc-title {
+    margin-top: var(--space-xl);
+  }
+
+  /* no outside gutter on a phone: the top level reserves one, and
+     the nested gutters tighten to keep a readable measure */
+  .legal-prose {
+    --lg1: 36px;
+    --lg2: 44px;
+    --lg3: 56px;
+    --lg4: 68px;
+  }
+
 
 }
 
@@ -4179,7 +4433,13 @@ body.menu-open {
    </form>
    type= and autocomplete= are part of the spec, not extras:
    they set the mobile keyboard and let a browser fill the form.
-   There is no error or success state yet. */
+   ERROR STATE: page JS (ccgFormValidation) puts is-invalid on
+   the .field wrapper and aria-invalid on the control; the line
+   turns lively red and a caption-size red message shows in the
+   hint's slot (the hint hides while the error shows, so the
+   form never jumps). Required controls carry required= or
+   data-required; optional ones say so in the label text.
+   Success is the confirm modal, there is no per-field tick. */
 
 .enquiry-form {
   display: flex;
@@ -4240,6 +4500,40 @@ body.menu-open {
 .field-textarea {
   min-height: 120px;
   resize: vertical;
+}
+/* Error state — the line is the indicator, so the line goes red.
+   Hover and focus do not override it: red holds until the value
+   is fixed, then the line eases back to the hairline. The label
+   stays grey so the eye lands on the message, not the label. */
+.field-error {
+  display: none;
+  margin: var(--space-xs) 0 0;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--ccg-lively-red);
+}
+.field.is-invalid .field-error {
+  display: block;
+}
+.field.is-invalid .field-hint {
+  display: none;
+}
+.field.is-invalid .field-input,
+.field.is-invalid .field-textarea,
+.field.is-invalid .type-select-trigger,
+.field.is-invalid .field-input:hover,
+.field.is-invalid .field-textarea:hover,
+.field.is-invalid .type-select-trigger:hover,
+.field.is-invalid .field-input:focus-visible,
+.field.is-invalid .field-textarea:focus-visible,
+.field.is-invalid .type-select-trigger:focus-visible {
+  border-bottom-color: var(--ccg-lively-red);
+}
+/* Required checkbox left unticked: red hairline on the box. Same
+   wrapper contract, the .field holds the option and its message. */
+.field.is-invalid .check-option input[type="checkbox"],
+.check-option.is-invalid input[type="checkbox"] {
+  border-color: var(--ccg-lively-red);
 }
 
 /* Custom dropdown — same pattern as the awards year filter,
@@ -4312,6 +4606,10 @@ body.menu-open {
   transition: transform .25s ease;
 }
 
+/* an unchosen select shows its prompt in sage, like a placeholder */
+.type-select[data-empty="true"] .type-select-trigger > span:first-child {
+  color: var(--ccg-sage);
+}
 .type-select[data-open="true"] .type-select-chevron {
   transform: translateY(1px) rotate(-135deg);
 }
@@ -4550,10 +4848,18 @@ body.menu-open {
   border-bottom-color: var(--green);
 }
 
+/* Standing reminder in grey; turns lively red when the group is
+   submitted with a mandatory box unticked (is-invalid on the
+   panel, set by ccgFormValidation via data-required-group). */
 .mainland-consent-required {
   margin: 0;
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
+  color: var(--grey);
+  transition: color .25s ease;
+}
+.is-invalid > .mainland-consent-required,
+.is-invalid .mainland-consent-required {
   color: var(--ccg-lively-red);
 }
 
@@ -5768,16 +6074,10 @@ body.menu-open {
 }
 
 .leader-card-role {
-  /* the description sits tight under the role; the role itself keeps
-     the card's even step above it */
   margin: var(--space-ms) 0 0;
   font-size: var(--text-h6);
   line-height: 32px;
   color: var(--ink);
-}
-
-.leader-card-role + .business-card-desc {
-  margin-top: 0;
 }
 
 /* Variant — feature: portrait left, detail packed to the bottom
@@ -6052,6 +6352,425 @@ body.has-drawer-open {
   .profile-drawer-media {
     height: 340px;
   }
+}
+
+/* =============================================================
+   CONFIRM MODAL — review-before-send dialog for a form
+   =============================================================
+   Shown when a form is submitted: every answer read back as a
+   ruled ledger, grouped, with an Edit route per group. The reader
+   either goes back to the form or sends. After sending, the same
+   panel turns into the thank-you.
+
+   A centred dialog at desktop and tablet; full screen at ≤680.
+
+   <div class="confirm-modal" id="…" data-open="false" data-state="review" aria-hidden="true">
+     <div class="confirm-modal-scrim" data-confirm-close></div>
+     <div class="confirm-modal-panel" role="dialog" aria-modal="true" aria-labelledby="…">
+       <button class="confirm-modal-close" type="button" aria-label="Close" data-confirm-close></button>
+       <header class="confirm-modal-head">
+         <p class="confirm-modal-step">Step 2 of 2 · Review</p>
+         <h2 class="confirm-modal-title" id="…">Confirm your details</h2>
+         <p class="confirm-modal-intro">…</p>
+       </header>
+       <div class="confirm-modal-body">
+         <section class="confirm-group">
+           <div class="confirm-group-head">
+             <h3 class="confirm-group-title">Your enquiry</h3>
+             <button class="confirm-edit" type="button" data-confirm-edit="…">Edit</button>
+           </div>
+           <dl class="confirm-list">
+             <div class="confirm-row"><dt>Label</dt><dd>Value</dd></div> × N
+             (dd.is-empty for blanks)
+           </dl>
+         </section> × N
+       </div>
+       <footer class="confirm-modal-foot">
+         <button class="profile-drawer-back" type="button" data-confirm-close>
+           <span class="ui-arrow" aria-hidden="true"></span> Back to form
+         </button>
+         <button class="primary-cta primary-cta--solid" type="button" data-confirm-send>
+           <span class="primary-cta-label">Send enquiry</span>
+           <span class="primary-cta-arrow" aria-hidden="true"><span class="inline-arrow"></span></span>
+         </button>
+       </footer>
+       <div class="confirm-modal-done" tabindex="-1">
+         <span class="confirm-modal-mark" aria-hidden="true"></span>
+         <h2 class="confirm-modal-title">Thank you</h2>
+         <p class="confirm-modal-intro">…</p>
+         <button class="link-arrow secondary-link-cta" type="button" data-confirm-close>Close</button>
+       </div>
+     </div>
+   </div>
+
+   Driven by ccgConfirmModal(root, { onEdit, onSend }) in
+   scripts/components.js: open(trigger) / close() / state.
+   data-state moves review → sending → sent. Page JS fills the
+   ledger from the form before calling open(). */
+
+body.has-modal-open {
+  overflow: hidden;
+}
+
+.confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--page-pad);
+  visibility: hidden;
+  /* hide is delayed for the exit; show is instant so focus can
+     move into the panel at once */
+  transition: visibility 0s .5s;
+}
+
+.confirm-modal[data-open="true"] {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.confirm-modal-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 29, 26, .38);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity .45s ease;
+}
+
+.confirm-modal[data-open="true"] .confirm-modal-scrim {
+  opacity: 1;
+}
+
+/* ---- panel: centred dialog ---- */
+
+.confirm-modal-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 880px;
+  max-width: 100%;
+  max-height: 100%;
+  background: #fff;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity .45s ease,
+    transform .55s cubic-bezier(.22,.61,.36,1);
+}
+
+.confirm-modal[data-open="true"] .confirm-modal-panel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* drawn cross; inks green-dark and turns a quarter on hover */
+.confirm-modal-close {
+  position: absolute;
+  top: var(--space-card);
+  right: var(--space-card);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--grey);
+  cursor: pointer;
+  transition: color .25s ease, transform .35s cubic-bezier(.22,.61,.36,1);
+}
+
+.confirm-modal-close::before,
+.confirm-modal-close::after {
+  content: "";
+  position: absolute;
+  top: 19px;
+  left: 8px;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+.confirm-modal-close::after {
+  transform: rotate(-45deg);
+}
+
+.confirm-modal-close:hover,
+.confirm-modal-close:focus-visible {
+  color: var(--green-dark);
+  transform: rotate(90deg);
+}
+
+.confirm-modal-head {
+  flex: 0 0 auto;
+  padding: var(--space-xl) var(--space-xl) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.confirm-modal-step {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--green);
+}
+
+.confirm-modal-title {
+  margin: 0;
+  padding-right: var(--space-xl);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  font-weight: 400;
+  color: var(--green-dark);
+}
+
+.confirm-modal-intro {
+  margin: var(--space-ms) 0 0;
+  max-width: 560px;
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--grey);
+}
+
+/* the ledger scrolls; head and foot stay put */
+.confirm-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--space-xl) var(--space-lg);
+}
+
+.confirm-group {
+  padding-top: var(--space-lg);
+}
+
+.confirm-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--green);
+}
+
+.confirm-group-title {
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  font-weight: 400;
+  color: var(--green);
+}
+
+.confirm-edit {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--grey);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: color .25s ease, text-decoration-color .25s ease;
+}
+
+.confirm-edit:hover,
+.confirm-edit:focus-visible {
+  color: var(--green-dark);
+  text-decoration-color: currentColor;
+}
+
+.confirm-list {
+  margin: 0;
+}
+
+.confirm-row {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-card);
+  padding: var(--space-ms) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.confirm-row dt {
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+  color: var(--grey);
+}
+
+.confirm-row dd {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.confirm-row dd.is-empty {
+  color: var(--ccg-sage);
+}
+
+.confirm-modal-foot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-xl);
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+
+.confirm-modal .primary-cta {
+  border: 0;
+  cursor: pointer;
+}
+
+/* sending: the button holds while the request is in flight */
+.confirm-modal[data-state="sending"] [data-confirm-send] {
+  pointer-events: none;
+  opacity: .6;
+}
+
+/* ---- sent: the panel becomes the thank-you ---- */
+
+.confirm-modal-done {
+  display: none;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-section-compact) var(--space-xl);
+  text-align: center;
+  outline: none;
+  box-shadow: none;
+}
+.confirm-modal-done:focus,
+.confirm-modal-done:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.confirm-modal[data-state="sent"] .confirm-modal-head,
+.confirm-modal[data-state="sent"] .confirm-modal-body,
+.confirm-modal[data-state="sent"] .confirm-modal-foot {
+  display: none;
+}
+
+.confirm-modal[data-state="sent"] .confirm-modal-done {
+  display: flex;
+  animation: confirm-done-in .6s cubic-bezier(.22,.61,.36,1) both;
+}
+
+.confirm-modal-done .confirm-modal-title {
+  padding-right: 0;
+}
+
+/* the secondary link, set on a <button> */
+.confirm-modal-done .secondary-link-cta {
+  margin-top: var(--space-xl);
+  padding: 0 0 20px;
+  border: 0;
+  background-color: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.confirm-modal-mark {
+  width: 64px;
+  height: 50px;
+  margin-bottom: var(--space-lg);
+  background: var(--gold);
+  -webkit-mask: var(--hearts-mask) center / contain no-repeat;
+  mask: var(--hearts-mask) center / contain no-repeat;
+}
+
+@keyframes confirm-done-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confirm-modal-scrim,
+  .confirm-modal-panel {
+    transition: none;
+  }
+
+  .confirm-modal[data-state="sent"] .confirm-modal-done {
+    animation: none;
+  }
+}
+
+@media (max-width: 680px) {
+  /* the dialog takes the whole screen, sliding up into place */
+  .confirm-modal {
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .confirm-modal-panel {
+    width: 100%;
+    height: 100%;
+    transform: translateY(100%);
+    opacity: 1;
+  }
+
+  .confirm-modal-close {
+    top: var(--space-ms);
+    right: var(--space-ms);
+  }
+
+  .confirm-modal-head {
+    padding: var(--space-lg) var(--page-pad) var(--space-md);
+  }
+
+  .confirm-modal-title {
+    font-size: var(--text-h4);
+    line-height: var(--leading-h4);
+  }
+
+  .confirm-modal-intro {
+    font-size: var(--text-small);
+    line-height: var(--leading-small);
+  }
+
+  .confirm-modal-body {
+    padding: 0 var(--page-pad) var(--space-md);
+  }
+
+  .confirm-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2xs);
+    padding: var(--space-sm) 0;
+  }
+
+  .confirm-modal-foot {
+    padding: var(--space-md) var(--page-pad);
+  }
+
+  .confirm-modal-foot .primary-cta {
+    min-width: 0;
+  }
+
+  .confirm-modal-done {
+    padding: var(--space-xl) var(--page-pad);
+  }
+
 }
 
 /* =============================================================

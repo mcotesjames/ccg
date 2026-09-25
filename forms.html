@@ -164,7 +164,7 @@
         <li><span class="cmp-event">Hover and focus:</span> the underline darkens from hairline grey to deep green over 0.25s. Focus and hover look identical, and the browser's own focus ring is suppressed, the line <em>is</em> the focus indicator.</li>
         <li><span class="cmp-event">Placeholder:</span> set in sage, a step lighter than entered text, so a filled field and an empty one are told apart by colour as well as content.</li>
         <li><span class="cmp-event">Multi-line:</span> the same control with a taller floor. It resizes vertically only, horizontal resize would break the column.</li>
-        <li><span class="cmp-event">Hint:</span> caption size in grey, under the control. This is guidance, not validation, there is no error style in the system yet.</li>
+        <li><span class="cmp-event">Hint:</span> caption size in grey, under the control. This is guidance; when a field fails, its error message takes this same slot and the hint steps aside. See Error states below.</li>
         <li><span class="cmp-event">Layout:</span> fields stack in a single column at an even rhythm. Pairs that belong together share a two-up row, which collapses to one column on mobile.</li>
         <li><span class="cmp-event">Semantics carry the weight:</span> each field declares its real input type and autofill purpose, that is what gives the right mobile keyboard and lets a browser fill the form. They are part of the spec, not optional extras.</li>
         </ul>
@@ -343,7 +343,7 @@
         <li><span class="cmp-event">The panel:</span> white against the cream plate with a thin gold bar down its left edge, marking it as conditional. Inside: an intro, a red required-fields warning, green group headings, and consent rows.</li>
         <li><span class="cmp-event">Reduced motion:</span> the panel opens and closes with no transition.</li>
         <li><span class="cmp-event">Submit:</span> the solid primary CTA as a true submit button, visually identical to its link form once the browser's default button chrome is neutralised, which is the only difference between the two.</li>
-        <li><span class="cmp-event">Not built yet:</span> browser validation is switched off and there is no client-side validation, no error state, no success state and no submit behaviour. The required-fields warning is static copy that shows whenever the panel is open, not a response to anything. Error and success styling has to be designed before this form can ship.</li>
+        <li><span class="cmp-event">Validation:</span> browser validation is switched off in favour of the house error state. Send checks every field, the grey reminder above a mandatory group turns red and each unticked mandatory box takes a red border; a folded panel is never checked. See Error states below. Success is the confirmation modal.</li>
         </ul>
       </details>
     </div>
@@ -380,10 +380,163 @@
     </div>
   </section>
 
+  <!-- FORMS · ERROR STATES -->
+
+  <section class="cmp-section" id="cmp-form-errors" aria-label="Error states">
+    <div class="cmp-head">
+      <span class="cmp-head-number">06</span>
+      <h2>Error states</h2>
+      <p class="cmp-head-note">Red line, caption message in the hint's slot &middot; checked on send, cleared as you fix</p>
+    </div>
+
+    <p class="cmp-sub">States</p>
+    <div class="cmp-stage">
+      <form class="enquiry-form" style="max-width: 872px;" novalidate onsubmit="return false;">
+
+        <div class="field-row">
+          <div class="field is-invalid">
+            <label class="field-label" for="cmpErrFirstName">Required, left empty</label>
+            <input class="field-input" id="cmpErrFirstName" type="text" placeholder="Your name" autocomplete="off" aria-invalid="true" aria-describedby="cmpErrFirstNameMsg">
+            <p class="field-error" id="cmpErrFirstNameMsg">Enter your first name</p>
+          </div>
+
+          <div class="field is-invalid">
+            <label class="field-label" for="cmpErrEmail">Wrong format, hint replaced</label>
+            <input class="field-input" id="cmpErrEmail" type="email" value="name@example" autocomplete="off" aria-invalid="true" aria-describedby="cmpErrEmailMsg">
+            <p class="field-hint">We only use this to reply.</p>
+            <p class="field-error" id="cmpErrEmailMsg">Enter an email address like name@example.com</p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field is-invalid">
+            <span class="field-label" id="cmpErrTypeLabel">Select, nothing chosen</span>
+            <div class="type-select" data-open="false" data-empty="true" id="cmpErrTypeSelect">
+              <button class="type-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="cmpErrTypeLabel cmpErrTypeValue" aria-invalid="true" aria-describedby="cmpErrTypeMsg">
+                <span id="cmpErrTypeValue">Choose an enquiry type</span>
+                <span class="type-select-chevron" aria-hidden="true"></span>
+              </button>
+            </div>
+            <p class="field-error" id="cmpErrTypeMsg">Choose an enquiry type</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="cmpErrPhone">Phone</label>
+            <input class="field-input" id="cmpErrPhone" type="tel" placeholder="+852" autocomplete="off">
+            <p class="field-hint">Not required, so it never flags.</p>
+          </div>
+        </div>
+
+        <div class="field is-invalid">
+          <label class="field-label" for="cmpErrMessage">Multi-line, left empty</label>
+          <textarea class="field-textarea" id="cmpErrMessage" placeholder="Provide details about your enquiry" aria-invalid="true" aria-describedby="cmpErrMessageMsg"></textarea>
+          <p class="field-error" id="cmpErrMessageMsg">Enter your message</p>
+        </div>
+
+        <div class="form-declarations">
+          <div class="mainland-consent-inner is-invalid">
+            <p class="mainland-consent-required">Please fill in all mandatory fields below.</p>
+            <p class="mainland-consent-group">Your personal data</p>
+            <label class="check-option">
+              <input type="checkbox" checked>
+              <span>I have fully read and understood the contents of the Privacy Policy of Chinachem Group and its addendum.</span>
+            </label>
+            <label class="check-option is-invalid">
+              <input type="checkbox" aria-invalid="true">
+              <span>I agree that the personal data that I provide to Chinachem Group may be transmitted and stored by Chinachem Group at its domicile or any other location it may designate.</span>
+            </label>
+          </div>
+
+          <div class="field is-invalid">
+            <label class="check-option">
+              <input type="checkbox" aria-invalid="true" aria-describedby="cmpErrPrivacyMsg">
+              <span>I acknowledge and accept the <a href="#">Privacy Policy</a>.</span>
+            </label>
+            <p class="field-error" id="cmpErrPrivacyMsg">Please accept the Privacy Policy to send your enquiry</p>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <p class="cmp-sub">Live &middot; press Send with the form empty</p>
+    <div class="cmp-stage">
+      <form class="enquiry-form" style="max-width: 872px;" id="cmpLiveForm" novalidate>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" for="cmpLiveFirstName">First name</label>
+            <input class="field-input" id="cmpLiveFirstName" type="text" placeholder="Your name" autocomplete="off" required>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="cmpLiveLastName">Last name</label>
+            <input class="field-input" id="cmpLiveLastName" type="text" placeholder="Your surname" autocomplete="off" required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" for="cmpLiveEmail">Email</label>
+            <input class="field-input" id="cmpLiveEmail" type="email" placeholder="name@example.com" autocomplete="off" required>
+            <p class="field-hint">We only use this to reply.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="cmpLivePhone">Phone</label>
+            <input class="field-input" id="cmpLivePhone" type="tel" placeholder="+852" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="cmpLiveMessage">Your message</label>
+          <textarea class="field-textarea" id="cmpLiveMessage" placeholder="Provide details about your enquiry" required></textarea>
+        </div>
+
+        <div class="form-declarations">
+          <div class="field">
+            <label class="check-option">
+              <input type="checkbox" data-required data-error-required="Please accept the Privacy Policy to send your enquiry">
+              <span>I acknowledge and accept the <a href="#">Privacy Policy</a>.</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions" style="display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap;">
+          <button class="primary-cta primary-cta--solid" type="submit">
+            <span class="primary-cta-label">Send enquiry</span>
+            <span class="primary-cta-arrow" aria-hidden="true">
+              <span class="inline-arrow"></span>
+            </span>
+          </button>
+          <p class="field-hint" id="cmpLiveStatus" role="status" style="margin: 0;"></p>
+        </div>
+
+      </form>
+      <details class="cmp-notes-wrap">
+        <summary>Interaction notes</summary>
+        <ul class="cmp-notes">
+        <li>The house rule carries through: the underline is the state indicator, so an error is a red line, not a red box. The label stays grey, the message does the talking.</li>
+        <li><span class="cmp-event">When it fires:</span> nothing is checked while the reader is still filling the form in. Pressing Send runs every check at once. From then on each field re-checks as the reader leaves it, and a field already in error clears itself the moment its value is fixed, without waiting for a blur.</li>
+        <li><span class="cmp-event">The line:</span> turns lively red over 0.25s and holds red through hover and focus, so the reader is never shown a green line on a field that is still wrong. Once fixed it eases back to the resting hairline.</li>
+        <li><span class="cmp-event">The message:</span> caption size in lively red, sitting exactly where a hint sits. A field's hint hides while its error shows, so the form never changes height and nothing beneath it jumps.</li>
+        <li><span class="cmp-event">Copy:</span> short and imperative, said once. A missing value asks for it by its label, "Enter your first name". A wrong format shows what a good value looks like, "Enter an email address like name@example.com".</li>
+        <li><span class="cmp-event">No required marks:</span> labels stay as they are, with no asterisks, no "(optional)" and no legend. A field that is not required simply never flags.</li>
+        <li><span class="cmp-event">Select:</span> an unchosen select shows its prompt in sage like a placeholder, and in error takes the same red line and message as a text field.</li>
+        <li><span class="cmp-event">Checkbox:</span> a required box left unticked takes a red hairline border, with the message beneath the row. Ticking it clears both at once.</li>
+        <li><span class="cmp-event">Declarations:</span> the grey reminder above a mandatory group turns red, and each unticked mandatory box in the group takes the red border. A folded panel is never checked, only what the reader can see counts.</li>
+        <li><span class="cmp-event">Focus:</span> after a failed Send the first failing field scrolls to the centre of the screen and takes focus, so the reader lands on the fix rather than on a summary.</li>
+        <li><span class="cmp-event">No summary, no ticks:</span> forms this short need no error banner, and a field that passes shows nothing new. Success is the confirmation modal that opens on a clean Send.</li>
+        <li><span class="cmp-event">Screen readers:</span> a failing field is announced as invalid and its message is read as its description, so the red is never the only signal.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
   <!-- FORMS · STICKY ENQUIRY PANEL -->
   <section class="cmp-section" id="cmp-sticky-panel" aria-label="Sticky enquiry panel">
     <div class="cmp-head">
-      <span class="cmp-head-number">06</span>
+      <span class="cmp-head-number">07</span>
       <h2>Sticky enquiry panel</h2>
       <p class="cmp-head-note">Routing panel that holds beside a long form, then releases</p>
     </div>
@@ -454,6 +607,17 @@
         cmpCloseTypeMenu();
         cmpTypeTrigger.focus();
       }
+    });
+
+    /* Error states, live: the shared validation runs on Send */
+    const cmpLiveForm = document.querySelector("#cmpLiveForm");
+    const cmpLiveStatus = document.querySelector("#cmpLiveStatus");
+    const cmpLiveValidation = window.ccgFormValidation(cmpLiveForm);
+
+    cmpLiveForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const ok = cmpLiveValidation.validate();
+      cmpLiveStatus.textContent = ok ? "All good. On the contact page the confirmation modal opens here." : "";
     });
 
     /* Conditional consent panel: follows the Yes/No radio */
