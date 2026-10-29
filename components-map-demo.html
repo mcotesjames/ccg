@@ -63,10 +63,16 @@
 
     .map-results {
       position: relative;
+      display: flex;
+      flex-direction: column;
       background: var(--green);
       color: #fff;
       overflow: auto;
       height: 560px;
+    }
+
+    .map-results > * {
+      flex: 0 0 auto;
     }
 
     /* filter row heads the list: label over the house dropdown,
@@ -99,6 +105,29 @@
     /* the carousel controls belong to the mobile strip only */
     .map-carousel-ui {
       display: none;
+    }
+
+    /* footnote pinned to the foot of the list: lime on ink, only
+       while a listed place carries the provisional-number flag */
+    .map-disclaimer {
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
+      margin: auto 0 0;
+      padding: var(--space-md) var(--space-plate);
+      background: var(--lime);
+      color: var(--ink);
+      font-size: var(--text-small);
+      line-height: var(--leading-small);
+    }
+
+    .map-disclaimer[hidden] {
+      display: none;
+    }
+
+    /* the flagged place marks its address line with the asterisk */
+    .map-result[data-disclaimer] p::after {
+      content: "*";
     }
 
     .map-result {
@@ -265,6 +294,13 @@
       .map-results.is-empty .map-carousel-ui {
         display: none;
       }
+
+      /* below the controls, a plain block in the flow */
+      .map-disclaimer {
+        position: static;
+        margin: 20px 0 0;
+        padding: var(--space-md) var(--page-pad);
+      }
     }
 
   </style>
@@ -305,12 +341,12 @@
             <p>Sha Tin Centre Street</p>
             <a class="map-result-directions link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=New%20Town%20Plaza%2C%20Sha%20Tin%2C%20Hong%20Kong" target="_blank" rel="noopener">Get directions</a>
           </article>
-          <article class="map-result" data-category="landmarks" tabindex="0">
+          <article class="map-result" data-category="landmarks" data-disclaimer tabindex="0">
             <h3>Royal Park Hotel</h3>
             <p>8 Pak Hok Ting Street</p>
             <a class="map-result-directions link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=Royal%20Park%20Hotel%2C%208%20Pak%20Hok%20Ting%20Street%2C%20Sha%20Tin%2C%20Hong%20Kong" target="_blank" rel="noopener">Get directions</a>
           </article>
-          <article class="map-result" data-category="landmarks" tabindex="0">
+          <article class="map-result" data-category="landmarks" data-disclaimer tabindex="0">
             <h3>Sha Tin Town Hall</h3>
             <p>1 Yuen Wo Road</p>
             <a class="map-result-directions link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=Sha%20Tin%20Town%20Hall%2C%201%20Yuen%20Wo%20Road%2C%20Sha%20Tin%2C%20Hong%20Kong" target="_blank" rel="noopener">Get directions</a>
@@ -332,6 +368,8 @@
             <button class="arrow arrow-next" type="button" id="mapNext" aria-label="Next place"><span class="ui-arrow" aria-hidden="true"></span></button>
           </div>
         </div>
+
+        <p class="map-disclaimer" id="mapDisclaimer">*The provisional street number is subject to confirmation when the Development is completed.</p>
       </aside>
 
       <div class="map-canvas">
@@ -352,6 +390,14 @@
       const options = [...root.querySelectorAll(".year-option")];
       const results = [...document.querySelectorAll("#mapResults .map-result")];
       const empty = document.querySelector("#mapEmpty");
+      const disclaimer = document.querySelector("#mapDisclaimer");
+
+      /* the footnote follows the chosen place: shown only while the
+         place holding the selection carries the provisional flag */
+      const syncDisclaimer = () => {
+        disclaimer.hidden = !results.some(item =>
+          item.classList.contains("is-active") && !item.hidden && item.hasAttribute("data-disclaimer"));
+      };
 
       const close = () => { root.dataset.open = "false"; trigger.setAttribute("aria-expanded", "false"); };
 
@@ -363,6 +409,7 @@
           if (on) shown++;
         });
         empty.hidden = shown > 0;
+        syncDisclaimer();
         results[0].closest(".map-results").classList.toggle("is-empty", shown === 0);
       }
 
@@ -410,6 +457,7 @@
            anything the filter has hidden gives its selection up */
         const shown = cards();
         results.forEach(card => card.classList.toggle("is-active", shown.indexOf(card) === index));
+        syncDisclaimer();
         const steps = maxIndex() + 1;
         current.textContent = String(index + 1).padStart(2, "0");
         total.textContent = String(steps).padStart(2, "0");
@@ -457,6 +505,7 @@
           update();
         } else {
           results.forEach(other => other.classList.toggle("is-active", other === item));
+          syncDisclaimer();
         }
       };
 
@@ -474,6 +523,7 @@
           update();
         } else {
           results.forEach(other => other.classList.toggle("is-active", other === item));
+          syncDisclaimer();
         }
       }));
 
@@ -482,6 +532,7 @@
       window.addEventListener("resize", () => update(false));
       mobile.addEventListener("change", () => update(false));
       update(false);
+      syncDisclaimer();
     })();
   </script>
 
